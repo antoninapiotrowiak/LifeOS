@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts (Plus Jakarta Sans & Playfair Display) -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -20,10 +20,10 @@
                 extend: {
                     colors: {
                         dark: {
-                            900: '#0B0D12',
-                            800: '#131722',
-                            700: '#1D2333',
-                            600: '#2A334A'
+                            900: '#090B0E',
+                            800: '#121620',
+                            700: '#1C2233',
+                            600: '#283147'
                         },
                         roseGold: {
                             400: '#F4B5B5',
@@ -33,7 +33,8 @@
                         emeraldGlow: {
                             400: '#5EEAD4',
                             500: '#14B8A6',
-                        }
+                        },
+                        champagne: '#FCE7F3'
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
@@ -44,31 +45,20 @@
         }
     </script>
     <style>
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0B0D12;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #2A334A;
-            border-radius: 9999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #E89898;
-        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #090B0E; }
+        ::-webkit-scrollbar-thumb { background: #283147; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #E89898; }
         
         .glass-card {
-            background: rgba(19, 23, 34, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.07);
+            background: rgba(18, 22, 32, 0.75);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
         
         .glass-card-hover:hover {
-            border-color: rgba(232, 152, 152, 0.3);
-            box-shadow: 0 10px 30px -10px rgba(232, 152, 152, 0.15);
+            border-color: rgba(232, 152, 152, 0.35);
+            box-shadow: 0 12px 32px -10px rgba(232, 152, 152, 0.18);
         }
 
         .gradient-text {
@@ -92,19 +82,25 @@
             mask-composite: exclude;
             pointer-events: none;
         }
+
+        /* Perspective Flip for Flashcards */
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
     </style>
 </head>
 <body class="bg-dark-900 text-slate-200 font-sans min-h-screen flex flex-col antialiased selection:bg-roseGold-500 selection:text-dark-900">
 
     <!-- Top Navigation Header -->
     <header class="sticky top-0 z-40 bg-dark-900/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3.5 transition-all">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
             
             <!-- Logo & Greeting -->
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-roseGold-600 via-roseGold-400 to-emeraldGlow-400 p-[1px] flex items-center justify-center shadow-lg shadow-roseGold-500/10">
                     <div class="w-full h-full bg-dark-900 rounded-[15px] flex items-center justify-center">
-                        <i class="fa-solid font-bold text-roseGold-400 fa-sparkles text-lg"></i>
+                        <i class="fa-solid fa-sparkles text-roseGold-400 text-lg"></i>
                     </div>
                 </div>
                 <div>
@@ -115,16 +111,23 @@
                 </div>
             </div>
 
-            <!-- Matura Countdown Badge -->
-            <div class="hidden md:flex items-center gap-3 bg-dark-800/90 border border-slate-700/60 rounded-full px-4 py-1.5 text-xs shadow-inner">
-                <i class="fa-solid fa-graduation-cap text-roseGold-400"></i>
-                <span class="text-slate-300">Odliczanie do Matury 2027:</span>
-                <span id="matura-countdown" class="font-bold text-emeraldGlow-400 font-mono tracking-wide">-- dni</span>
+            <!-- Real-time Countdowns (Matura & Studniówka) -->
+            <div class="hidden sm:flex items-center gap-3">
+                <div class="flex items-center gap-2 bg-dark-800/90 border border-slate-700/60 rounded-full px-3.5 py-1.5 text-xs shadow-inner">
+                    <i class="fa-solid fa-graduation-cap text-roseGold-400"></i>
+                    <span class="text-slate-400">Matura 2027:</span>
+                    <span id="matura-countdown" class="font-bold text-emeraldGlow-400 font-mono">-- dni</span>
+                </div>
+                <div class="flex items-center gap-2 bg-dark-800/90 border border-slate-700/60 rounded-full px-3.5 py-1.5 text-xs shadow-inner">
+                    <i class="fa-solid fa-champagne-glasses text-roseGold-400"></i>
+                    <span class="text-slate-400">Studniówka:</span>
+                    <span id="studniowka-countdown" class="font-bold text-roseGold-400 font-mono">-- dni</span>
+                </div>
             </div>
 
-            <!-- Focus Mode Button & Mobile Nav Trigger -->
+            <!-- Right Controls -->
             <div class="flex items-center gap-2">
-                <button id="focus-toggle-btn" onclick="toggleFocusMode()" class="flex items-center gap-2 text-xs font-semibold bg-dark-800 hover:bg-dark-700 text-slate-300 px-3.5 py-2 rounded-xl border border-slate-700/60 transition-all hover:text-roseGold-400">
+                <button onclick="toggleFocusMode()" id="focus-toggle-btn" class="flex items-center gap-2 text-xs font-semibold bg-dark-800 hover:bg-dark-700 text-slate-300 px-3.5 py-2 rounded-xl border border-slate-700/60 transition-all hover:text-roseGold-400">
                     <i class="fa-solid fa-bullseye text-roseGold-400"></i>
                     <span class="hidden sm:inline">Tryb Skupienia</span>
                 </button>
@@ -135,32 +138,38 @@
     <!-- Main Content Area -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 lg:p-8 space-y-6">
 
-        <!-- Welcome Banner & Quick Controls -->
+        <!-- Banner with Greeting & Mood Slider -->
         <section class="relative overflow-hidden rounded-3xl p-6 md:p-8 glass-card gradient-border">
             <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-roseGold-500/10 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute -left-12 -top-12 w-64 h-64 bg-emeraldGlow-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-            <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div>
-                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20 mb-3">
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                <div class="lg:col-span-2 space-y-2">
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20">
                         <i class="fa-solid fa-crown text-[10px]"></i> Twój Prywatny Kokpit
                     </span>
                     <h2 class="text-2xl sm:text-3xl font-bold text-white font-serif tracking-wide">
-                        Witaj, <span class="gradient-text">Gwiazdo!</span> ✨
+                        Cześć, <span class="gradient-text">Gwiazda / Młoda!</span> ✨
                     </h2>
-                    <p class="text-sm text-slate-400 mt-1 max-w-xl leading-relaxed">
-                        Wszystko, czego potrzebujesz na dzisiaj – Matura, Air Fryer, lista zadań, notatki oraz marzenia w jednym miejscu.
+                    <p class="text-xs sm:text-sm text-slate-400 max-w-xl leading-relaxed">
+                        Matura, Airfryer bez twarogu, wishlisty studniówkowe, dramy azjatyckie i punkty na studia — w jednym stylowym miejscu.
                     </p>
                 </div>
 
-                <!-- Daily Motivational Quote / Quick Stats -->
-                <div class="flex items-center gap-4 bg-dark-900/60 border border-slate-800 rounded-2xl p-3.5 max-w-md">
-                    <div class="w-10 h-10 rounded-xl bg-emeraldGlow-500/10 border border-emeraldGlow-500/20 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-fire text-emeraldGlow-400 text-lg"></i>
+                <!-- Interactive Mood & Energy Tracker -->
+                <div class="bg-dark-900/80 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between space-y-3">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-roseGold-400"></i> Poziom Energii:
+                        </span>
+                        <span id="energy-value-text" class="font-mono font-bold text-emeraldGlow-400">3/5 (Umiarkowany)</span>
                     </div>
-                    <div>
-                        <div class="text-xs font-medium text-slate-400">Daily Goal & Streak</div>
-                        <div id="quote-display" class="text-xs font-semibold text-slate-200 mt-0.5 leading-snug">"Małe kroki każdego dnia robią różnicę."</div>
+                    
+                    <input type="range" min="1" max="5" value="3" id="energy-range" oninput="updateEnergyTracker(this.value)" class="w-full accent-roseGold-400 cursor-pointer h-1.5 bg-dark-700 rounded-lg">
+                    
+                    <div id="energy-recommendation" class="text-[11px] text-slate-300 bg-dark-800/70 p-2.5 rounded-xl border border-slate-700/50 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info text-roseGold-400 shrink-0"></i>
+                        <span>Stabilne tempo. Dobry moment na 15m fiszek lub małą przekąskę.</span>
                     </div>
                 </div>
             </div>
@@ -168,124 +177,126 @@
 
         <!-- Navigation Tabs -->
         <nav class="flex items-center gap-2 border-b border-slate-800 pb-2 overflow-x-auto scrollbar-none">
-            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all bg-roseGold-500 text-dark-900 shadow-md shadow-roseGold-500/20">
+            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all bg-roseGold-500 text-dark-900 shadow-md shadow-roseGold-500/20 shrink-0">
                 <i class="fa-solid fa-grid-2"></i> Dashboard
             </button>
-            <button onclick="switchTab('matura')" id="tab-matura" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all">
-                <i class="fa-solid fa-book-open"></i> Matura 2027
+            <button onclick="switchTab('matura')" id="tab-matura" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
+                <i class="fa-solid fa-graduation-cap"></i> Matura & Kalkulator PG/UG
             </button>
-            <button onclick="switchTab('recipes')" id="tab-recipes" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all">
-                <i class="fa-solid fa-utensils"></i> Air Fryer & Przepisy
+            <button onclick="switchTab('recipes')" id="tab-recipes" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
+                <i class="fa-solid fa-utensils"></i> Fit Kuchnia & Airfryer
             </button>
-            <button onclick="switchTab('style')" id="tab-style" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all">
+            <button onclick="switchTab('style')" id="tab-style" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
                 <i class="fa-solid fa-shirt"></i> Style & Studniówka
             </button>
-            <button onclick="switchTab('notes')" id="tab-notes" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all">
-                <i class="fa-solid fa-note-sticky"></i> Brain Dump
+            <button onclick="switchTab('lounge')" id="tab-lounge" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
+                <i class="fa-solid fa-tv"></i> Dramy & Gaming RP
+            </button>
+            <button onclick="switchTab('shopping')" id="tab-shopping" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
+                <i class="fa-solid fa-cart-shopping"></i> Lista Zakupów
             </button>
         </nav>
 
-        <!-- TAB CONTENT 1: DASHBOARD -->
+        <!-- TAB 1: DASHBOARD / COMMAND CENTER -->
         <div id="content-dashboard" class="tab-content grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <!-- Column 1: Daily To-Do List -->
-            <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[520px]">
+            <!-- Column 1: Daily Tasks -->
+            <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[500px]">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-roseGold-400"></i> Lista Zadania na Dziś
+                        <i class="fa-solid fa-list-check text-roseGold-400"></i> Priorytety na Dziś
                     </h3>
-                    <span id="todo-count" class="text-xs bg-slate-800 text-roseGold-400 font-medium px-2.5 py-1 rounded-full border border-slate-700">0 zrealizowane</span>
+                    <span id="todo-count" class="text-[11px] bg-slate-800 text-roseGold-400 font-medium px-2.5 py-1 rounded-full border border-slate-700">0 zrealizowane</span>
                 </div>
 
-                <!-- Add Task Form -->
                 <form onsubmit="addTodo(event)" class="flex items-center gap-2 mb-4">
-                    <input type="text" id="todo-input" placeholder="Co dziś robimy?" required class="flex-1 bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-roseGold-500 transition-all placeholder:text-slate-500">
-                    <select id="todo-category" class="bg-dark-900 border border-slate-700 text-xs text-slate-300 rounded-xl px-2.5 py-2 focus:outline-none focus:border-roseGold-500">
+                    <input type="text" id="todo-input" placeholder="Wpisz nowe zadanie..." required class="flex-1 bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-roseGold-500 transition-all placeholder:text-slate-500">
+                    <select id="todo-category" class="bg-dark-900 border border-slate-700 text-xs text-slate-300 rounded-xl px-2 py-2 focus:outline-none focus:border-roseGold-500">
                         <option value="Szkoła">Szkoła</option>
                         <option value="Matura">Matura</option>
                         <option value="Życie">Życie</option>
-                        <option value="Projekt">Projekt</option>
                     </select>
                     <button type="submit" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold px-3 py-2 rounded-xl text-xs transition-all">
                         <i class="fa-solid fa-plus"></i>
                     </button>
                 </form>
 
-                <!-- Task List Container -->
-                <div id="todo-list" class="flex-1 overflow-y-auto space-y-2 pr-1">
-                    <!-- Dynamic To-Dos insert here -->
-                </div>
+                <div id="todo-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
             </div>
 
-            <!-- Column 2: Quick Matura Practice Flashcard -->
-            <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[520px]">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-brain text-emeraldGlow-400"></i> Szybka Powtórka (Fiszka)
+            <!-- Column 2: Quick Flashcard Mini Widget & Daily Habits -->
+            <div class="space-y-6 flex flex-col">
+                <!-- Spaced Repetition Flashcard Mini -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800 flex-1 flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-brain text-emeraldGlow-400"></i> Szybka Fiszka
+                        </h3>
+                        <span id="flashcard-subject-tag" class="text-[10px] bg-emeraldGlow-500/10 text-emeraldGlow-400 border border-emeraldGlow-500/20 px-2 py-0.5 rounded-md font-medium uppercase">Matematyka</span>
+                    </div>
+
+                    <div id="flashcard-card" onclick="flipCurrentCard()" class="perspective-1000 my-auto cursor-pointer min-h-[140px] flex items-center justify-center">
+                        <div id="flashcard-inner" class="w-full h-full transform-style-3d relative bg-dark-900/90 rounded-xl border border-slate-800 p-4 flex flex-col items-center justify-center text-center">
+                            <p id="flashcard-front-text" class="text-sm font-semibold text-slate-100">Ładowanie pytania...</p>
+                            <p id="flashcard-back-text" class="text-xs text-emeraldGlow-400 font-medium hidden mt-2 border-t border-slate-800 pt-2 w-full">Odpowiedź...</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-2 pt-3 border-t border-slate-800/80">
+                        <button onclick="rateFlashcard('repeat')" class="flex-1 text-[11px] py-1.5 rounded-lg bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20 hover:bg-roseGold-500/20 font-medium transition-all">
+                            Do powtórki ❌
+                        </button>
+                        <button onclick="rateFlashcard('easy')" class="flex-1 text-[11px] py-1.5 rounded-lg bg-emeraldGlow-500/10 text-emeraldGlow-400 border border-emeraldGlow-500/20 hover:bg-emeraldGlow-500/20 font-medium transition-all">
+                            Znam to! ✨
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Daily Habits Tracker -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800">
+                    <h3 class="text-base font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-sparkles text-roseGold-400"></i> Nawykownik Dnia
                     </h3>
-                    <span class="text-xs bg-emeraldGlow-500/10 text-emeraldGlow-400 border border-emeraldGlow-500/20 px-2 py-0.5 rounded-md font-medium">Spaced Repetition</span>
-                </div>
-
-                <div class="flex-1 flex flex-col justify-between bg-dark-900/80 rounded-xl p-5 border border-slate-800 relative group overflow-hidden">
-                    <div class="flex items-center justify-between text-xs text-slate-400">
-                        <span id="flashcard-subject" class="font-semibold text-roseGold-400 uppercase tracking-wider text-[10px]">Matematyka</span>
-                        <span>Kliknij, aby odsłonić odpowiedź</span>
-                    </div>
-
-                    <div id="flashcard-container" onclick="flipFlashcard()" class="my-auto text-center cursor-pointer py-8 px-4 transition-all hover:scale-[1.01]">
-                        <div id="flashcard-question" class="text-base font-semibold text-slate-100">
-                            Ładowanie pytania...
-                        </div>
-                        <div id="flashcard-answer" class="text-sm text-emeraldGlow-400 mt-4 font-medium hidden border-t border-slate-800 pt-3">
-                            Odpowiedź...
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between gap-3 pt-3 border-t border-slate-800/80">
-                        <button onclick="prevFlashcard()" class="text-xs px-3 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 text-slate-300 font-medium transition-all">
-                            <i class="fa-solid fa-arrow-left"></i> Poprzednia
-                        </button>
-                        <button onclick="nextFlashcard()" class="text-xs px-3 py-1.5 rounded-lg bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20 hover:bg-roseGold-500/20 font-medium transition-all">
-                            Następna <i class="fa-solid fa-arrow-right"></i>
-                        </button>
+                    <div class="grid grid-cols-2 gap-2 text-xs" id="daily-habits-grid">
+                        <!-- Habits loaded dynamically -->
                     </div>
                 </div>
             </div>
 
-            <!-- Column 3: Quick Air Fryer Picker & Daily Water/Habits -->
+            <!-- Column 3: Airfryer Quick Randomizer & Hydration -->
             <div class="space-y-6 flex flex-col justify-between">
                 
-                <!-- Air Fryer Random Meal Generator Card -->
                 <div class="glass-card rounded-2xl p-5 border border-slate-800">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-wand-magic-sparkles text-roseGold-400"></i> Co dziś zjeść?
+                            <i class="fa-solid fa-wand-magic-sparkles text-roseGold-400"></i> Losuj Ekspresowy Przepis
                         </h3>
-                        <span class="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Bez twarogu i tuńczyka</span>
+                        <span class="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Bez twarogu & tuńczyka</span>
                     </div>
-
-                    <p class="text-xs text-slate-400 mb-4">Nie masz pomysłu? Kliknij poniżej, aby wygenerować szybką fit przekąskę z Air Fryera lub miski!</p>
 
                     <div id="quick-meal-result" class="bg-dark-900/90 rounded-xl p-3.5 border border-slate-800 mb-4">
-                        <div class="text-xs font-bold text-roseGold-400 mb-1" id="meal-res-title">Szybka Owsianka z Air Fryera 🥣</div>
-                        <div class="text-[11px] text-slate-300" id="meal-res-desc">Płatki owsiane, mleko roślinne, banan, kakao, kropka miodu - 12 min w 180°C.</div>
+                        <div class="text-xs font-bold text-roseGold-400 mb-1" id="meal-res-title">Pieczona Owsianka Czekoladowa 🥣</div>
+                        <div class="text-[11px] text-slate-300" id="meal-res-desc">Banan, kakao, płatki owsiane, mleko — 12 min w 180°C w Airfryerze.</div>
                     </div>
 
-                    <button onclick="generateRandomMeal()" class="w-full bg-gradient-to-r from-roseGold-500 to-roseGold-600 hover:opacity-95 text-dark-900 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md shadow-roseGold-500/10 transition-all">
-                        <i class="fa-solid fa-dice"></i> Losuj ekspresowy przepis
-                    </button>
+                    <div class="flex gap-2">
+                        <button onclick="generateRandomMeal()" class="flex-1 bg-gradient-to-r from-roseGold-500 to-roseGold-600 hover:opacity-95 text-dark-900 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition-all">
+                            <i class="fa-solid fa-dice"></i> Losuj Danie
+                        </button>
+                        <button onclick="addCurrentMealToShopping()" class="bg-dark-800 hover:bg-dark-700 border border-slate-700 text-roseGold-400 px-3 py-2.5 rounded-xl text-xs transition-all" title="Dodaj składniki do zakupy">
+                            <i class="fa-solid fa-cart-plus"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Habits & Hydration -->
+                <!-- Hydration Tracker -->
                 <div class="glass-card rounded-2xl p-5 border border-slate-800">
                     <h3 class="text-base font-bold text-white mb-3 flex items-center justify-between">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-glass-water text-emeraldGlow-400"></i> Nawodnienie Dnia</span>
                         <span id="water-count-text" class="text-xs font-mono text-emeraldGlow-400 font-bold">0 / 8 szklanek</span>
                     </h3>
                     
-                    <div class="grid grid-cols-8 gap-1.5 mb-3" id="water-glasses-container">
-                        <!-- 8 water glasses JS generated -->
-                    </div>
+                    <div class="grid grid-cols-8 gap-1.5 mb-3" id="water-glasses-container"></div>
 
                     <div class="flex items-center justify-between text-xs text-slate-400">
                         <span>Kliknij szklankę, by zaznaczyć</span>
@@ -296,229 +307,354 @@
             </div>
         </div>
 
-        <!-- TAB CONTENT 2: MATURA 2027 -->
+        <!-- TAB 2: MATURA & KALKULATOR UG / PG -->
         <div id="content-matura" class="tab-content hidden space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                <!-- Matematyka -->
-                <div class="glass-card rounded-2xl p-5 border border-slate-800">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-lg bg-roseGold-500/10 border border-roseGold-500/20 flex items-center justify-center text-roseGold-400">
-                                <i class="fa-solid fa-calculator text-sm"></i>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left 2 Cols: Matura Checklists & Deck Flashcards -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="glass-card rounded-2xl p-5 border border-slate-800">
+                        <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-book-open text-roseGold-400"></i> Postęp w Nauce Przedmiotów Maturalnych
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Math -->
+                            <div class="bg-dark-900/80 p-3.5 rounded-xl border border-slate-800">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-roseGold-400">Matematyka</span>
+                                    <span id="math-progress-text" class="text-[11px] font-mono text-slate-400">0%</span>
+                                </div>
+                                <div class="w-full bg-dark-800 h-1.5 rounded-full overflow-hidden mb-3">
+                                    <div id="math-progress-bar" class="bg-roseGold-400 h-full rounded-full transition-all" style="width: 0%"></div>
+                                </div>
+                                <div id="math-checklist" class="space-y-1.5 text-[11px]"></div>
                             </div>
-                            <h3 class="font-bold text-white text-base">Matematyka</h3>
+                            <!-- Polish -->
+                            <div class="bg-dark-900/80 p-3.5 rounded-xl border border-slate-800">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-emeraldGlow-400">Język Polski</span>
+                                    <span id="pol-progress-text" class="text-[11px] font-mono text-slate-400">0%</span>
+                                </div>
+                                <div class="w-full bg-dark-800 h-1.5 rounded-full overflow-hidden mb-3">
+                                    <div id="pol-progress-bar" class="bg-emeraldGlow-400 h-full rounded-full transition-all" style="width: 0%"></div>
+                                </div>
+                                <div id="pol-checklist" class="space-y-1.5 text-[11px]"></div>
+                            </div>
+                            <!-- English -->
+                            <div class="bg-dark-900/80 p-3.5 rounded-xl border border-slate-800">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-sky-400">Język Angielski</span>
+                                    <span id="eng-progress-text" class="text-[11px] font-mono text-slate-400">0%</span>
+                                </div>
+                                <div class="w-full bg-dark-800 h-1.5 rounded-full overflow-hidden mb-3">
+                                    <div id="eng-progress-bar" class="bg-sky-400 h-full rounded-full transition-all" style="width: 0%"></div>
+                                </div>
+                                <div id="eng-checklist" class="space-y-1.5 text-[11px]"></div>
+                            </div>
                         </div>
-                        <span id="math-progress-text" class="text-xs font-mono text-roseGold-400">0%</span>
-                    </div>
-
-                    <div class="w-full bg-dark-900 rounded-full h-2 mb-4 overflow-hidden border border-slate-800">
-                        <div id="math-progress-bar" class="bg-roseGold-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
-                    </div>
-
-                    <div class="space-y-2 text-xs" id="math-checklist">
-                        <!-- Checklist loaded via JS -->
                     </div>
                 </div>
 
-                <!-- Język Polski -->
-                <div class="glass-card rounded-2xl p-5 border border-slate-800">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-lg bg-emeraldGlow-500/10 border border-emeraldGlow-500/20 flex items-center justify-center text-emeraldGlow-400">
-                                <i class="fa-solid fa-book text-sm"></i>
-                            </div>
-                            <h3 class="font-bold text-white text-base">Język Polski</h3>
+                <!-- Right Col: Polish University Admission Points Calculator (UG / PG formula) -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-calculator text-emeraldGlow-400"></i> Kalkulator Punktów UG / PG
+                            </h3>
+                            <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded">Rekrutacja</span>
                         </div>
-                        <span id="pol-progress-text" class="text-xs font-mono text-emeraldGlow-400">0%</span>
+                        <p class="text-xs text-slate-400 mb-4">Przelicz wyniki matur (Podstawa = 0.4, Rozszerzenie = 1.0) na punkty rekrutacyjne.</p>
+
+                        <div class="space-y-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 font-medium mb-1">Matematyka (%):</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="calc-math-p" min="0" max="100" placeholder="Podstawa %" oninput="calculateUniPoints()" class="bg-dark-900 border border-slate-700 rounded-lg p-2 text-white">
+                                    <input type="number" id="calc-math-r" min="0" max="100" placeholder="Rozszerzenie %" oninput="calculateUniPoints()" class="bg-dark-900 border border-slate-700 rounded-lg p-2 text-white">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-slate-300 font-medium mb-1">Język Angielski (%):</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="calc-eng-p" min="0" max="100" placeholder="Podstawa %" oninput="calculateUniPoints()" class="bg-dark-900 border border-slate-700 rounded-lg p-2 text-white">
+                                    <input type="number" id="calc-eng-r" min="0" max="100" placeholder="Rozszerzenie %" oninput="calculateUniPoints()" class="bg-dark-900 border border-slate-700 rounded-lg p-2 text-white">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-slate-300 font-medium mb-1">Język Polski (%):</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="calc-pol-p" min="0" max="100" placeholder="Podstawa %" oninput="calculateUniPoints()" class="bg-dark-900 border border-slate-700 rounded-lg p-2 text-white">
+                                    <input type="number" id="calc-pol-r" min="0" max="100" placeholder="Rozszerzenie %" oninput="calculateUniPoints()" class="bg-dark-900 border border-slate-700 rounded-lg p-2 text-white">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="w-full bg-dark-900 rounded-full h-2 mb-4 overflow-hidden border border-slate-800">
-                        <div id="pol-progress-bar" class="bg-emeraldGlow-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
-                    </div>
-
-                    <div class="space-y-2 text-xs" id="pol-checklist">
-                        <!-- Checklist loaded via JS -->
+                    <!-- Output Points -->
+                    <div class="mt-5 pt-4 border-t border-slate-800">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-300">Szacowane Punkty:</span>
+                            <span id="uni-total-points" class="text-xl font-mono font-bold text-emeraldGlow-400">0 pkt</span>
+                        </div>
+                        <p class="text-[10px] text-slate-500 mt-1">Typowy próg UG: ~60-80 pkt, PG: ~70-90 pkt w zależności od kierunku.</p>
                     </div>
                 </div>
-
-                <!-- Język Angielski -->
-                <div class="glass-card rounded-2xl p-5 border border-slate-800">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
-                                <i class="fa-solid fa-language text-sm"></i>
-                            </div>
-                            <h3 class="font-bold text-white text-base">Język Angielski</h3>
-                        </div>
-                        <span id="eng-progress-text" class="text-xs font-mono text-sky-400">0%</span>
-                    </div>
-
-                    <div class="w-full bg-dark-900 rounded-full h-2 mb-4 overflow-hidden border border-slate-800">
-                        <div id="eng-progress-bar" class="bg-sky-400 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
-                    </div>
-
-                    <div class="space-y-2 text-xs" id="eng-checklist">
-                        <!-- Checklist loaded via JS -->
-                    </div>
-                </div>
-
             </div>
+
         </div>
 
-        <!-- TAB CONTENT 3: RECIPES & AIR FRYER -->
+        <!-- TAB 3: FIT KITCHEN & AIRFRYER -->
         <div id="content-recipes" class="tab-content hidden space-y-6">
             
-            <!-- Filters & Preferences Banner -->
             <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
                     <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-utensils text-roseGold-400"></i> Szybka Kuchnia & Air Fryer (10-15 min)
+                        <i class="fa-solid fa-utensils text-roseGold-400"></i> Airfryer & Fit Przepisy (10-15 min)
                     </h3>
-                    <p class="text-xs text-slate-400 mt-0.5">Przepisy zoptymalizowane pod szybki czas i ulubione składniki (bez twarogu i tuńczyka!).</p>
+                    <p class="text-xs text-slate-400 mt-0.5">Przepisy zoptymalizowane pod szybki czas (zero twarogu, zero tuńczyka, zero hummusu!).</p>
                 </div>
 
-                <!-- Category Filters -->
                 <div class="flex items-center gap-2 flex-wrap">
                     <button onclick="filterRecipes('all')" class="recipe-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-roseGold-500 text-dark-900">Wszystkie</button>
-                    <button onclick="filterRecipes('airfryer')" class="recipe-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-dark-800 text-slate-400 hover:text-white">Air Fryer 🌬️</button>
+                    <button onclick="filterRecipes('airfryer')" class="recipe-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-dark-800 text-slate-400 hover:text-white">Airfryer 🌬️</button>
                     <button onclick="filterRecipes('sweet')" class="recipe-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-dark-800 text-slate-400 hover:text-white">Na Słodko 🍫</button>
                     <button onclick="filterRecipes('salty')" class="recipe-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-dark-800 text-slate-400 hover:text-white">Przekąski 🥨</button>
                 </div>
             </div>
 
-            <!-- Recipe Grid -->
-            <div id="recipes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Recipe Cards Inserted Dynamically -->
-            </div>
+            <div id="recipes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
 
-        <!-- TAB CONTENT 4: STYLE & MOODBOARD (STUDNIÓWKA) -->
+        <!-- TAB 4: STYLE, SHOPPING & STUDNIÓWKA MOODBOARD -->
         <div id="content-style" class="tab-content hidden space-y-6">
             
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-sparkles text-roseGold-400"></i> Wishlist & Studniówka Moodboard
+                        <i class="fa-solid fa-wand-magic-sparkles text-roseGold-400"></i> Studniówka & Outfit Moodboard
                     </h3>
-                    <p class="text-xs text-slate-400">Zapisuj sukienki, stylówki, shoppery i budżet w jednym miejscu.</p>
+                    <p class="text-xs text-slate-400">Sukienki na Studniówkę (Bordowa / Szmaragdowa), shoppery A4 i wishlisty.</p>
                 </div>
                 
-                <button onclick="openAddWishlistModal()" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-roseGold-500/20 transition-all">
-                    <i class="fa-solid fa-plus"></i> Dodaj Inspirację / Przedmiot
-                </button>
+                <div class="flex items-center gap-2">
+                    <select id="wishlist-color-filter" onchange="renderWishlist()" class="bg-dark-800 text-xs text-slate-300 border border-slate-700 rounded-xl px-3 py-2">
+                        <option value="all">Wszystkie Kolory</option>
+                        <option value="Bordowy">Bordowy 🍷</option>
+                        <option value="Szmaragd">Szmaragd 💚</option>
+                        <option value="Granat">Granat 💙</option>
+                        <option value="Czarny">Czarny 🖤</option>
+                    </select>
+
+                    <button onclick="openAddWishlistModal()" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-roseGold-500/20 transition-all">
+                        <i class="fa-solid fa-plus"></i> Dodaj Inspirację
+                    </button>
+                </div>
             </div>
 
-            <!-- Shopping List & Moodboard Items Grid -->
-            <div id="wishlist-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Wishlist Items loaded here -->
-            </div>
+            <div id="wishlist-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
 
-        <!-- TAB CONTENT 5: BRAIN DUMP / NOTES -->
-        <div id="content-notes" class="tab-content hidden space-y-6">
-            <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[600px]">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-note-sticky text-roseGold-400"></i> Szybki Brudnopis / Luźne Myśli
-                    </h3>
-                    <span class="text-xs text-emeraldGlow-400 font-mono" id="notes-save-status">Zapisano w pamięci <i class="fa-solid fa-check"></i></span>
+        <!-- TAB 5: ASIAN DRAMAS & GAMING RP -->
+        <div id="content-lounge" class="tab-content hidden space-y-6">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Asian Dramas Watchlist -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[520px]">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-tv text-roseGold-400"></i> Azjatyckie Dramy (Watchlist)
+                        </h3>
+                        <span class="text-xs text-slate-400">K-Drama / C-Drama</span>
+                    </div>
+
+                    <form onsubmit="addDrama(event)" class="grid grid-cols-3 gap-2 mb-4">
+                        <input type="text" id="drama-title" placeholder="Tytuł dramy..." required class="col-span-2 bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                        <input type="number" id="drama-total-eps" placeholder="Ode (np. 16)" min="1" required class="bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                        <button type="submit" class="col-span-3 bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold py-2 rounded-xl text-xs transition-all">
+                            Dodaj do Listy Oglądania
+                        </button>
+                    </form>
+
+                    <div id="dramas-list" class="flex-1 overflow-y-auto space-y-2.5 pr-1"></div>
                 </div>
 
-                <textarea id="brain-dump-textarea" oninput="saveNotes()" placeholder="Wpisz cokolwiek: linki do outfitów, pomysły na seriale, angielskie słówka, luźne notatki..." class="flex-1 w-full bg-dark-900/90 border border-slate-800 rounded-xl p-4 text-sm text-slate-200 focus:outline-none focus:border-roseGold-500 resize-none font-sans leading-relaxed transition-all placeholder:text-slate-600"></textarea>
+                <!-- Gaming & RP Quest Log / Scratchpad -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[520px]">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-gamepad text-emeraldGlow-400"></i> Gaming & RP Notes
+                        </h3>
+                        <span class="text-xs text-slate-400">Roblox, SSO, GTA RP</span>
+                    </div>
+
+                    <textarea id="rp-notes-textarea" oninput="saveRpNotes()" placeholder="Notatki do GTA RP (Lore postaci, kontakty, auto), SSO (konie, treningi), Roblox questy..." class="flex-1 w-full bg-dark-900 border border-slate-800 rounded-xl p-3.5 text-xs text-slate-200 focus:outline-none focus:border-emeraldGlow-500 resize-none leading-relaxed transition-all placeholder:text-slate-600"></textarea>
+                    
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 mt-3 pt-2 border-t border-slate-800">
+                        <span>Zapisuje się automatycznie</span>
+                        <span id="rp-notes-status" class="text-emeraldGlow-400"><i class="fa-solid fa-check"></i> Aktualne</span>
+                    </div>
+                </div>
             </div>
+
+        </div>
+
+        <!-- TAB 6: SMART SHOPPING LIST -->
+        <div id="content-shopping" class="tab-content hidden space-y-6">
+            
+            <div class="glass-card rounded-2xl p-5 border border-slate-800">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-cart-shopping text-roseGold-400"></i> Inteligentna Lista Zakupów
+                    </h3>
+                    <button onclick="clearCompletedShopping()" class="text-xs bg-dark-800 hover:bg-dark-700 text-slate-400 hover:text-roseGold-400 border border-slate-700 px-3 py-1.5 rounded-xl transition-all">
+                        <i class="fa-solid fa-broom"></i> Usuń kupione
+                    </button>
+                </div>
+
+                <form onsubmit="addShoppingItem(event)" class="flex items-center gap-2 mb-6">
+                    <input type="text" id="shop-input" placeholder="Co trzeba kupić?" required class="flex-1 bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
+                    <select id="shop-category" class="bg-dark-900 border border-slate-700 text-xs text-slate-300 rounded-xl px-3 py-2">
+                        <option value="Spożywcze">Spożywcze 🛒</option>
+                        <option value="Kosmetyki">Kosmetyki / Manicure 💅</option>
+                        <option value="Szkoła">Szkoła / Inne 📚</option>
+                    </select>
+                    <button type="submit" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold px-4 py-2 rounded-xl text-xs transition-all">
+                        Dodaj
+                    </button>
+                </form>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-dark-900/60 rounded-xl p-4 border border-slate-800">
+                        <h4 class="text-xs font-bold text-roseGold-400 mb-3 uppercase tracking-wider">Spożywcze 🛒</h4>
+                        <div id="shop-list-food" class="space-y-2 text-xs"></div>
+                    </div>
+                    <div class="bg-dark-900/60 rounded-xl p-4 border border-slate-800">
+                        <h4 class="text-xs font-bold text-emeraldGlow-400 mb-3 uppercase tracking-wider">Kosmetyki & Paznokcie 💅</h4>
+                        <div id="shop-list-beauty" class="space-y-2 text-xs"></div>
+                    </div>
+                    <div class="bg-dark-900/60 rounded-xl p-4 border border-slate-800">
+                        <h4 class="text-xs font-bold text-sky-400 mb-3 uppercase tracking-wider">Szkoła & Inne 📚</h4>
+                        <div id="shop-list-other" class="space-y-2 text-xs"></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </main>
 
-    <!-- Modal: Add Wishlist / Style Item -->
+    <!-- Modal: Add Wishlist Item -->
     <div id="wishlist-modal" class="fixed inset-0 bg-dark-900/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="glass-card w-full max-w-md rounded-2xl p-6 border border-slate-700 shadow-2xl relative">
             <button onclick="closeAddWishlistModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
             <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-shirt text-roseGold-400"></i> Dodaj do Wishlisty / Moodboardu
+                <i class="fa-solid fa-shirt text-roseGold-400"></i> Dodaj do Outfits & Wishlist
             </h3>
-            <form onsubmit="saveWishlistItem(event)" class="space-y-4">
+            <form onsubmit="saveWishlistItem(event)" class="space-y-3.5">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nazwa przedmiotu / inspiracji</label>
-                    <input type="text" id="wish-title" required placeholder="np. Sukienka na studniówkę (Zieleń/Bord)" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-roseGold-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Kategoria</label>
-                    <select id="wish-category" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-roseGold-500">
-                        <option value="Studniówka 💃">Studniówka 💃</option>
-                        <option value="Torba / Shopper 👜">Torba / Shopper 👜</option>
-                        <option value="Codzienny Outit 👗">Codzienny Outfit 👗</option>
-                        <option value="Kosmetyki / Inne ✨">Kosmetyki / Inne ✨</option>
-                    </select>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nazwa przedmiotu</label>
+                    <input type="text" id="wish-title" required placeholder="np. Sukienka gorsetowa z rozcięciem" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Cena / Budżet (zł)</label>
-                        <input type="number" id="wish-price" placeholder="np. 250" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-roseGold-500">
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Kategoria</label>
+                        <select id="wish-category" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                            <option value="Studniówka 💃">Studniówka 💃</option>
+                            <option value="Torba A4 👜">Torba A4 👜</option>
+                            <option value="Outfit 👗">Outfit 👗</option>
+                        </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Link (opcjonalnie)</label>
-                        <input type="url" id="wish-link" placeholder="https://..." class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-roseGold-500">
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Odcień / Paleta</label>
+                        <select id="wish-color" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                            <option value="Bordowy">Bordowy 🍷</option>
+                            <option value="Szmaragd">Szmaragd 💚</option>
+                            <option value="Granat">Granat 💙</option>
+                            <option value="Czarny">Czarny 🖤</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Cena (zł)</label>
+                        <input type="number" id="wish-price" placeholder="np. 299" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Link URL</label>
+                        <input type="url" id="wish-link" placeholder="https://..." class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
                     </div>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">URL Zdjęcia (opcjonalnie)</label>
-                    <input type="url" id="wish-img" placeholder="https://images.unsplash.com/..." class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-roseGold-500">
+                    <input type="url" id="wish-img" placeholder="https://images.unsplash.com/..." class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
                 </div>
                 <button type="submit" class="w-full bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold py-2.5 rounded-xl text-xs transition-all mt-2">
-                    Dodaj do mojej listy
+                    Zapisz w Inspiracjach
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- Application Script Logic -->
+    <!-- Application JS Logic -->
     <script>
-        /* --- STATE MANAGEMENT & LOCAL STORAGE --- */
-        const STORAGE_KEY = 'lifeos_my_space_data_v1';
+        const STORAGE_KEY = 'lifeos_my_space_v2_data';
 
         let appData = {
+            energyLevel: 3,
             todos: [
                 { id: 1, text: 'Rozwiązać 5 zadań z ciągów arytmetycznych', category: 'Matura', completed: false },
-                { id: 2, text: 'Sprawdzić wymiary shoppera A4 na uczelnię/szkołę', category: 'Życie', completed: true },
-                { id: 3, text: 'Zrobić szybką pieczoną owsiankę w Air Fryerze', category: 'Życie', completed: false }
+                { id: 2, text: 'Sprawdzić wymiary shoppera A4 na studia/szkołę', category: 'Życie', completed: true },
+                { id: 3, text: 'Przejrzeć sukienki bordowe i szmaragdowe na studniówkę', category: 'Życie', completed: false }
+            ],
+            habits: [
+                { id: 'h1', title: 'Pielęgnacja / Paznokcie 💅', done: true },
+                { id: 'h2', title: 'Nauka 30 min 📚', done: false },
+                { id: 'h3', title: 'Airfryer Posilek 🥣', done: true },
+                { id: 'h4', title: 'Chwila dla siebie / Relax ☕', done: false }
             ],
             maturaChecklist: {
                 math: [
-                    { id: 'm1', title: 'Funkcja kwadratowa i wzory', done: true },
+                    { id: 'm1', title: 'Funkcja kwadratowa & Delta', done: true },
                     { id: 'm2', title: 'Ciągi arytmetyczne i geometryczne', done: false },
-                    { id: 'm3', title: 'Planimetria & Kąty w okręgu', done: false },
-                    { id: 'm4', title: 'Równania i nierówności', done: true },
-                    { id: 'm5', title: 'Prawdopodobieństwo & Kombinatoryka', done: false }
+                    { id: 'm3', title: 'Planimetria i okręgi', done: false }
                 ],
                 pol: [
-                    { id: 'p1', title: 'Lektury obowiązkowe: Pan Tadeusz, Dziady', done: true },
-                    { id: 'p2', title: 'Wesele Wyspiańskiego - motywy', done: false },
-                    { id: 'p3', title: 'Struktura rozprawki maturalnej', done: true },
-                    { id: 'p4', title: 'Lalka Prusa - charakterystyka', done: false }
+                    { id: 'p1', title: 'Pan Tadeusz & Dziady cz. III', done: true },
+                    { id: 'p2', title: 'Wesele Wyspiańskiego (Motyw chochoła)', done: false },
+                    { id: 'p3', title: 'Struktura rozprawki maturalnej', done: true }
                 ],
                 eng: [
-                    { id: 'e1', title: 'Czasy złożone (Perfect & Continuous)', done: true },
-                    { id: 'e2', title: 'Słownictwo: Środowisko & Edukacja', done: true },
-                    { id: 'e3', title: 'Pisanie e-maila / Wypowiedź pisemna', done: true },
-                    { id: 'e4', title: 'Pytania na maturze ustnej', done: false }
+                    { id: 'e1', title: 'Present Perfect vs Past Simple', done: true },
+                    { id: 'e2', title: 'Pisanie e-maila formalnego', done: true },
+                    { id: 'e3', title: 'Słownictwo: Edukacja & Praca', done: false }
                 ]
             },
             flashcards: [
-                { subject: 'Matematyka', q: 'Jaki jest wzór na delta (Δ) w funkcji kwadratowej?', a: 'Δ = b² - 4ac' },
-                { subject: 'Język Polski', q: 'Czym jest motyw "tńca chętnego / chocholego" w Weselu?', a: 'Symbol uśpienia narodu, marazmu i niezdolności do walki.' },
-                { subject: 'Język Angielski', q: 'Przetłumacz: "I would rather stay home today."', a: 'Wolałabym dzisiaj zostać w domu.' },
-                { subject: 'Matematyka', q: 'Wzór na n-ty wyraz ciągu arytmetycznego?', a: 'an = a1 + (n - 1) * r' }
+                { subject: 'Matematyka', q: 'Wzór na delta (Δ) w funkcji kwadratowej?', a: 'Δ = b² - 4ac' },
+                { subject: 'Język Polski', q: 'Co symbolizuje Chocholi Taniec w Weselu?', a: 'Symbol uśpienia narodu, marazmu i niezdolności do zrywu.' },
+                { subject: 'Język Angielski', q: 'Przetłumacz: "I would rather stay home today."', a: 'Wolałabym dzisiaj zostać w domu.' }
             ],
-            waterGlasses: 3,
-            notes: '',
+            waterGlasses: 4,
+            dramas: [
+                { id: 1, title: 'Crash Landing on You', currentEp: 16, totalEps: 16, rating: 5, status: 'Obejrzane' },
+                { id: 2, title: 'Business Proposal', currentEp: 8, totalEps: 12, rating: 4, status: 'W trakcie' }
+            ],
+            shopping: [
+                { id: 1, text: 'Płatki owsiane górskie', category: 'Spożywcze', done: false },
+                { id: 2, text: 'Oliwka do skórek i paznokci', category: 'Kosmetyki', done: true },
+                { id: 3, text: 'Zeszyt A4 w kratkę', category: 'Szkoła', done: false }
+            ],
             wishlist: [
-                { id: 1, title: 'Sukienka gorsetowa z rozcięciem', category: 'Studniówka 💃', price: 299, link: '', img: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=600&q=80' },
-                { id: 2, title: 'Czarny Shopper miejski A4', category: 'Torba / Shopper 👜', price: 159, link: '', img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80' }
-            ]
+                { id: 1, title: 'Gorsetowa Sukienka Maxi (Rozcięcie)', category: 'Studniówka 💃', color: 'Bordowy', price: 349, link: '', img: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=600&q=80' },
+                { id: 2, title: 'Czarny Skórzany Shopper A4', category: 'Torba A4 👜', color: 'Czarny', price: 189, link: '', img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80' }
+            ],
+            rpNotes: ''
         };
 
         const recipesList = [
@@ -526,58 +662,58 @@
                 id: 1,
                 title: "Pieczona Owsianka Czekoladowa",
                 tag: "airfryer",
-                category: "Air Fryer 🌬️ / Na słodko",
+                category: "Airfryer 🌬️ / Słodkie",
                 time: "12 min",
-                desc: "Zblenduj płatki owsiane z bananem, kakao i mlekiem. Wlej do kokilki i piecz 12 minut w 180°C."
+                desc: "Zblenduj płatki owsiane, banan, kakao i mleko roślinne. 12 min w 180°C.",
+                ingredients: ["Płatki owsiane", "Banan", "Kakao", "Mleko roślinne"]
             },
             {
                 id: 2,
-                title: "Air Fryer Chrupiąca Tortilla z Serem & Warzywami",
+                title: "Airfryer Tortilla z Serem & Słodką Papryką",
                 tag: "salty",
-                category: "Air Fryer 🌬️ / Przekąski",
+                category: "Airfryer 🌬️ / Przekąski",
                 time: "8 min",
-                desc: "Złóż tortillę z ulubionym serem żółtym, papryką i kukurydzą. Zapiekaj 7-8 min na chrupiąco."
+                desc: "Tortilla złożona z serem cheddar, papryką i kukurydzą. Zapiekaj 7 min w 190°C.",
+                ingredients: ["Placek Tortilla", "Ser Cheddar", "Papryka czerwona", "Kukurydza"]
             },
             {
                 id: 3,
-                title: "Mug Cake Czekoladowe w 3 minuty",
+                title: "Mug Cake Czekoladowy w 3 Minuty",
                 tag: "sweet",
                 category: "Na Słodko 🍫",
                 time: "3 min",
-                desc: "Mąka, kakao, odrobina proszku do pieczenia, mleko, miód i kostka gorzkiej czekolady w środku."
+                desc: "Mąka, kakao, miód, odrobina mleka i kostka gorzkiej czekolady do środka.",
+                ingredients: ["Mąka", "Kakao", "Kostka gorzkiej czekolady", "Miód"]
             },
             {
                 id: 4,
-                title: "Kruche Frytki z Ziemniaków / Batatów",
-                tag: "airfryer",
-                category: "Air Fryer 🌬️",
-                time: "15 min",
-                desc: "Pokrój w słupki, dodaj łyżeczkę oliwy, słodką paprykę i zioła. 15 minut w 200°C z potrząśnięciem."
-            },
-            {
-                id: 5,
-                title: "Wafle Ryżowe z Masłem Orzechowym & Bananem",
+                title: "Kruche Wafle Ryżowe z Masłem Orzechowym & Bananem",
                 tag: "sweet",
                 category: "Na Słodko 🍫",
                 time: "2 min",
-                desc: "Brak czasu? Dwa wafle ryżowe, gruba warstwa masła orzechowego, plastry banana i cynamon."
+                desc: "Wafle ryżowe, gruba warstwa masła orzechowego, plastry banana i cynamon.",
+                ingredients: ["Wafle ryżowe", "Masło orzechowe", "Banan"]
             }
         ];
 
-        let currentFlashcardIdx = 0;
+        let currentCardIdx = 0;
 
-        // Initialize App
         window.onload = function() {
             loadFromStorage();
             updateDateDisplay();
-            updateMaturaCountdown();
+            updateCountdowns();
             renderTodos();
-            renderFlashcards();
+            renderHabits();
+            renderFlashcard();
             renderWaterGlasses();
             renderMaturaChecklists();
             renderRecipes('all');
             renderWishlist();
-            document.getElementById('brain-dump-textarea').value = appData.notes || '';
+            renderDramas();
+            renderShopping();
+            document.getElementById('rp-notes-textarea').value = appData.rpNotes || '';
+            document.getElementById('energy-range').value = appData.energyLevel || 3;
+            updateEnergyTracker(appData.energyLevel || 3);
         };
 
         function saveToStorage() {
@@ -590,12 +726,12 @@
                 try {
                     appData = { ...appData, ...JSON.parse(saved) };
                 } catch(e) {
-                    console.error("Error loading local storage", e);
+                    console.error("Storage parse error", e);
                 }
             }
         }
 
-        /* --- UI NAVIGATION --- */
+        /* NAVIGATION & DASHBOARD LOGIC */
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -616,59 +752,67 @@
             document.getElementById('current-date-display').innerText = formatted.charAt(0).toUpperCase() + formatted.slice(1);
         }
 
-        function updateMaturaCountdown() {
-            // Target Matura 2027 start (Approx May 4, 2027)
-            const maturaDate = new Date('2027-05-04T09:00:00');
+        function updateCountdowns() {
             const today = new Date();
-            const diffTime = maturaDate - today;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            document.getElementById('matura-countdown').innerText = diffDays > 0 ? `${diffDays} dni` : 'Dziś Matura!';
+            const maturaDate = new Date('2027-05-04T09:00:00');
+            const diffMatura = Math.ceil((maturaDate - today) / (1000 * 60 * 60 * 24));
+            document.getElementById('matura-countdown').innerText = diffMatura > 0 ? `${diffMatura} dni` : 'Dziś Matura!';
+
+            const studniowkaDate = new Date('2027-01-15T18:00:00');
+            const diffStud = Math.ceil((studniowkaDate - today) / (1000 * 60 * 60 * 24));
+            document.getElementById('studniowka-countdown').innerText = diffStud > 0 ? `${diffStud} dni` : 'Dziś Studniówka!';
         }
 
-        /* --- TO-DO LIST --- */
+        function updateEnergyTracker(val) {
+            appData.energyLevel = val;
+            saveToStorage();
+            const textEl = document.getElementById('energy-value-text');
+            const recEl = document.getElementById('energy-recommendation');
+            
+            const states = {
+                1: { title: "1/5 (Brak energii)", desc: "Odpocznij! Zrób ciepłą herbatę, włącz drama K-Drama lub posłuchaj muzyki." },
+                2: { title: "2/5 (Niski)", desc: "Zrób szybką przekąskę w Airfryerze i przejrzyj 3 fiszki z polskiego." },
+                3: { title: "3/5 (Umiarkowany)", desc: "Stabilne tempo. Dobry moment na krótki blok nauki lub uporządkowanie zadań." },
+                4: { title: "4/5 (Wysoki)", desc: "Świetna forma! Przerób ciężejsze zadanie z matematyki." },
+                5: { title: "5/5 (Pełna moc ✨)", desc: "Rozwalasz dziś system! Rozwiąż arkusz lub zaplanuj moodboard outfitów!" }
+            };
+
+            textEl.innerText = states[val].title;
+            recEl.innerHTML = `<i class="fa-solid fa-circle-info text-roseGold-400 shrink-0"></i><span>${states[val].desc}</span>`;
+        }
+
+        /* TO-DO LIST */
         function renderTodos() {
             const container = document.getElementById('todo-list');
             container.innerHTML = '';
+            let done = 0;
 
-            let completedCount = 0;
-            appData.todos.forEach(todo => {
-                if(todo.completed) completedCount++;
-
+            appData.todos.forEach(t => {
+                if(t.completed) done++;
                 const div = document.createElement('div');
-                div.className = `flex items-center justify-between p-3 rounded-xl border ${todo.completed ? 'bg-dark-900/40 border-slate-800/60 opacity-60' : 'bg-dark-900 border-slate-800'} transition-all`;
-                
+                div.className = `flex items-center justify-between p-2.5 rounded-xl border ${t.completed ? 'bg-dark-900/40 border-slate-800/60 opacity-60' : 'bg-dark-900 border-slate-800'}`;
                 div.innerHTML = `
-                    <div class="flex items-center gap-3 overflow-hidden pr-2">
-                        <button onclick="toggleTodo(${todo.id})" class="w-5 h-5 rounded-md border ${todo.completed ? 'bg-roseGold-500 border-roseGold-500 text-dark-900' : 'border-slate-600'} flex items-center justify-center shrink-0 text-xs transition-all">
-                            ${todo.completed ? '<i class="fa-solid fa-check"></i>' : ''}
+                    <div class="flex items-center gap-2.5 overflow-hidden">
+                        <button onclick="toggleTodo(${t.id})" class="w-4 h-4 rounded border ${t.completed ? 'bg-roseGold-500 border-roseGold-500 text-dark-900' : 'border-slate-600'} flex items-center justify-center shrink-0 text-[10px]">
+                            ${t.completed ? '<i class="fa-solid fa-check"></i>' : ''}
                         </button>
-                        <span class="text-xs ${todo.completed ? 'line-through text-slate-500' : 'text-slate-200'} truncate">${escapeHtml(todo.text)}</span>
+                        <span class="text-xs ${t.completed ? 'line-through text-slate-500' : 'text-slate-200'} truncate">${escapeHtml(t.text)}</span>
                     </div>
-                    <div class="flex items-center gap-2 shrink-0">
-                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">${todo.category}</span>
-                        <button onclick="deleteTodo(${todo.id})" class="text-slate-500 hover:text-roseGold-400 text-xs p-1">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
+                    <button onclick="deleteTodo(${t.id})" class="text-slate-500 hover:text-roseGold-400 text-xs p-1">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
                 `;
                 container.appendChild(div);
             });
-
-            document.getElementById('todo-count').innerText = `${completedCount} z ${appData.todos.length} gotowe`;
+            document.getElementById('todo-count').innerText = `${done} z ${appData.todos.length} gotowe`;
         }
 
         function addTodo(e) {
             e.preventDefault();
             const input = document.getElementById('todo-input');
-            const category = document.getElementById('todo-category').value;
+            const cat = document.getElementById('todo-category').value;
             if(!input.value.trim()) return;
-
-            appData.todos.unshift({
-                id: Date.now(),
-                text: input.value.trim(),
-                category: category,
-                completed: false
-            });
+            appData.todos.unshift({ id: Date.now(), text: input.value.trim(), category: cat, completed: false });
             input.value = '';
             saveToStorage();
             renderTodos();
@@ -686,49 +830,57 @@
             renderTodos();
         }
 
-        /* --- FLASHCARDS --- */
-        function renderFlashcards() {
+        /* HABITS TRACKER */
+        function renderHabits() {
+            const container = document.getElementById('daily-habits-grid');
+            container.innerHTML = '';
+            appData.habits.forEach(h => {
+                const btn = document.createElement('button');
+                btn.onclick = () => toggleHabit(h.id);
+                btn.className = `p-2.5 rounded-xl border flex items-center gap-2 text-left transition-all ${h.done ? 'bg-roseGold-500/10 border-roseGold-500/30 text-roseGold-400 font-semibold' : 'bg-dark-900 border-slate-800 text-slate-400'}`;
+                btn.innerHTML = `<i class="fa-solid ${h.done ? 'fa-circle-check text-roseGold-400' : 'fa-circle text-slate-600'} text-xs"></i><span>${h.title}</span>`;
+                container.appendChild(btn);
+            });
+        }
+
+        function toggleHabit(id) {
+            appData.habits = appData.habits.map(h => h.id === id ? { ...h, done: !h.done } : h);
+            saveToStorage();
+            renderHabits();
+        }
+
+        /* FLASHCARDS WITH FLIP ANIMATION */
+        function renderFlashcard() {
             if(!appData.flashcards || appData.flashcards.length === 0) return;
-            const current = appData.flashcards[currentFlashcardIdx];
-            document.getElementById('flashcard-subject').innerText = current.subject;
-            document.getElementById('flashcard-question').innerText = current.q;
-            document.getElementById('flashcard-answer').innerText = current.a;
-            document.getElementById('flashcard-answer').classList.add('hidden');
+            const current = appData.flashcards[currentCardIdx];
+            document.getElementById('flashcard-subject-tag').innerText = current.subject;
+            document.getElementById('flashcard-front-text').innerText = current.q;
+            document.getElementById('flashcard-back-text').innerText = current.a;
+            document.getElementById('flashcard-back-text').classList.add('hidden');
         }
 
-        function flipFlashcard() {
-            document.getElementById('flashcard-answer').classList.toggle('hidden');
+        function flipCurrentCard() {
+            document.getElementById('flashcard-back-text').classList.toggle('hidden');
         }
 
-        function nextFlashcard() {
-            currentFlashcardIdx = (currentFlashcardIdx + 1) % appData.flashcards.length;
-            renderFlashcards();
+        function rateFlashcard(type) {
+            currentCardIdx = (currentCardIdx + 1) % appData.flashcards.length;
+            renderFlashcard();
         }
 
-        function prevFlashcard() {
-            currentFlashcardIdx = (currentFlashcardIdx - 1 + appData.flashcards.length) % appData.flashcards.length;
-            renderFlashcards();
-        }
-
-        /* --- WATER TRACKER --- */
+        /* WATER TRACKER */
         function renderWaterGlasses() {
             const container = document.getElementById('water-glasses-container');
             container.innerHTML = '';
             for(let i = 1; i <= 8; i++) {
                 const btn = document.createElement('button');
-                btn.onclick = () => setWater(i);
+                btn.onclick = () => { appData.waterGlasses = i; saveToStorage(); renderWaterGlasses(); };
                 const isActive = i <= appData.waterGlasses;
-                btn.className = `h-9 rounded-lg flex items-center justify-center text-xs transition-all ${isActive ? 'bg-emeraldGlow-500/20 border border-emeraldGlow-500/40 text-emeraldGlow-400' : 'bg-dark-900 border border-slate-800 text-slate-600 hover:text-slate-400'}`;
+                btn.className = `h-8 rounded-lg flex items-center justify-center text-xs ${isActive ? 'bg-emeraldGlow-500/20 border border-emeraldGlow-500/40 text-emeraldGlow-400' : 'bg-dark-900 border border-slate-800 text-slate-600'}`;
                 btn.innerHTML = `<i class="fa-solid fa-glass-water"></i>`;
                 container.appendChild(btn);
             }
             document.getElementById('water-count-text').innerText = `${appData.waterGlasses} / 8 szklanek`;
-        }
-
-        function setWater(count) {
-            appData.waterGlasses = count;
-            saveToStorage();
-            renderWaterGlasses();
         }
 
         function resetWater() {
@@ -737,112 +889,78 @@
             renderWaterGlasses();
         }
 
-        /* --- RANDOM MEAL PICKER --- */
-        function generateRandomMeal() {
-            const randomIndex = Math.floor(Math.random() * recipesList.length);
-            const meal = recipesList[randomIndex];
-            document.getElementById('meal-res-title').innerText = `${meal.title} 🥣`;
-            document.getElementById('meal-res-desc').innerText = meal.desc;
-        }
-
-        /* --- MATURA CHECKLISTS --- */
+        /* MATURA CHECKLISTS & CALCULATOR */
         function renderMaturaChecklists() {
-            renderSubjectList('math', appData.maturaChecklist.math, 'math-checklist', 'math-progress-bar', 'math-progress-text');
-            renderSubjectList('pol', appData.maturaChecklist.pol, 'pol-checklist', 'pol-progress-bar', 'pol-progress-text');
-            renderSubjectList('eng', appData.maturaChecklist.eng, 'eng-checklist', 'eng-progress-bar', 'eng-progress-text');
+            renderSubjectChecklist('math', appData.maturaChecklist.math, 'math-checklist', 'math-progress-bar', 'math-progress-text');
+            renderSubjectChecklist('pol', appData.maturaChecklist.pol, 'pol-checklist', 'pol-progress-bar', 'pol-progress-text');
+            renderSubjectChecklist('eng', appData.maturaChecklist.eng, 'eng-checklist', 'eng-progress-bar', 'eng-progress-text');
         }
 
-        function renderSubjectList(subjectKey, list, containerId, barId, textId) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-
-            let doneCount = 0;
+        function renderSubjectChecklist(key, list, cId, bId, tId) {
+            const c = document.getElementById(cId);
+            c.innerHTML = '';
+            let done = 0;
             list.forEach(item => {
-                if(item.done) doneCount++;
+                if(item.done) done++;
                 const div = document.createElement('div');
-                div.className = "flex items-center gap-2.5 p-2 rounded-lg bg-dark-900/80 border border-slate-800/80";
+                div.className = "flex items-center gap-2 text-slate-300";
                 div.innerHTML = `
-                    <button onclick="toggleMaturaItem('${subjectKey}', '${item.id}')" class="w-4 h-4 rounded border ${item.done ? 'bg-roseGold-500 border-roseGold-500 text-dark-900' : 'border-slate-600'} flex items-center justify-center text-[10px] shrink-0">
+                    <button onclick="toggleMaturaCheck('${key}', '${item.id}')" class="w-3.5 h-3.5 rounded border ${item.done ? 'bg-roseGold-500 border-roseGold-500 text-dark-900' : 'border-slate-600'} flex items-center justify-center text-[9px] shrink-0">
                         ${item.done ? '<i class="fa-solid fa-check"></i>' : ''}
                     </button>
-                    <span class="${item.done ? 'line-through text-slate-500' : 'text-slate-200'}">${escapeHtml(item.title)}</span>
+                    <span class="${item.done ? 'line-through text-slate-500' : ''}">${escapeHtml(item.title)}</span>
                 `;
-                container.appendChild(div);
+                c.appendChild(div);
             });
-
-            const percent = Math.round((doneCount / list.length) * 100) || 0;
-            document.getElementById(barId).style.width = `${percent}%`;
-            document.getElementById(textId).innerText = `${percent}%`;
+            const pct = Math.round((done / list.length) * 100) || 0;
+            document.getElementById(bId).style.width = `${pct}%`;
+            document.getElementById(tId).innerText = `${pct}%`;
         }
 
-        function toggleMaturaItem(subjectKey, itemId) {
-            appData.maturaChecklist[subjectKey] = appData.maturaChecklist[subjectKey].map(item => item.id === itemId ? { ...item, done: !item.done } : item);
+        function toggleMaturaCheck(subject, id) {
+            appData.maturaChecklist[subject] = appData.maturaChecklist[subject].map(i => i.id === id ? { ...i, done: !i.done } : i);
             saveToStorage();
             renderMaturaChecklists();
         }
 
-        /* --- RECIPES GALLERY --- */
+        function calculateUniPoints() {
+            const mathP = parseFloat(document.getElementById('calc-math-p').value) || 0;
+            const mathR = parseFloat(document.getElementById('calc-math-r').value) || 0;
+            const engP = parseFloat(document.getElementById('calc-eng-p').value) || 0;
+            const engR = parseFloat(document.getElementById('calc-eng-r').value) || 0;
+            const polP = parseFloat(document.getElementById('calc-pol-p').value) || 0;
+            const polR = parseFloat(document.getElementById('calc-pol-r').value) || 0;
+
+            const mathScore = Math.max(mathP * 0.4, mathR * 1.0);
+            const engScore = Math.max(engP * 0.4, engR * 1.0);
+            const polScore = Math.max(polP * 0.4, polR * 1.0);
+
+            const total = Math.round(mathScore + engScore + polScore);
+            document.getElementById('uni-total-points').innerText = `${total} pkt`;
+        }
+
+        /* FIT KITCHEN RECIPES */
         function renderRecipes(filter) {
             const container = document.getElementById('recipes-grid');
             container.innerHTML = '';
+            const list = filter === 'all' ? recipesList : recipesList.filter(r => r.tag === filter);
 
-            const filtered = filter === 'all' ? recipesList : recipesList.filter(r => r.tag === filter);
-
-            filtered.forEach(recipe => {
+            list.forEach(r => {
                 const card = document.createElement('div');
-                card.className = "glass-card glass-card-hover rounded-2xl p-5 border border-slate-800 flex flex-col justify-between transition-all";
+                card.className = "glass-card glass-card-hover rounded-2xl p-5 border border-slate-800 flex flex-col justify-between";
                 card.innerHTML = `
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20">${recipe.category}</span>
-                            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock"></i> ${recipe.time}</span>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20">${r.category}</span>
+                            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock"></i> ${r.time}</span>
                         </div>
-                        <h4 class="font-bold text-white text-base mb-2">${recipe.title}</h4>
-                        <p class="text-xs text-slate-300 leading-relaxed">${recipe.desc}</p>
+                        <h4 class="font-bold text-white text-base mb-1.5">${r.title}</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-3">${r.desc}</p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
-                        <span class="text-emeraldGlow-400"><i class="fa-solid fa-leaf"></i> Fit & Fast</span>
-                        <span>Zero twarogu</span>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function filterRecipes(category) {
-            document.querySelectorAll('.recipe-filter-btn').forEach(btn => {
-                btn.classList.remove('bg-roseGold-500', 'text-dark-900');
-                btn.classList.add('bg-dark-800', 'text-slate-400');
-            });
-            event.target.classList.remove('bg-dark-800', 'text-slate-400');
-            event.target.classList.add('bg-roseGold-500', 'text-dark-900');
-            renderRecipes(category);
-        }
-
-        /* --- WISHLIST & MOODBOARD --- */
-        function renderWishlist() {
-            const container = document.getElementById('wishlist-grid');
-            container.innerHTML = '';
-
-            appData.wishlist.forEach(item => {
-                const card = document.createElement('div');
-                card.className = "glass-card rounded-2xl overflow-hidden border border-slate-800 flex flex-col justify-between group";
-                
-                const imgTag = item.img ? `<img src="${item.img}" class="w-full h-44 object-cover group-hover:scale-105 transition-all duration-300" alt="${item.title}">` : `<div class="w-full h-44 bg-dark-900 flex items-center justify-center text-slate-700"><i class="fa-solid fa-image text-3xl"></i></div>`;
-
-                card.innerHTML = `
-                    <div>
-                        ${imgTag}
-                        <div class="p-4">
-                            <span class="text-[10px] font-semibold text-roseGold-400 bg-roseGold-500/10 border border-roseGold-500/20 px-2 py-0.5 rounded-full">${item.category}</span>
-                            <h4 class="font-bold text-white text-sm mt-2">${escapeHtml(item.title)}</h4>
-                            <div class="text-xs font-mono text-emeraldGlow-400 mt-1">${item.price ? item.price + ' zł' : 'Brak ceny'}</div>
-                        </div>
-                    </div>
-                    <div class="px-4 pb-4 flex items-center justify-between gap-2">
-                        ${item.link ? `<a href="${item.link}" target="_blank" class="text-xs text-roseGold-400 hover:underline"><i class="fa-solid fa-link"></i> Otwórz link</a>` : '<span></span>'}
-                        <button onclick="deleteWishlistItem(${item.id})" class="text-xs text-slate-500 hover:text-roseGold-400 p-1">
-                            <i class="fa-solid fa-trash"></i>
+                    <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between">
+                        <span class="text-[10px] text-emeraldGlow-400"><i class="fa-solid fa-shield"></i> Bez twarogu/tuńczyka</span>
+                        <button onclick="addIngredientsToShopping(${r.id})" class="text-xs text-roseGold-400 hover:underline flex items-center gap-1">
+                            <i class="fa-solid fa-cart-plus"></i> Dodaj składniki
                         </button>
                     </div>
                 `;
@@ -850,35 +968,90 @@
             });
         }
 
-        function openAddWishlistModal() {
-            document.getElementById('wishlist-modal').classList.remove('hidden');
+        function filterRecipes(cat) {
+            document.querySelectorAll('.recipe-filter-btn').forEach(b => {
+                b.classList.remove('bg-roseGold-500', 'text-dark-900');
+                b.classList.add('bg-dark-800', 'text-slate-400');
+            });
+            event.target.classList.remove('bg-dark-800', 'text-slate-400');
+            event.target.classList.add('bg-roseGold-500', 'text-dark-900');
+            renderRecipes(cat);
         }
 
-        function closeAddWishlistModal() {
-            document.getElementById('wishlist-modal').classList.add('hidden');
+        function generateRandomMeal() {
+            const idx = Math.floor(Math.random() * recipesList.length);
+            const r = recipesList[idx];
+            document.getElementById('meal-res-title').innerText = `${r.title} 🥣`;
+            document.getElementById('meal-res-desc').innerText = r.desc;
         }
+
+        function addCurrentMealToShopping() {
+            const currentTitle = document.getElementById('meal-res-title').innerText;
+            const recipe = recipesList.find(r => currentTitle.includes(r.title)) || recipesList[0];
+            addIngredientsToShopping(recipe.id);
+        }
+
+        function addIngredientsToShopping(recipeId) {
+            const recipe = recipesList.find(r => r.id === recipeId);
+            if(!recipe) return;
+            recipe.ingredients.forEach(ing => {
+                appData.shopping.push({ id: Date.now() + Math.random(), text: ing, category: 'Spożywcze', done: false });
+            });
+            saveToStorage();
+            renderShopping();
+            alert(`Dodano składniki (${recipe.title}) do Listy Zakupów! 🛒`);
+        }
+
+        /* STYLE & WISHLIST */
+        function renderWishlist() {
+            const container = document.getElementById('wishlist-grid');
+            container.innerHTML = '';
+            const filterColor = document.getElementById('wishlist-color-filter')?.value || 'all';
+
+            const filtered = filterColor === 'all' ? appData.wishlist : appData.wishlist.filter(w => w.color === filterColor);
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "glass-card rounded-2xl overflow-hidden border border-slate-800 flex flex-col justify-between group";
+                const imgTag = item.img ? `<img src="${item.img}" class="w-full h-44 object-cover group-hover:scale-105 transition-all duration-300" alt="${item.title}">` : `<div class="w-full h-44 bg-dark-900 flex items-center justify-center text-slate-700"><i class="fa-solid fa-shirt text-3xl"></i></div>`;
+
+                card.innerHTML = `
+                    <div>
+                        ${imgTag}
+                        <div class="p-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-semibold text-roseGold-400 bg-roseGold-500/10 border border-roseGold-500/20 px-2 py-0.5 rounded-full">${item.category}</span>
+                                <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">${item.color || 'Brak'}</span>
+                            </div>
+                            <h4 class="font-bold text-white text-sm mt-2">${escapeHtml(item.title)}</h4>
+                            <div class="text-xs font-mono text-emeraldGlow-400 mt-1">${item.price ? item.price + ' zł' : 'Brak ceny'}</div>
+                        </div>
+                    </div>
+                    <div class="px-4 pb-4 flex items-center justify-between gap-2">
+                        ${item.link ? `<a href="${item.link}" target="_blank" class="text-xs text-roseGold-400 hover:underline"><i class="fa-solid fa-link"></i> Otwórz link</a>` : '<span></span>'}
+                        <button onclick="deleteWishlistItem(${item.id})" class="text-xs text-slate-500 hover:text-roseGold-400 p-1"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openAddWishlistModal() { document.getElementById('wishlist-modal').classList.remove('hidden'); }
+        function closeAddWishlistModal() { document.getElementById('wishlist-modal').classList.add('hidden'); }
 
         function saveWishlistItem(e) {
             e.preventDefault();
             const title = document.getElementById('wish-title').value;
             const category = document.getElementById('wish-category').value;
+            const color = document.getElementById('wish-color').value;
             const price = document.getElementById('wish-price').value;
             const link = document.getElementById('wish-link').value;
             const img = document.getElementById('wish-img').value;
 
-            appData.wishlist.unshift({
-                id: Date.now(),
-                title, category, price, link, img
-            });
-
+            appData.wishlist.unshift({ id: Date.now(), title, category, color, price, link, img });
             saveToStorage();
             renderWishlist();
             closeAddWishlistModal();
-
-            document.getElementById('wish-title').value = '';
-            document.getElementById('wish-price').value = '';
-            document.getElementById('wish-link').value = '';
-            document.getElementById('wish-img').value = '';
         }
 
         function deleteWishlistItem(id) {
@@ -887,35 +1060,128 @@
             renderWishlist();
         }
 
-        /* --- NOTES & BRAIN DUMP --- */
-        let notesTimeout;
-        function saveNotes() {
-            const val = document.getElementById('brain-dump-textarea').value;
-            appData.notes = val;
-            document.getElementById('notes-save-status').innerText = 'Zapisywanie...';
-            clearTimeout(notesTimeout);
-            notesTimeout = setTimeout(() => {
+        /* ASIAN DRAMAS WATCHLIST */
+        function renderDramas() {
+            const container = document.getElementById('dramas-list');
+            container.innerHTML = '';
+            appData.dramas.forEach(d => {
+                const div = document.createElement('div');
+                div.className = "p-3 rounded-xl bg-dark-900 border border-slate-800 flex items-center justify-between text-xs";
+                div.innerHTML = `
+                    <div class="space-y-0.5">
+                        <div class="font-bold text-white">${escapeHtml(d.title)}</div>
+                        <div class="text-[11px] text-slate-400">Odcinek: ${d.currentEp} / ${d.totalEps}</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="updateDramaEp(${d.id}, 1)" class="px-2 py-1 rounded bg-dark-800 hover:bg-dark-700 text-roseGold-400 border border-slate-700 font-bold">+1 Ep</button>
+                        <button onclick="deleteDrama(${d.id})" class="text-slate-500 hover:text-roseGold-400 p-1"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addDrama(e) {
+            e.preventDefault();
+            const title = document.getElementById('drama-title').value;
+            const totalEps = parseInt(document.getElementById('drama-total-eps').value) || 16;
+            appData.dramas.unshift({ id: Date.now(), title, currentEp: 1, totalEps, status: 'W trakcie' });
+            saveToStorage();
+            renderDramas();
+            document.getElementById('drama-title').value = '';
+            document.getElementById('drama-total-eps').value = '';
+        }
+
+        function updateDramaEp(id, delta) {
+            appData.dramas = appData.dramas.map(d => d.id === id ? { ...d, currentEp: Math.min(d.totalEps, d.currentEp + delta) } : d);
+            saveToStorage();
+            renderDramas();
+        }
+
+        function deleteDrama(id) {
+            appData.dramas = appData.dramas.filter(d => d.id !== id);
+            saveToStorage();
+            renderDramas();
+        }
+
+        /* GAMING & RP NOTES */
+        let rpTimeout;
+        function saveRpNotes() {
+            appData.rpNotes = document.getElementById('rp-notes-textarea').value;
+            document.getElementById('rp-notes-status').innerText = 'Zapisywanie...';
+            clearTimeout(rpTimeout);
+            rpTimeout = setTimeout(() => {
                 saveToStorage();
-                document.getElementById('notes-save-status').innerHTML = 'Zapisano w pamięci <i class="fa-solid fa-check"></i>';
+                document.getElementById('rp-notes-status').innerHTML = '<i class="fa-solid fa-check"></i> Aktualne';
             }, 500);
         }
 
-        /* --- FOCUS MODE TOGGLE --- */
+        /* SMART SHOPPING LIST */
+        function renderShopping() {
+            const foodC = document.getElementById('shop-list-food');
+            const beautyC = document.getElementById('shop-list-beauty');
+            const otherC = document.getElementById('shop-list-other');
+
+            foodC.innerHTML = ''; beautyC.innerHTML = ''; otherC.innerHTML = '';
+
+            appData.shopping.forEach(s => {
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between p-2 rounded-lg bg-dark-900/90 border border-slate-800/80";
+                div.innerHTML = `
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <button onclick="toggleShopping(${s.id})" class="w-4 h-4 rounded border ${s.done ? 'bg-emeraldGlow-500 border-emeraldGlow-500 text-dark-900' : 'border-slate-600'} flex items-center justify-center text-[10px]">
+                            ${s.done ? '<i class="fa-solid fa-check"></i>' : ''}
+                        </button>
+                        <span class="${s.done ? 'line-through text-slate-500' : 'text-slate-200'} truncate">${escapeHtml(s.text)}</span>
+                    </div>
+                    <button onclick="deleteShopping(${s.id})" class="text-slate-500 hover:text-roseGold-400 text-xs p-1"><i class="fa-solid fa-trash"></i></button>
+                `;
+
+                if(s.category === 'Spożywcze') foodC.appendChild(div);
+                else if(s.category === 'Kosmetyki') beautyC.appendChild(div);
+                else otherC.appendChild(div);
+            });
+        }
+
+        function addShoppingItem(e) {
+            e.preventDefault();
+            const input = document.getElementById('shop-input');
+            const cat = document.getElementById('shop-category').value;
+            if(!input.value.trim()) return;
+            appData.shopping.push({ id: Date.now(), text: input.value.trim(), category: cat, done: false });
+            input.value = '';
+            saveToStorage();
+            renderShopping();
+        }
+
+        function toggleShopping(id) {
+            appData.shopping = appData.shopping.map(s => s.id === id ? { ...s, done: !s.done } : s);
+            saveToStorage();
+            renderShopping();
+        }
+
+        function deleteShopping(id) {
+            appData.shopping = appData.shopping.filter(s => s.id !== id);
+            saveToStorage();
+            renderShopping();
+        }
+
+        function clearCompletedShopping() {
+            appData.shopping = appData.shopping.filter(s => !s.done);
+            saveToStorage();
+            renderShopping();
+        }
+
+        /* FOCUS MODE */
         function toggleFocusMode() {
             document.body.classList.toggle('focus-mode');
             const btn = document.getElementById('focus-toggle-btn');
-            if(document.body.classList.contains('focus-mode')) {
-                btn.classList.add('bg-roseGold-500', 'text-dark-900');
-                btn.classList.remove('bg-dark-800', 'text-slate-300');
-            } else {
-                btn.classList.remove('bg-roseGold-500', 'text-dark-900');
-                btn.classList.add('bg-dark-800', 'text-slate-300');
-            }
+            btn.classList.toggle('bg-roseGold-500');
+            btn.classList.toggle('text-dark-900');
         }
 
-        /* --- UTILS --- */
         function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+            return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") : '';
         }
     </script>
 </body>
