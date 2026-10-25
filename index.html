@@ -6,1568 +6,1626 @@
     <title>LifeOS: My Space ✨</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        dark: {
-                            900: '#090B0E',
-                            800: '#121620',
-                            700: '#1C2233',
-                            600: '#283147'
-                        },
-                        roseGold: {
-                            400: '#F4B5B5',
-                            500: '#E89898',
-                            600: '#D67B7B',
-                        },
-                        emeraldGlow: {
-                            400: '#5EEAD4',
-                            500: '#14B8A6',
-                        },
-                        champagne: '#FCE7F3'
+                        bgDark: '#0b0d10',
+                        cardDark: 'rgba(18, 22, 29, 0.75)',
+                        borderDark: 'rgba(255, 255, 255, 0.08)',
+                        roseGold: '#e5b8b7',
+                        roseGoldHover: '#d4a3a2',
+                        emeraldAcc: '#4eaf8b',
+                        emeraldHover: '#3e9574',
+                        onyx: '#161920',
                     },
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        glowRose: '0 0 25px -5px rgba(229, 184, 183, 0.25)',
+                        glowEmerald: '0 0 25px -5px rgba(78, 175, 139, 0.25)',
+                        glass: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
                     }
                 }
             }
         }
     </script>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #090B0E; }
-        ::-webkit-scrollbar-thumb { background: #283147; border-radius: 9999px; }
-        ::-webkit-scrollbar-thumb:hover { background: #E89898; }
-        
-        .glass-card {
-            background: rgba(18, 22, 32, 0.75);
-            backdrop-filter: blur(14px);
+        body {
+            background-color: #0b0d10;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(229, 184, 183, 0.05) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(78, 175, 139, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Glassmorphism custom styling */
+        .glass-panel {
+            background: rgba(18, 22, 29, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         
-        .glass-card-hover:hover {
-            border-color: rgba(232, 152, 152, 0.35);
-            box-shadow: 0 12px 32px -10px rgba(232, 152, 152, 0.18);
+        .glass-card {
+            background: rgba(26, 31, 40, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .gradient-text {
-            background: linear-gradient(135deg, #F4B5B5 0%, #E89898 50%, #5EEAD4 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .glass-input {
+            background: rgba(11, 13, 16, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f3f4f6;
+        }
+        .glass-input:focus {
+            border-color: #e5b8b7;
+            outline: none;
+            box-shadow: 0 0 10px rgba(229, 184, 183, 0.2);
         }
 
-        .gradient-border {
-            position: relative;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-        .gradient-border::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            padding: 1px;
-            background: linear-gradient(135deg, rgba(244,181,181,0.4), rgba(94,234,212,0.2));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
+        ::-webkit-scrollbar-track {
+            background: rgba(11, 13, 16, 0.8);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(229, 184, 183, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(229, 184, 183, 0.4);
         }
 
-        /* Perspective Flip for Flashcards */
-        .perspective-1000 { perspective: 1000px; }
-        .transform-style-3d { transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        .backface-hidden { backface-visibility: hidden; }
-        .rotate-y-180 { transform: rotateY(180deg); }
+        /* Canvas Cat Eye Animation */
+        @keyframes shine {
+            0% { opacity: 0.3; transform: rotate(0deg) scale(1); }
+            50% { opacity: 0.8; transform: rotate(180deg) scale(1.1); }
+            100% { opacity: 0.3; transform: rotate(360deg) scale(1); }
+        }
+        .animate-shine {
+            animation: shine 6s infinite linear;
+        }
     </style>
 </head>
-<body class="bg-dark-900 text-slate-200 font-sans min-h-screen flex flex-col antialiased selection:bg-roseGold-500 selection:text-dark-900">
+<body class="min-h-screen flex flex-col md:flex-row overflow-x-hidden selection:bg-roseGold selection:text-black">
 
-    <!-- Top Navigation Header -->
-    <header class="sticky top-0 z-40 bg-dark-900/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3.5 transition-all">
-        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
-            
-            <!-- Logo & Greeting -->
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-roseGold-600 via-roseGold-400 to-emeraldGlow-400 p-[1px] flex items-center justify-center shadow-lg shadow-roseGold-500/10">
-                    <div class="w-full h-full bg-dark-900 rounded-[15px] flex items-center justify-center">
-                        <i class="fa-solid fa-sparkles text-roseGold-400 text-lg"></i>
-                    </div>
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold text-white tracking-tight flex items-center gap-2">
-                        LifeOS <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20">My Space ✨</span>
-                    </h1>
-                    <p class="text-xs text-slate-400 font-medium" id="current-date-display">Ładowanie daty...</p>
-                </div>
+    <!-- Mobile Top Navigation Header -->
+    <header class="md:hidden glass-panel p-4 flex items-center justify-between sticky top-0 z-50 border-b border-white/10">
+        <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-roseGold to-emeraldAcc flex items-center justify-center text-black font-bold text-lg shadow-glowRose">
+                ✨
             </div>
-
-            <!-- Real-time Countdowns (Matura & Studniówka) -->
-            <div class="hidden md:flex items-center gap-3">
-                <div class="flex items-center gap-2 bg-dark-800/90 border border-slate-700/60 rounded-full px-3.5 py-1.5 text-xs shadow-inner">
-                    <i class="fa-solid fa-graduation-cap text-roseGold-400"></i>
-                    <span class="text-slate-400">Matura 2027:</span>
-                    <span id="matura-countdown" class="font-bold text-emeraldGlow-400 font-mono">-- dni</span>
-                </div>
-                <div class="flex items-center gap-2 bg-dark-800/90 border border-slate-700/60 rounded-full px-3.5 py-1.5 text-xs shadow-inner">
-                    <i class="fa-solid fa-champagne-glasses text-roseGold-400"></i>
-                    <span class="text-slate-400">Studniówka:</span>
-                    <span id="studniowka-countdown" class="font-bold text-roseGold-400 font-mono">-- dni</span>
-                </div>
-            </div>
-
-            <!-- Right Controls -->
-            <div class="flex items-center gap-2">
-                <button onclick="toggleFocusMode()" id="focus-toggle-btn" class="flex items-center gap-2 text-xs font-semibold bg-dark-800 hover:bg-dark-700 text-slate-300 px-3.5 py-2 rounded-xl border border-slate-700/60 transition-all hover:text-roseGold-400">
-                    <i class="fa-solid fa-bullseye text-roseGold-400"></i>
-                    <span class="hidden sm:inline">Tryb Skupienia</span>
-                </button>
-            </div>
+            <span class="font-bold text-lg tracking-wide bg-gradient-to-r from-roseGold via-white to-emeraldAcc bg-clip-text text-transparent">LifeOS</span>
         </div>
+        <button id="mobileMenuBtn" class="text-gray-300 hover:text-roseGold p-2 focus:outline-none">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
     </header>
 
-    <!-- Main Content Area -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 lg:p-8 space-y-6">
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="fixed md:sticky top-0 left-0 h-screen w-64 glass-panel z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col justify-between border-r border-white/10 shrink-0">
+        <div>
+            <!-- App Logo / Title -->
+            <div class="p-6 flex items-center space-x-3 border-b border-white/5">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-roseGold to-emeraldAcc flex items-center justify-center text-black font-extrabold text-xl shadow-glowRose">
+                    ✨
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-wider bg-gradient-to-r from-roseGold to-emeraldAcc bg-clip-text text-transparent">LifeOS</h1>
+                    <p class="text-xs text-gray-400">Personal Sanctuary 2026</p>
+                </div>
+            </div>
 
-        <!-- Banner with Greeting & Mood Slider -->
-        <section class="relative overflow-hidden rounded-3xl p-6 md:p-8 glass-card gradient-border">
-            <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-roseGold-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -left-12 -top-12 w-64 h-64 bg-emeraldGlow-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <!-- Navigation Links -->
+            <nav class="mt-4 px-3 space-y-1">
+                <button onclick="switchTab('dashboard')" class="nav-tab active w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-roseGold bg-white/5 border border-roseGold/20">
+                    <i class="fa-solid fa-house w-5 text-center"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button onclick="switchTab('matura')" class="nav-tab w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-gray-400 hover:text-roseGold hover:bg-white/5">
+                    <i class="fa-solid fa-graduation-cap w-5 text-center"></i>
+                    <span>Matura 2027 Practice</span>
+                </button>
+                <button onclick="switchTab('airfryer')" class="nav-tab w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-gray-400 hover:text-roseGold hover:bg-white/5">
+                    <i class="fa-solid fa-utensils w-5 text-center"></i>
+                    <span>Airfryer & Fit Snack</span>
+                </button>
+                <button onclick="switchTab('manicure')" class="nav-tab w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-gray-400 hover:text-roseGold hover:bg-white/5">
+                    <i class="fa-solid fa-wand-magic-sparkles w-5 text-center"></i>
+                    <span>Nail Atelier</span>
+                </button>
+                <button onclick="switchTab('fashion')" class="nav-tab w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-gray-400 hover:text-roseGold hover:bg-white/5">
+                    <i class="fa-solid fa-bag-shopping w-5 text-center"></i>
+                    <span>Studniówka & Bags</span>
+                </button>
+                <button onclick="switchTab('chill')" class="nav-tab w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-gray-400 hover:text-roseGold hover:bg-white/5">
+                    <i class="fa-solid fa-tv w-5 text-center"></i>
+                    <span>Chill & Drama Hub</span>
+                </button>
+                <button onclick="switchTab('budget')" class="nav-tab w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-gray-400 hover:text-roseGold hover:bg-white/5">
+                    <i class="fa-solid fa-wallet w-5 text-center"></i>
+                    <span>Budget & Shopping</span>
+                </button>
+            </nav>
+        </div>
 
-            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
-                <div class="lg:col-span-2 space-y-2">
-                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20">
-                        <i class="fa-solid fa-crown text-[10px]"></i> Twój Prywatny Kokpit 2.0
-                    </span>
-                    <h2 class="text-2xl sm:text-3xl font-bold text-white font-serif tracking-wide">
-                        Cześć, <span class="gradient-text">Gwiazda / Młoda!</span> ✨
+        <!-- Audio Quick Controls & System Status -->
+        <div class="p-4 border-t border-white/5 space-y-3">
+            <div class="glass-card p-3 rounded-xl flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-volume-high text-emeraldAcc text-xs"></i>
+                    <span class="text-xs text-gray-300">Audio FX</span>
+                </div>
+                <button onclick="toggleSoundFx()" id="soundFxBtn" class="text-xs px-2 py-1 rounded bg-emeraldAcc/20 text-emeraldAcc border border-emeraldAcc/30 font-semibold">ON</button>
+            </div>
+            <div class="flex items-center justify-between text-xs text-gray-500 px-1">
+                <span>Class of 2027</span>
+                <span class="inline-flex items-center text-emeraldAcc"><span class="w-2 h-2 rounded-full bg-emeraldAcc mr-1 animate-pulse"></span> Ready</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Canvas -->
+    <main class="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto min-h-screen">
+        
+        <!-- SECTION 1: DASHBOARD HUB -->
+        <div id="tab-dashboard" class="tab-content space-y-6">
+            <!-- Header Hero Banner -->
+            <div class="glass-panel rounded-3xl p-6 md:p-8 relative overflow-hidden border border-white/10">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-roseGold/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute top-0 right-1/4 w-48 h-48 bg-emeraldAcc/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-roseGold/10 border border-roseGold/20 text-roseGold text-xs font-semibold mb-3">
+                            <i class="fa-solid fa-crown"></i>
+                            <span>LifeOS Luxury Edition</span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-white">Witaj ponownie, <span class="bg-gradient-to-r from-roseGold via-white to-emeraldAcc bg-clip-text text-transparent">Królowo ✨</span></h2>
+                        <p class="text-gray-400 text-sm mt-1">Prawo jazdy zdane! Czas podbić Maturę 2027 i zaplanować studniówkę.</p>
+                    </div>
+
+                    <div class="glass-card px-5 py-3 rounded-2xl flex items-center space-x-4 border border-roseGold/20 shadow-glowRose">
+                        <div class="text-center">
+                            <span class="text-2xl font-black text-roseGold" id="dashCountdown">--</span>
+                            <span class="block text-[10px] text-gray-400 uppercase tracking-wider">Dni do Matury</span>
+                        </div>
+                        <div class="h-8 w-px bg-white/10"></div>
+                        <div class="text-center">
+                            <span class="text-2xl font-black text-emeraldAcc" id="dashStreak">0</span>
+                            <span class="block text-[10px] text-gray-400 uppercase tracking-wider">Dni Nauki</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid Widgets -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Quick Daily Goals & Streak -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                        <h3 class="font-bold text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-fire text-roseGold"></i>
+                            <span>Dzienne Nawyki</span>
+                        </h3>
+                        <span class="text-xs text-roseGold font-semibold" id="habitProgress">0/3</span>
+                    </div>
+                    <div class="space-y-3" id="habitList">
+                        <!-- Habit items rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Active Airfryer Snack Quick Picker -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                            <h3 class="font-bold text-white flex items-center space-x-2">
+                                <i class="fa-solid fa-bolt text-emeraldAcc"></i>
+                                <span>Szybka Przekąska</span>
+                            </h3>
+                            <span class="text-xs text-emeraldAcc bg-emeraldAcc/10 px-2 py-0.5 rounded-full border border-emeraldAcc/20">&lt; 15m</span>
+                        </div>
+                        <div class="mt-4 glass-card p-4 rounded-xl border border-white/5">
+                            <h4 class="font-bold text-roseGold text-base" id="quickSnackTitle">Owsiane Ciasteczka Kakao</h4>
+                            <p class="text-xs text-gray-400 mt-1" id="quickSnackDesc">Banan, płatki owsiane, kakao, borówki. 180°C przez 10 min w Airfryerze.</p>
+                            <div class="mt-3 flex items-center space-x-2 text-xs text-emeraldAcc">
+                                <i class="fa-solid fa-check"></i>
+                                <span>Zero twarogu & surowego sera</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="switchTab('airfryer')" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-gray-300 transition-all border border-white/10 flex items-center justify-center space-x-2">
+                        <span>Otwórz Airfryer Studio</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Current Drama Watching -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                            <h3 class="font-bold text-white flex items-center space-x-2">
+                                <i class="fa-solid fa-play text-roseGold"></i>
+                                <span>Oglądana Drama</span>
+                            </h3>
+                            <span class="text-xs text-gray-400" id="dashDramaEp">Odc. --/--</span>
+                        </div>
+                        <div class="mt-4 glass-card p-4 rounded-xl border border-white/5 relative overflow-hidden">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-bold text-white text-base" id="dashDramaTitle">Brak aktywnej dramy</h4>
+                                    <p class="text-xs text-roseGold mt-0.5" id="dashDramaGenre">K-Drama / Romance</p>
+                                </div>
+                                <div class="text-yellow-400 text-xs" id="dashDramaStars">
+                                    <i class="fa-solid fa-star"></i> 5.0
+                                </div>
+                            </div>
+                            <div class="w-full bg-white/10 h-1.5 rounded-full mt-4 overflow-hidden">
+                                <div class="bg-gradient-to-r from-roseGold to-emeraldAcc h-full w-2/3" id="dashDramaProgress"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="switchTab('chill')" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-gray-300 transition-all border border-white/10 flex items-center justify-center space-x-2">
+                        <span>Chill Lounge & RP Streamy</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Shopping List Quick View & Budget Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-panel p-6 rounded-2xl space-y-4">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                        <h3 class="font-bold text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-cart-shopping text-emeraldAcc"></i>
+                            <span>Szybka Lista Zakupów</span>
+                        </h3>
+                        <button onclick="switchTab('budget')" class="text-xs text-emeraldAcc hover:underline">Zarządzaj</button>
+                    </div>
+                    <div id="dashShopList" class="space-y-2">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl space-y-4">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                        <h3 class="font-bold text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-sparkles text-roseGold"></i>
+                            <span>Cytat Motywacyjny Matura 2027</span>
+                        </h3>
+                    </div>
+                    <blockquote class="italic text-gray-300 text-sm border-l-2 border-roseGold pl-4 py-1">
+                        "Sukces to suma niewielkich wysiłków, powtarzanych dzień po dniu."
+                    </blockquote>
+                    <div class="pt-2 flex justify-between items-center text-xs text-gray-400">
+                        <span>Cel: Informatyka / E-Biznes</span>
+                        <span class="text-emeraldAcc font-mono font-bold">PG / UG 2027</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: MATURA PRACTICE HUB -->
+        <div id="tab-matura" class="tab-content hidden space-y-6">
+            <div class="glass-panel p-6 rounded-3xl border border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center space-x-3">
+                        <i class="fa-solid fa-graduation-cap text-roseGold"></i>
+                        <span>Matura 2027 Practice & Study Hub</span>
                     </h2>
-                    <p class="text-xs sm:text-sm text-slate-400 max-w-xl leading-relaxed">
-                        Matura 2027, Prawo Jazdy Kat. B, Manicure Gel Studio, Pomodoro Soundscapes & Fit Kuchnia w jednym miejscu.
-                    </p>
+                    <p class="text-xs text-gray-400 mt-1">Język Niemiecki, Język Angielski C1, Matematyka oraz Kalkulator Rekrutacyjny UG/PG.</p>
                 </div>
-
-                <!-- Interactive Mood & Energy Tracker -->
-                <div class="bg-dark-900/80 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between space-y-3">
-                    <div class="flex items-center justify-between text-xs">
-                        <span class="font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-bolt text-roseGold-400"></i> Poziom Energii:
-                        </span>
-                        <span id="energy-value-text" class="font-mono font-bold text-emeraldGlow-400">3/5 (Umiarkowany)</span>
-                    </div>
-                    
-                    <input type="range" min="1" max="5" value="3" id="energy-range" oninput="updateEnergyTracker(this.value)" class="w-full accent-roseGold-400 cursor-pointer h-1.5 bg-dark-700 rounded-lg">
-                    
-                    <div id="energy-recommendation" class="text-[11px] text-slate-300 bg-dark-800/70 p-2.5 rounded-xl border border-slate-700/50 flex items-center gap-2">
-                        <i class="fa-solid fa-circle-info text-roseGold-400 shrink-0"></i>
-                        <span>Stabilne tempo. Dobry moment na 15m fiszek lub jazdę próbną online.</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Navigation Tabs -->
-        <nav class="flex items-center gap-2 border-b border-slate-800 pb-2 overflow-x-auto scrollbar-none">
-            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all bg-roseGold-500 text-dark-900 shadow-md shadow-roseGold-500/20 shrink-0">
-                <i class="fa-solid fa-grid-2"></i> Dashboard
-            </button>
-            <button onclick="switchTab('pomodoro')" id="tab-pomodoro" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
-                <i class="fa-solid fa-headphones"></i> Focus & Audio 🎧
-            </button>
-            <button onclick="switchTab('nails')" id="tab-nails" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
-                <i class="fa-solid fa-hand-sparkles"></i> Manicure & Nails 💅
-            </button>
-            <button onclick="switchTab('driving')" id="tab-driving" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
-                <i class="fa-solid fa-car-side"></i> Prawo Jazdy Kat. B 🚗
-            </button>
-            <button onclick="switchTab('matura')" id="tab-matura" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
-                <i class="fa-solid fa-graduation-cap"></i> Matura & UG/PG
-            </button>
-            <button onclick="switchTab('recipes')" id="tab-recipes" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
-                <i class="fa-solid fa-utensils"></i> Fit Kuchnia
-            </button>
-            <button onclick="switchTab('style')" id="tab-style" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
-                <i class="fa-solid fa-shirt"></i> Style & Outfits
-            </button>
-            <button onclick="switchTab('lounge')" id="tab-lounge" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
-                <i class="fa-solid fa-tv"></i> Dramy & Gaming
-            </button>
-            <button onclick="switchTab('shopping')" id="tab-shopping" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
-                <i class="fa-solid fa-cart-shopping"></i> Zakupy
-            </button>
-        </nav>
-
-        <!-- TAB 1: DASHBOARD / COMMAND CENTER -->
-        <div id="content-dashboard" class="tab-content grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- Column 1: Daily Tasks -->
-            <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[500px]">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-roseGold-400"></i> Priorytety na Dziś
-                    </h3>
-                    <span id="todo-count" class="text-[11px] bg-slate-800 text-roseGold-400 font-medium px-2.5 py-1 rounded-full border border-slate-700">0 zrealizowane</span>
-                </div>
-
-                <form onsubmit="addTodo(event)" class="flex items-center gap-2 mb-4">
-                    <input type="text" id="todo-input" placeholder="Wpisz nowe zadanie..." required class="flex-1 bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-roseGold-500 transition-all placeholder:text-slate-500">
-                    <select id="todo-category" class="bg-dark-900 border border-slate-700 text-xs text-slate-300 rounded-xl px-2 py-2 focus:outline-none focus:border-roseGold-500">
-                        <option value="Szkoła">Szkoła</option>
-                        <option value="Prawko">Prawko B</option>
-                        <option value="Nails">Manicure</option>
-                        <option value="Życie">Życie</option>
-                    </select>
-                    <button type="submit" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold px-3 py-2 rounded-xl text-xs transition-all">
-                        <i class="fa-solid fa-plus"></i>
+                <div class="flex items-center space-x-3">
+                    <button onclick="logStudySession()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-roseGold to-roseGoldHover text-black font-semibold text-xs shadow-glowRose hover:scale-105 transition-all">
+                        <i class="fa-solid fa-check mr-1"></i> Zaloguj Dziś Naukę
                     </button>
-                </form>
-
-                <div id="todo-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
-            </div>
-
-            <!-- Column 2: Flashcard Mini Widget & Daily Habits -->
-            <div class="space-y-6 flex flex-col">
-                <div class="glass-card rounded-2xl p-5 border border-slate-800 flex-1 flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-base font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-brain text-emeraldGlow-400"></i> Szybka Fiszka
-                        </h3>
-                        <span id="flashcard-subject-tag" class="text-[10px] bg-emeraldGlow-500/10 text-emeraldGlow-400 border border-emeraldGlow-500/20 px-2 py-0.5 rounded-md font-medium uppercase">Matematyka</span>
-                    </div>
-
-                    <div id="flashcard-card" onclick="flipCurrentCard()" class="perspective-1000 my-auto cursor-pointer min-h-[130px] flex items-center justify-center">
-                        <div id="flashcard-inner" class="w-full h-full transform-style-3d relative bg-dark-900/90 rounded-xl border border-slate-800 p-4 flex flex-col items-center justify-center text-center">
-                            <p id="flashcard-front-text" class="text-sm font-semibold text-slate-100">Ładowanie pytania...</p>
-                            <p id="flashcard-back-text" class="text-xs text-emeraldGlow-400 font-medium hidden mt-2 border-t border-slate-800 pt-2 w-full">Odpowiedź...</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between gap-2 pt-3 border-t border-slate-800/80">
-                        <button onclick="rateFlashcard('repeat')" class="flex-1 text-[11px] py-1.5 rounded-lg bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20 hover:bg-roseGold-500/20 font-medium transition-all">
-                            Do powtórki ❌
-                        </button>
-                        <button onclick="rateFlashcard('easy')" class="flex-1 text-[11px] py-1.5 rounded-lg bg-emeraldGlow-500/10 text-emeraldGlow-400 border border-emeraldGlow-500/20 hover:bg-emeraldGlow-500/20 font-medium transition-all">
-                            Znam to! ✨
-                        </button>
-                    </div>
-                </div>
-
-                <div class="glass-card rounded-2xl p-5 border border-slate-800">
-                    <h3 class="text-base font-bold text-white mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-sparkles text-roseGold-400"></i> Nawykownik Dnia
-                    </h3>
-                    <div class="grid grid-cols-2 gap-2 text-xs" id="daily-habits-grid"></div>
                 </div>
             </div>
 
-            <!-- Column 3: Airfryer Quick Randomizer & Hydration -->
-            <div class="space-y-6 flex flex-col justify-between">
-                <div class="glass-card rounded-2xl p-5 border border-slate-800">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-base font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-wand-magic-sparkles text-roseGold-400"></i> Losuj Ekspresowy Przepis
-                        </h3>
-                        <span class="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Airfryer & Fit</span>
-                    </div>
-
-                    <div id="quick-meal-result" class="bg-dark-900/90 rounded-xl p-3.5 border border-slate-800 mb-4">
-                        <div class="text-xs font-bold text-roseGold-400 mb-1" id="meal-res-title">Pieczona Owsianka Czekoladowa 🥣</div>
-                        <div class="text-[11px] text-slate-300" id="meal-res-desc">Banan, kakao, płatki owsiane, mleko — 12 min w 180°C w Airfryerze.</div>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button onclick="generateRandomMeal()" class="flex-1 bg-gradient-to-r from-roseGold-500 to-roseGold-600 hover:opacity-95 text-dark-900 font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition-all">
-                            <i class="fa-solid fa-dice"></i> Losuj Danie
-                        </button>
-                        <button onclick="addCurrentMealToShopping()" class="bg-dark-800 hover:bg-dark-700 border border-slate-700 text-roseGold-400 px-3 py-2 rounded-xl text-xs transition-all" title="Dodaj składniki do zakupy">
-                            <i class="fa-solid fa-cart-plus"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="glass-card rounded-2xl p-5 border border-slate-800">
-                    <h3 class="text-base font-bold text-white mb-3 flex items-center justify-between">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-glass-water text-emeraldGlow-400"></i> Nawodnienie Dnia</span>
-                        <span id="water-count-text" class="text-xs font-mono text-emeraldGlow-400 font-bold">0 / 8 szklanek</span>
-                    </h3>
-                    <div class="grid grid-cols-8 gap-1.5 mb-3" id="water-glasses-container"></div>
-                    <div class="flex items-center justify-between text-xs text-slate-400">
-                        <span>Kliknij szklankę</span>
-                        <button onclick="resetWater()" class="hover:text-roseGold-400 text-[10px]"><i class="fa-solid fa-rotate-left"></i> Reset</button>
-                    </div>
-                </div>
+            <!-- Subtabs Navigation -->
+            <div class="flex space-x-2 border-b border-white/10 pb-2">
+                <button onclick="switchMaturaSubTab('speaking')" id="btn-matura-speaking" class="matura-subtab text-xs px-4 py-2 rounded-xl bg-white/10 text-white font-medium border border-white/10">Generator Tematów</button>
+                <button onclick="switchMaturaSubTab('flashcards')" id="btn-matura-flashcards" class="matura-subtab text-xs px-4 py-2 rounded-xl text-gray-400 hover:text-white font-medium">Spaced Repetition Fiszki</button>
+                <button onclick="switchMaturaSubTab('calc')" id="btn-matura-calc" class="matura-subtab text-xs px-4 py-2 rounded-xl text-gray-400 hover:text-white font-medium">Kalkulator Punktów UG/PG</button>
             </div>
-        </div>
 
-        <!-- NEW TAB: FOCUS MODE & POMODORO SOUNDSCAPES -->
-        <div id="content-pomodoro" class="tab-content hidden space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Pomodoro Timer -->
-                <div class="glass-card rounded-2xl p-6 border border-slate-800 flex flex-col items-center justify-center text-center">
-                    <span class="text-xs uppercase tracking-widest text-roseGold-400 font-semibold mb-2" id="pomo-mode-label">Tryb Skupienia (25 min)</span>
-                    <div class="text-6xl font-mono font-bold text-white tracking-wider my-4" id="pomo-timer-display">25:00</div>
-                    <div class="flex items-center gap-3">
-                        <button onclick="startPomodoro()" id="pomo-start-btn" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold px-6 py-2.5 rounded-xl text-xs transition-all shadow-lg shadow-roseGold-500/20">
-                            <i class="fa-solid fa-play"></i> Start
-                        </button>
-                        <button onclick="pausePomodoro()" class="bg-dark-800 hover:bg-dark-700 text-slate-300 border border-slate-700 px-4 py-2.5 rounded-xl text-xs transition-all">
-                            <i class="fa-solid fa-pause"></i> Pauza
-                        </button>
-                        <button onclick="resetPomodoro()" class="bg-dark-800 hover:bg-dark-700 text-slate-400 border border-slate-700 px-4 py-2.5 rounded-xl text-xs transition-all">
-                            <i class="fa-solid fa-rotate-left"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Ambient Soundscapes (Web Audio Generator) -->
-                <div class="lg:col-span-2 glass-card rounded-2xl p-6 border border-slate-800">
-                    <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                        <i class="fa-solid fa-headphones text-emeraldGlow-400"></i> Lofi Ambient Soundscapes
-                    </h3>
-                    <p class="text-xs text-slate-400 mb-6">Generowane w czasie rzeczywistym szumy i tła do nauki, maratonów maturalnych i skupienia.</p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <!-- Rain Sound -->
-                        <div class="bg-dark-900/90 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-between text-center space-y-3">
-                            <i class="fa-solid fa-cloud-showers-heavy text-2xl text-roseGold-400"></i>
-                            <div>
-                                <div class="text-xs font-bold text-white">Cichy Deszcz</div>
-                                <div class="text-[10px] text-slate-500">Soft Rain synth</div>
-                            </div>
-                            <button onclick="toggleAudioSynth('rain')" id="audio-btn-rain" class="w-full bg-dark-800 hover:bg-dark-700 border border-slate-700 text-slate-300 py-1.5 rounded-lg text-xs font-semibold transition-all">
-                                Connect / Play
+            <!-- Subtab Content 1: Speaking & Writing Prompt Generator -->
+            <div id="matura-sub-speaking" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- German Oral Practice -->
+                    <div class="glass-panel p-6 rounded-2xl space-y-4 border border-emeraldAcc/20">
+                        <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                            <h3 class="font-bold text-white flex items-center space-x-2">
+                                <span class="px-2 py-0.5 rounded bg-emeraldAcc/20 text-emeraldAcc text-xs">DE</span>
+                                <span>Niemiecki Ustny (Mündliche Prüfung)</span>
+                            </h3>
+                            <button onclick="generateGermanPrompt()" class="text-xs px-3 py-1.5 rounded-lg bg-emeraldAcc text-black font-semibold hover:bg-emeraldHover transition-all">
+                                <i class="fa-solid fa-rotate mr-1"></i> Losuj Temat
                             </button>
                         </div>
-
-                        <!-- Cafe Ambient -->
-                        <div class="bg-dark-900/90 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-between text-center space-y-3">
-                            <i class="fa-solid fa-mug-hot text-2xl text-emeraldGlow-400"></i>
-                            <div>
-                                <div class="text-xs font-bold text-white">Kawiarnia / Cafe</div>
-                                <div class="text-[10px] text-slate-500">Warm Brown Noise</div>
+                        <div class="glass-card p-4 rounded-xl min-h-[140px] flex flex-col justify-between" id="germanPromptBox">
+                            <p class="text-sm text-gray-300 italic" id="germanPromptText">Kliknij "Losuj Temat", aby wygenerować zadanie do wypowiedzi ustnej po niemiecku.</p>
+                            <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[11px] text-gray-400">
+                                <span id="germanPromptCategory">Kategoria: --</span>
+                                <span>Poziom: Podstawowy / Rozszerzony</span>
                             </div>
-                            <button onclick="toggleAudioSynth('cafe')" id="audio-btn-cafe" class="w-full bg-dark-800 hover:bg-dark-700 border border-slate-700 text-slate-300 py-1.5 rounded-lg text-xs font-semibold transition-all">
-                                Connect / Play
+                        </div>
+                    </div>
+
+                    <!-- English Essay Prompt -->
+                    <div class="glass-panel p-6 rounded-2xl space-y-4 border border-roseGold/20">
+                        <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                            <h3 class="font-bold text-white flex items-center space-x-2">
+                                <span class="px-2 py-0.5 rounded bg-roseGold/20 text-roseGold text-xs">EN</span>
+                                <span>English Writing Practice (B2/C1 Essay)</span>
+                            </h3>
+                            <button onclick="generateEnglishPrompt()" class="text-xs px-3 py-1.5 rounded-lg bg-roseGold text-black font-semibold hover:bg-roseGoldHover transition-all">
+                                <i class="fa-solid fa-rotate mr-1"></i> New Prompt
                             </button>
                         </div>
-
-                        <!-- Deep Focus White/Pink noise -->
-                        <div class="bg-dark-900/90 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-between text-center space-y-3">
-                            <i class="fa-solid fa-wave-square text-2xl text-sky-400"></i>
-                            <div>
-                                <div class="text-xs font-bold text-white">Deep Focus</div>
-                                <div class="text-[10px] text-slate-500">Pink Noise Synth</div>
+                        <div class="glass-card p-4 rounded-xl min-h-[140px] flex flex-col justify-between" id="englishPromptBox">
+                            <p class="text-sm text-gray-300 italic" id="englishPromptText">Click "New Prompt" to get a Matura English writing essay topic or article prompt.</p>
+                            <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[11px] text-gray-400">
+                                <span id="englishPromptType">Type: Article / Essay</span>
+                                <span>Target: 200-250 words</span>
                             </div>
-                            <button onclick="toggleAudioSynth('pink')" id="audio-btn-pink" class="w-full bg-dark-800 hover:bg-dark-700 border border-slate-700 text-slate-300 py-1.5 rounded-lg text-xs font-semibold transition-all">
-                                Connect / Play
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtab Content 2: Flashcards Spaced Repetition -->
+            <div id="matura-sub-flashcards" class="hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Deck List & Add Form -->
+                    <div class="glass-panel p-6 rounded-2xl space-y-4">
+                        <h3 class="font-bold text-white border-b border-white/5 pb-3">Dodaj Nową Fiszki</h3>
+                        <form id="addFlashcardForm" onsubmit="handleAddFlashcard(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Kategoria</label>
+                                <select id="fcCategory" class="w-full glass-input rounded-xl px-3 py-2 text-xs">
+                                    <option value="English Phrasals">English Phrasal Verbs</option>
+                                    <option value="German Vokabeln">German Vokabeln</option>
+                                    <option value="Matematyka Wzory">Matematyka - Wzory</option>
+                                    <option value="Polski Motywy">J. Polski - Motywy i Epoki</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Przód (Pytanie / Pojęcie)</label>
+                                <input type="text" id="fcFront" required class="w-full glass-input rounded-xl px-3 py-2 text-xs" placeholder="np. look forward to / Wzór na deltę">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Tył (Odpowiedź / Definicja)</label>
+                                <textarea id="fcBack" required class="w-full glass-input rounded-xl px-3 py-2 text-xs h-20" placeholder="np. oczekiwać na coś z niecierpliwością / Δ = b² - 4ac"></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emeraldAcc to-emeraldHover text-black font-semibold text-xs transition-all shadow-glowEmerald">
+                                Dodaj Fiszki
                             </button>
+                        </form>
+                    </div>
+
+                    <!-- Flashcard Interactive Player -->
+                    <div class="md:col-span-2 glass-panel p-6 rounded-2xl flex flex-col justify-between items-center text-center relative overflow-hidden">
+                        <div class="w-full flex justify-between items-center text-xs text-gray-400 border-b border-white/5 pb-3">
+                            <span id="fcCategoryBadge" class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-roseGold font-semibold">Wybierz talię</span>
+                            <span id="fcCounter">Karta 0 / 0</span>
+                        </div>
+
+                        <!-- Card Flip Box -->
+                        <div id="flashcardBox" onclick="flipFlashcard()" class="w-full my-8 p-10 glass-card rounded-2xl border border-roseGold/30 cursor-pointer min-h-[220px] flex flex-col items-center justify-center transition-all duration-300 hover:scale-[1.01] shadow-glowRose">
+                            <span class="text-xs uppercase tracking-widest text-gray-500 mb-2" id="fcSideLabel font-bold">PRZÓD (Kliknij aby obrócić)</span>
+                            <h3 class="text-xl md:text-2xl font-bold text-white px-4" id="fcContentText">Brak fiszek w wybranej kategorii</h3>
+                        </div>
+
+                        <!-- Spaced Repetition Action Buttons -->
+                        <div class="w-full grid grid-cols-3 gap-3">
+                            <button onclick="rateFlashcard('hard')" class="py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 text-xs font-semibold">Trudne (Trudno)</button>
+                            <button onclick="rateFlashcard('medium')" class="py-2.5 rounded-xl bg-yellow-500/10 hover:bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 text-xs font-semibold">Średnie (Sokół)</button>
+                            <button onclick="rateFlashcard('easy')" class="py-2.5 rounded-xl bg-emeraldAcc/10 hover:bg-emeraldAcc/20 border border-emeraldAcc/30 text-emeraldAcc text-xs font-semibold">Łatwe (Ukończono)</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- NEW TAB: MANICURE & BEAUTY STUDIO -->
-        <div id="content-nails" class="tab-content hidden space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
-                <!-- Gel Extension Project Form -->
-                <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-4">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-hand-sparkles text-roseGold-400"></i> Nowy Projekt Stylizacji
-                    </h3>
-                    <form onsubmit="saveNailSet(event)" class="space-y-3">
-                        <div>
-                            <label class="block text-xs text-slate-300 mb-1">Marka Żelu / Hybrydy:</label>
-                            <select id="nail-brand" class="w-full bg-dark-900 border border-slate-700 text-xs rounded-xl p-2.5 text-white">
-                                <option value="Excellent Pro">Excellent Pro 💖</option>
-                                <option value="Palù">Palù 🌸</option>
-                                <option value="Hessi">Hessi ⭐</option>
-                                <option value="SPN Nails">SPN Nails ✨</option>
-                                <option value="Claresa">Claresa 💎</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-xs text-slate-300 mb-1">Metoda Przedłużania:</label>
-                            <select id="nail-method" class="w-full bg-dark-900 border border-slate-700 text-xs rounded-xl p-2.5 text-white">
-                                <option value="Górne Formy (Dual Forms)">Górne Formy (Dual Forms)</option>
-                                <option value="Szablony papierowe">Szablony papierowe (Paper)</option>
-                                <option value="Utwardzenie naturalnej płytki">Utwardzenie naturalnej płytki</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs text-slate-300 mb-1">Zdobienia & Efekty:</label>
-                            <input type="text" id="nail-design" placeholder="np. Cat-Eye, 3D Kwiaty, French Rose Gold" required class="w-full bg-dark-900 border border-slate-700 text-xs rounded-xl p-2.5 text-white">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs text-slate-300 mb-1">Paleta / Kolory:</label>
-                            <input type="text" id="nail-colors" placeholder="np. Mleczny róż, szmaragd, złoto" class="w-full bg-dark-900 border border-slate-700 text-xs rounded-xl p-2.5 text-white">
-                        </div>
-
-                        <button type="submit" class="w-full bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold py-2.5 rounded-xl text-xs transition-all shadow-md">
-                            Zapisz Set w Dzienniku
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Log & Gel Maintenance Timer -->
-                <div class="lg:col-span-2 glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-base font-bold text-white flex items-center gap-2">
-                                <i class="fa-solid fa-clock-rotate-left text-emeraldGlow-400"></i> Log Stylizacji & Licznik Odrostu
-                            </h3>
-                            <span class="text-xs text-slate-400">Optymalna zmiana: co 3-4 tyg.</span>
-                        </div>
-                        <div id="nails-history-list" class="space-y-3"></div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- NEW TAB: PRAWO JAZDY KAT. B -->
-        <div id="content-driving" class="tab-content hidden space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
-                <!-- Driving Theory Flashcards / Quiz -->
-                <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-base font-bold text-white flex items-center gap-2">
-                                <i class="fa-solid fa-shield-halved text-roseGold-400"></i> Teoria Kat. B Quiz
-                            </h3>
-                            <span id="driving-quiz-tag" class="text-[10px] bg-roseGold-500/10 text-roseGold-400 px-2 py-0.5 rounded font-bold">Znaki & Skrzyżowania</span>
-                        </div>
-
-                        <div id="driving-card-box" onclick="flipDrivingCard()" class="perspective-1000 my-4 cursor-pointer min-h-[140px] flex items-center justify-center">
-                            <div id="driving-inner" class="w-full h-full transform-style-3d bg-dark-900 border border-slate-800 rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                                <p id="driving-q-text" class="text-xs font-semibold text-slate-100">Ładowanie pytania drogowego...</p>
-                                <p id="driving-a-text" class="text-xs text-emeraldGlow-400 font-medium hidden mt-2 border-t border-slate-800 pt-2 w-full">Wyjaśnienie zasady...</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-2 pt-3 border-t border-slate-800">
-                        <button onclick="nextDrivingCard()" class="w-full bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold py-2 rounded-xl text-xs transition-all">
-                            Następne Pytanie Drogowe <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Driving Lessons Log -->
-                <div class="lg:col-span-2 glass-card rounded-2xl p-5 border border-slate-800 flex flex-col">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-base font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-route text-emeraldGlow-400"></i> Dziennik Jazd Praktycznych
-                        </h3>
-                        <span id="driving-hours-total" class="text-xs font-mono font-bold text-emeraldGlow-400 bg-emeraldGlow-500/10 border border-emeraldGlow-500/20 px-3 py-1 rounded-full">0 / 30h wyjeżdżone</span>
-                    </div>
-
-                    <form onsubmit="addDrivingLesson(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-2 mb-4">
-                        <input type="number" id="lesson-hours" placeholder="Liczbah (np. 2)" min="1" max="10" required class="bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-                        <input type="text" id="lesson-route" placeholder="Trasa (np. Manewry, Plac, Miasto Center)" required class="sm:col-span-2 bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-                        <button type="submit" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold py-2 rounded-xl text-xs transition-all">
-                            Zapisz Jazdę
-                        </button>
-                    </form>
-
-                    <div id="driving-lessons-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- TAB 5: MATURA & KALKULATOR UG / PG -->
-        <div id="content-matura" class="tab-content hidden space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Checklists -->
-                <div class="lg:col-span-2 space-y-6">
-                    <div class="glass-card rounded-2xl p-5 border border-slate-800">
-                        <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-book-open text-roseGold-400"></i> Postęp w Nauce Przedmiotów Maturalnych
-                        </h3>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <!-- Math -->
-                            <div class="bg-dark-900/80 p-3.5 rounded-xl border border-slate-800">
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-xs font-bold text-roseGold-400">Matematyka</span>
-                                    <span id="math-progress-text" class="text-[11px] font-mono text-slate-400">0%</span>
-                                </div>
-                                <div class="w-full bg-dark-800 h-1.5 rounded-full overflow-hidden mb-3">
-                                    <div id="math-progress-bar" class="bg-roseGold-400 h-full rounded-full transition-all" style="width: 0%"></div>
-                                </div>
-                                <div id="math-checklist" class="space-y-1.5 text-[11px]"></div>
-                            </div>
-                            <!-- Polish -->
-                            <div class="bg-dark-900/80 p-3.5 rounded-xl border border-slate-800">
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-xs font-bold text-emeraldGlow-400">Język Polski</span>
-                                    <span id="pol-progress-text" class="text-[11px] font-mono text-slate-400">0%</span>
-                                </div>
-                                <div class="w-full bg-dark-800 h-1.5 rounded-full overflow-hidden mb-3">
-                                    <div id="pol-progress-bar" class="bg-emeraldGlow-400 h-full rounded-full transition-all" style="width: 0%"></div>
-                                </div>
-                                <div id="pol-checklist" class="space-y-1.5 text-[11px]"></div>
-                            </div>
-                            <!-- English -->
-                            <div class="bg-dark-900/80 p-3.5 rounded-xl border border-slate-800">
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-xs font-bold text-sky-400">Język Angielski</span>
-                                    <span id="eng-progress-text" class="text-[11px] font-mono text-slate-400">0%</span>
-                                </div>
-                                <div class="w-full bg-dark-800 h-1.5 rounded-full overflow-hidden mb-3">
-                                    <div id="eng-progress-bar" class="bg-sky-400 h-full rounded-full transition-all" style="width: 0%"></div>
-                                </div>
-                                <div id="eng-checklist" class="space-y-1.5 text-[11px]"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Calculator UG / PG -->
-                <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-base font-bold text-white flex items-center gap-2">
-                                <i class="fa-solid fa-calculator text-emeraldGlow-400"></i> Kalkulator Punktów UG / PG
-                            </h3>
-                            <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded">Gdańsk</span>
-                        </div>
-                        <p class="text-xs text-slate-400 mb-4">Przelicz wyniki matur (Podstawa = 0.4, Rozszerzenie = 1.0) na punkty rekrutacyjne.</p>
-
-                        <div class="space-y-3 text-xs">
-                            <div>
-                                <label class="block text-slate-300 font-medium mb-1">Matematyka (%):</label>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <input type="number" id="calc-math-p" min="0" max="100" placeholder="Podstawa %" oninput="calculateUniPoints()" class="bg-dark-900 border border-slate-700 rounded-lg p-2 text-white">
-                                    <input type="number" id="calc-math-r" min="0" max="100" placeholder="Rozszerzenie %" oninput="calculateUniPoints()" class="bg-dark-900 border border-slate-700 rounded-lg p-2 text-white">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-slate-300 font-medium mb-1">Język Angielski (%):</label>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <input type="number" id="calc-eng-p" min="0" max="100" placeholder="Podstawa %" oninput="calculateUniPoints()" class="bg-dark-900 border border-slate-700 rounded-lg p-2 text-white">
-                                    <input type="number" id="calc-eng-r" min="0" max="100" placeholder="Rozszerzenie %" oninput="calculateUniPoints()" class="bg-dark-900 border border-slate-700 rounded-lg p-2 text-white">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-slate-300 font-medium mb-1">Język Polski (%):</label>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <input type="number" id="calc-pol-p" min="0" max="100" placeholder="Podstawa %" oninput="calculateUniPoints()" class="bg-dark-900 border border-slate-700 rounded-lg p-2 text-white">
-                                    <input type="number" id="calc-pol-r" min="0" max="100" placeholder="Rozszerzenie %" oninput="calculateUniPoints()" class="bg-dark-900 border border-slate-700 rounded-lg p-2 text-white">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-5 pt-4 border-t border-slate-800">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-slate-300">Szacowane Punkty:</span>
-                            <span id="uni-total-points" class="text-xl font-mono font-bold text-emeraldGlow-400">0 pkt</span>
-                        </div>
-                        <p class="text-[10px] text-slate-500 mt-1">Próg UG: ~60-80 pkt, PG: ~70-90 pkt.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 6: FIT KITCHEN & AIRFRYER -->
-        <div id="content-recipes" class="tab-content hidden space-y-6">
-            <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
-                <div>
-                    <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-utensils text-roseGold-400"></i> Airfryer & Fit Przepisy (10-15 min)
-                    </h3>
-                    <p class="text-xs text-slate-400 mt-0.5">Szybkie przepisy bez twarogu, tuńczyka, hummusu czy szakszuki!</p>
-                </div>
-
-                <div class="flex items-center gap-2 flex-wrap">
-                    <button onclick="filterRecipes('all')" class="recipe-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-roseGold-500 text-dark-900">Wszystkie</button>
-                    <button onclick="filterRecipes('airfryer')" class="recipe-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-dark-800 text-slate-400 hover:text-white">Airfryer 🌬️</button>
-                    <button onclick="filterRecipes('sweet')" class="recipe-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-dark-800 text-slate-400 hover:text-white">Na Słodko 🍫</button>
-                    <button onclick="filterRecipes('salty')" class="recipe-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-dark-800 text-slate-400 hover:text-white">Przekąski 🥨</button>
-                </div>
-            </div>
-
-            <div id="recipes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-        </div>
-
-        <!-- TAB 7: STYLE & STUDNIÓWKA MOODBOARD -->
-        <div id="content-style" class="tab-content hidden space-y-6">
-            <div class="flex flex-wrap items-center justify-between gap-4">
-                <div>
-                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-wand-magic-sparkles text-roseGold-400"></i> Studniówka & Outfit Moodboard
-                    </h3>
-                    <p class="text-xs text-slate-400">Sukienki (Bordowa / Szmaragdowa / Granatowa / Czarna), Shoppery A4 & Inspiracje.</p>
-                </div>
-                
-                <div class="flex items-center gap-2">
-                    <select id="wishlist-color-filter" onchange="renderWishlist()" class="bg-dark-800 text-xs text-slate-300 border border-slate-700 rounded-xl px-3 py-2">
-                        <option value="all">Wszystkie Kolory</option>
-                        <option value="Bordowy">Bordowy 🍷</option>
-                        <option value="Szmaragd">Szmaragd 💚</option>
-                        <option value="Granat">Granat 💙</option>
-                        <option value="Czarny">Czarny 🖤</option>
-                    </select>
-
-                    <button onclick="openAddWishlistModal()" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-roseGold-500/20 transition-all">
-                        <i class="fa-solid fa-plus"></i> Dodaj Inspirację
-                    </button>
-                </div>
-            </div>
-
-            <div id="wishlist-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-        </div>
-
-        <!-- TAB 8: ASIAN DRAMAS & GAMING RP -->
-        <div id="content-lounge" class="tab-content hidden space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Dramas -->
-                <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[520px]">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-base font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-tv text-roseGold-400"></i> Azjatyckie Dramy (Watchlist)
-                        </h3>
-                        <span class="text-xs text-slate-400">K-Drama / C-Drama</span>
-                    </div>
-
-                    <form onsubmit="addDrama(event)" class="grid grid-cols-3 gap-2 mb-4">
-                        <input type="text" id="drama-title" placeholder="Tytuł dramy..." required class="col-span-2 bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-                        <input type="number" id="drama-total-eps" placeholder="Ode (16)" min="1" required class="bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-                        <button type="submit" class="col-span-3 bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold py-2 rounded-xl text-xs transition-all">
-                            Dodaj do Listy Oglądania
-                        </button>
-                    </form>
-
-                    <div id="dramas-list" class="flex-1 overflow-y-auto space-y-2.5 pr-1"></div>
-                </div>
-
-                <!-- Gaming & RP Notes -->
-                <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[520px]">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-base font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-gamepad text-emeraldGlow-400"></i> Gaming & RP Notes
-                        </h3>
-                        <span class="text-xs text-slate-400">Roblox, SSO, GTA RP</span>
-                    </div>
-
-                    <textarea id="rp-notes-textarea" oninput="saveRpNotes()" placeholder="Notatki do GTA RP (Lore postaci, auta), Star Stable (konie), Roblox..." class="flex-1 w-full bg-dark-900 border border-slate-800 rounded-xl p-3.5 text-xs text-slate-200 focus:outline-none focus:border-emeraldGlow-500 resize-none leading-relaxed transition-all placeholder:text-slate-600"></textarea>
-                    
-                    <div class="flex items-center justify-between text-[11px] text-slate-400 mt-3 pt-2 border-t border-slate-800">
-                        <span>Zapisuje się automatycznie</span>
-                        <span id="rp-notes-status" class="text-emeraldGlow-400"><i class="fa-solid fa-check"></i> Aktualne</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 9: SMART SHOPPING LIST -->
-        <div id="content-shopping" class="tab-content hidden space-y-6">
-            <div class="glass-card rounded-2xl p-5 border border-slate-800">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-cart-shopping text-roseGold-400"></i> Inteligentna Lista Zakupów
-                    </h3>
-                    <button onclick="clearCompletedShopping()" class="text-xs bg-dark-800 hover:bg-dark-700 text-slate-400 hover:text-roseGold-400 border border-slate-700 px-3 py-1.5 rounded-xl transition-all">
-                        <i class="fa-solid fa-broom"></i> Usuń kupione
-                    </button>
-                </div>
-
-                <form onsubmit="addShoppingItem(event)" class="flex items-center gap-2 mb-6">
-                    <input type="text" id="shop-input" placeholder="Co trzeba kupić?" required class="flex-1 bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
-                    <select id="shop-category" class="bg-dark-900 border border-slate-700 text-xs text-slate-300 rounded-xl px-3 py-2">
-                        <option value="Spożywcze">Spożywcze 🛒</option>
-                        <option value="Kosmetyki">Kosmetyki / Paznokcie 💅</option>
-                        <option value="Szkoła">Szkoła / Inne 📚</option>
-                    </select>
-                    <button type="submit" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold px-4 py-2 rounded-xl text-xs transition-all">
-                        Dodaj
-                    </button>
-                </form>
+            <!-- Subtab Content 3: UG / PG Admissions Calculator -->
+            <div id="matura-sub-calc" class="hidden glass-panel p-6 rounded-2xl space-y-6">
+                <h3 class="font-bold text-white text-lg border-b border-white/5 pb-3 flex items-center space-x-2">
+                    <i class="fa-solid fa-calculator text-emeraldAcc"></i>
+                    <span>Kalkulator Punktów Rekrutacyjnych (Politechnika Gdańska / Uniwersytet Gdański)</span>
+                </h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-dark-900/60 rounded-xl p-4 border border-slate-800">
-                        <h4 class="text-xs font-bold text-roseGold-400 mb-3 uppercase tracking-wider">Spożywcze 🛒</h4>
-                        <div id="shop-list-food" class="space-y-2 text-xs"></div>
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-roseGold">Twoje Wyniki Maturalne (%)</h4>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Matematyka Podstawa (%)</label>
+                            <input type="number" id="matMathP" value="85" max="100" class="w-full glass-input rounded-xl px-3 py-2 text-xs" oninput="calculateMaturaScore()">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Matematyka Rozszerzenie (%)</label>
+                            <input type="number" id="matMathR" value="70" max="100" class="w-full glass-input rounded-xl px-3 py-2 text-xs" oninput="calculateMaturaScore()">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Język Angielski Rozszerzony (%)</label>
+                            <input type="number" id="matEngR" value="90" max="100" class="w-full glass-input rounded-xl px-3 py-2 text-xs" oninput="calculateMaturaScore()">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Przedmiot Dodatkowy (Fizyka/Informatyka R %)</label>
+                            <input type="number" id="matExtraR" value="65" max="100" class="w-full glass-input rounded-xl px-3 py-2 text-xs" oninput="calculateMaturaScore()">
+                        </div>
                     </div>
-                    <div class="bg-dark-900/60 rounded-xl p-4 border border-slate-800">
-                        <h4 class="text-xs font-bold text-emeraldGlow-400 mb-3 uppercase tracking-wider">Kosmetyki & Paznokcie 💅</h4>
-                        <div id="shop-list-beauty" class="space-y-2 text-xs"></div>
+
+                    <div class="md:col-span-2 glass-card p-6 rounded-2xl border border-white/10 space-y-4">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-emeraldAcc">Wyniki w Rekrutacji na Kierunki Targetowe</h4>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-3 rounded-xl bg-white/5 border border-white/5">
+                                <div>
+                                    <p class="font-bold text-white text-sm">Informatyka / E-Biznes (PG)</p>
+                                    <p class="text-xs text-gray-400">Próg historyczny: ~75-82 pkt</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-lg font-black text-emeraldAcc" id="scorePG">-- pkt</span>
+                                    <span class="block text-[10px] text-gray-400" id="statusPG">Przeliczanie...</span>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between items-center p-3 rounded-xl bg-white/5 border border-white/5">
+                                <div>
+                                    <p class="font-bold text-white text-sm">Matematyka Finansowa / Ekonomia (UG)</p>
+                                    <p class="text-xs text-gray-400">Próg historyczny: ~65-72 pkt</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-lg font-black text-roseGold" id="scoreUG">-- pkt</span>
+                                    <span class="block text-[10px] text-gray-400" id="statusUG">Przeliczanie...</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="bg-dark-900/60 rounded-xl p-4 border border-slate-800">
-                        <h4 class="text-xs font-bold text-sky-400 mb-3 uppercase tracking-wider">Szkoła & Inne 📚</h4>
-                        <div id="shop-list-other" class="space-y-2 text-xs"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: AIRFRYER & FIT SNACK STUDIO -->
+        <div id="tab-airfryer" class="tab-content hidden space-y-6">
+            <div class="glass-panel p-6 rounded-3xl border border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center space-x-3">
+                        <i class="fa-solid fa-utensils text-emeraldAcc"></i>
+                        <span>Airfryer & Fit Snack Studio</span>
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1">Przepisy z owsem, kakao, owocami. STRICT EXCLUSION: twaróg, tuńczyk, surowy ser, szakszuka, hummus.</p>
+                </div>
+                <div class="flex items-center space-x-2 bg-red-500/10 border border-red-500/20 px-3 py-1.5 rounded-xl text-xs text-red-400 font-semibold">
+                    <i class="fa-solid fa-ban"></i>
+                    <span>Wykluczenia aktywne</span>
+                </div>
+            </div>
+
+            <!-- Recipe Finder & Converter Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Recipe Filters & Search -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-white border-b border-white/5 pb-3">Filtry Przepisów</h3>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Maksymalny czas przygotowania</label>
+                        <select id="recipeTimeFilter" onchange="filterRecipes()" class="w-full glass-input rounded-xl px-3 py-2 text-xs">
+                            <option value="all">Wszystkie czasochłonności</option>
+                            <option value="10">&lt; 10 minut</option>
+                            <option value="15">&lt; 15 minut</option>
+                        </select>
                     </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Główny składnik</label>
+                        <select id="recipeIngFilter" onchange="filterRecipes()" class="w-full glass-input rounded-xl px-3 py-2 text-xs">
+                            <option value="all">Wszystkie dozwolone</option>
+                            <option value="oats">Płatki Owsiane (Oats)</option>
+                            <option value="cocoa">Kakao / Czekolada</option>
+                            <option value="banana">Banany / Jabłka</option>
+                            <option value="berries">Owoce Leśne / Borówki</option>
+                            <option value="eggs">Jajka</option>
+                        </select>
+                    </div>
+
+                    <!-- Airfryer Maintenance Timer -->
+                    <div class="pt-4 border-t border-white/5 space-y-2">
+                        <span class="text-xs font-bold text-gray-300 block">Timer Czyszczenia Airfryera 🧼</span>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="startCleanTimer(10)" class="flex-1 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-gray-300">Mooczenie (10m)</button>
+                            <button onclick="startCleanTimer(5)" class="flex-1 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-gray-300">Wypalanie (5m)</button>
+                        </div>
+                        <p id="cleanTimerDisplay" class="text-xs text-emeraldAcc font-mono text-center pt-1">Timer bezczynny</p>
+                    </div>
+                </div>
+
+                <!-- Recipe Display Grid -->
+                <div class="md:col-span-2 glass-panel p-6 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-white border-b border-white/5 pb-3 flex justify-between items-center">
+                        <span>Fit Przepisy do Airfryera</span>
+                        <span class="text-xs text-gray-400" id="recipeCount">Znaleziono: 4</span>
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="recipeContainer">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Recipe Builder & Airfryer Temp Converter -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Converter -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-white border-b border-white/5 pb-3 flex items-center space-x-2">
+                        <i class="fa-solid fa-temperature-arrow-up text-roseGold"></i>
+                        <span>Kalkulator Piekarnik -> Airfryer</span>
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Temp. Piekarnika (°C)</label>
+                            <input type="number" id="ovenTemp" value="200" class="w-full glass-input rounded-xl px-3 py-2 text-xs" oninput="convertOvenToAirfryer()">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Czas Piekarnika (min)</label>
+                            <input type="number" id="ovenTime" value="20" class="w-full glass-input rounded-xl px-3 py-2 text-xs" oninput="convertOvenToAirfryer()">
+                        </div>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border border-roseGold/20 flex justify-between items-center">
+                        <div>
+                            <span class="block text-xs text-gray-400 uppercase">Ustawienie Airfryera:</span>
+                            <span class="text-lg font-bold text-roseGold" id="airfryerResult">180°C przez 16 min</span>
+                        </div>
+                        <i class="fa-solid fa-fire text-2xl text-roseGold/40"></i>
+                    </div>
+                </div>
+
+                <!-- Custom Recipe Builder -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-white border-b border-white/5 pb-3">Kreator Własnego Fit Przepisu</h3>
+                    <form id="customRecipeForm" onsubmit="handleAddCustomRecipe(event)" class="space-y-3">
+                        <input type="text" id="crTitle" required placeholder="Nazwa przepisu (np. Pieczona Owsianka z Jabłkiem)" class="w-full glass-input rounded-xl px-3 py-2 text-xs">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="number" id="crTime" required placeholder="Czas (min)" class="w-full glass-input rounded-xl px-3 py-2 text-xs">
+                            <input type="number" id="crTemp" required placeholder="Temp (°C)" class="w-full glass-input rounded-xl px-3 py-2 text-xs">
+                        </div>
+                        <textarea id="crIngredients" required placeholder="Składniki po przecinku (np. Płatki owsiane, Banan, Kakao, Cynamon)" class="w-full glass-input rounded-xl px-3 py-2 text-xs h-16"></textarea>
+                        <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-roseGold to-roseGoldHover text-black font-semibold text-xs shadow-glowRose">
+                            Zapisz i Dodaj Składniki do Listy Zakupów
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: MANICURE & NAIL ART ATELIER -->
+        <div id="tab-manicure" class="tab-content hidden space-y-6">
+            <div class="glass-panel p-6 rounded-3xl border border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center space-x-3">
+                        <i class="fa-solid fa-wand-magic-sparkles text-roseGold"></i>
+                        <span>Manicure & Gel Nail Atelier</span>
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1">Dziennik budowania na formach/dual formach, baza lepkości żeli i timer utwardzania.</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs text-roseGold bg-roseGold/10 border border-roseGold/20 px-3 py-1.5 rounded-xl font-semibold">
+                        Nail Tech Level: Advanced ✨
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Gel Curing Timer & Presets -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-white border-b border-white/5 pb-3">Timer Utwardzania Lampa LED/UV</h3>
+                    <div class="text-center py-4">
+                        <span class="text-4xl font-black font-mono text-roseGold" id="curingTimerDisplay">60s</span>
+                        <span class="block text-xs text-gray-400 mt-1" id="curingBrandLabel">Wybierz preparat poniżej</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="startCuringTimer(60, 'Baza Kauczukowa / Hybryda')" class="py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-gray-300 border border-white/5">Baza/Color (60s)</button>
+                        <button onclick="startCuringTimer(90, 'Żel Budujący / Dual Forms')" class="py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-gray-300 border border-white/5">Żel Gęsty (90s)</button>
+                        <button onclick="startCuringTimer(30, 'Top No Wipe')" class="py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-gray-300 border border-white/5">Top Glow (30s)</button>
+                        <button onclick="startCuringTimer(120, 'Zdobienia 3D / Pyłek')" class="py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-gray-300 border border-white/5">French 3D (120s)</button>
+                    </div>
+                </div>
+
+                <!-- Interactive Nail Art Effect Studio -->
+                <div class="md:col-span-2 glass-panel p-6 rounded-2xl space-y-4">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                        <h3 class="font-bold text-white">Interaktywny Podgląd Efektów Nail Art</h3>
+                        <div class="flex space-x-2">
+                            <button onclick="setNailEffect('cateye')" class="text-xs px-3 py-1 rounded-lg bg-roseGold/20 text-roseGold font-semibold border border-roseGold/30">Cat-Eye Magnetic</button>
+                            <button onclick="setNailEffect('chrome')" class="text-xs px-3 py-1 rounded-lg bg-white/10 text-gray-300 hover:text-white">Mirror Chrome</button>
+                            <button onclick="setNailEffect('french3d')" class="text-xs px-3 py-1 rounded-lg bg-white/10 text-gray-300 hover:text-white">French 3D Floral</button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl p-8 flex flex-col items-center justify-center min-h-[220px] relative overflow-hidden border border-roseGold/20">
+                        <!-- Simulated Nail Display -->
+                        <div id="nailCanvas" class="w-24 h-48 rounded-t-full rounded-b-xl border-2 border-white/20 shadow-2xl relative transition-all duration-500 flex items-center justify-center overflow-hidden bg-gradient-to-b from-purple-900 via-pink-900 to-black">
+                            <div id="nailShine" class="absolute inset-0 bg-gradient-to-r from-transparent via-roseGold/40 to-transparent animate-shine"></div>
+                            <span class="relative z-10 text-[10px] uppercase font-mono font-bold tracking-widest text-white/80" id="nailCanvasLabel">Cat-Eye Magnetic</span>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-4 text-center" id="nailDesc">Odbicie magnetyczne 9D z drobinką różowego złota na ciemnym podkładzie.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gel Viscosity & Material Log -->
+            <div class="glass-panel p-6 rounded-2xl space-y-4">
+                <h3 class="font-bold text-white border-b border-white/5 pb-3">Baza Produktów & Lepkości (Claresa, Excellent Pro, Palu, SPN)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="gelLogContainer">
+                    <div class="glass-card p-4 rounded-xl border border-white/5 space-y-2">
+                        <span class="text-xs px-2 py-0.5 rounded bg-emeraldAcc/20 text-emeraldAcc font-semibold">Dual Forms</span>
+                        <h4 class="font-bold text-white text-sm">Excellent Pro Builder Gel</h4>
+                        <p class="text-xs text-gray-400">Lepkość: Gęsta (Jednofazowy). Idealny do nakładek i szablonów bez spływania.</p>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border border-white/5 space-y-2">
+                        <span class="text-xs px-2 py-0.5 rounded bg-roseGold/20 text-roseGold font-semibold">Hybryda / Baza</span>
+                        <h4 class="font-bold text-white text-sm">Claresa Rubber Base 5</h4>
+                        <p class="text-xs text-gray-400">Lepkość: Średnio-gęsta. Kauczukowa elastyczność do miękkich płytków paznokcia.</p>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border border-white/5 space-y-2">
+                        <span class="text-xs px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 font-semibold">Zdobienia</span>
+                        <h4 class="font-bold text-white text-sm">Palu Metalic Mirror Powder</h4>
+                        <p class="text-xs text-gray-400">Efekt tafli szkła / lustra. Wcierany w Top No Wipe utwardzony 30s.</p>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border border-white/5 space-y-2">
+                        <span class="text-xs px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-400 font-semibold">Formy Papierowe</span>
+                        <h4 class="font-bold text-white text-sm">SPN AcrylO! Gel Cover</h4>
+                        <p class="text-xs text-gray-400">Akrylożel bardzo gęsty. Zero skracania czasu pracy, brak samopoziomowania.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: STUDNIÓWKA & FASHION BAG STUDIO -->
+        <div id="tab-fashion" class="tab-content hidden space-y-6">
+            <div class="glass-panel p-6 rounded-3xl border border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center space-x-3">
+                        <i class="fa-solid fa-bag-shopping text-emeraldAcc"></i>
+                        <span>Studniówka & Shopper Bag Tester</span>
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1">Planer stylizacji studniówkowej oraz kalkulator wymiarowy torebki A4 do szkoły/miasta.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- A4 Shopper Bag Tester -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-white border-b border-white/5 pb-3 flex items-center space-x-2">
+                        <i class="fa-solid fa-ruler-combined text-emeraldAcc"></i>
+                        <span>A4 City Shopper Bag Dimension Tester</span>
+                    </h3>
+                    <p class="text-xs text-gray-400">Wpisz wymiary torebki (cm), aby sprawdzić, czy zmieści teczkę A4, butelkę wody 0.75L i lunchbox.</p>
+                    
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Szerokość (cm)</label>
+                            <input type="number" id="bagWidth" value="38" class="w-full glass-input rounded-xl px-3 py-2 text-xs" oninput="testBagFit()">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Wysokość (cm)</label>
+                            <input type="number" id="bagHeight" value="29" class="w-full glass-input rounded-xl px-3 py-2 text-xs" oninput="testBagFit()">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Głębokość (cm)</label>
+                            <input type="number" id="bagDepth" value="12" class="w-full glass-input rounded-xl px-3 py-2 text-xs" oninput="testBagFit()">
+                        </div>
+                    </div>
+
+                    <div id="bagTestResultBox" class="glass-card p-4 rounded-xl border border-emeraldAcc/30 space-y-2">
+                        <div class="flex items-center space-x-2 text-emeraldAcc font-bold text-sm" id="bagResultStatus">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Idealny Rozmiar A4 Shopper!</span>
+                        </div>
+                        <ul class="text-xs text-gray-300 space-y-1 pl-5 list-disc" id="bagDetailsList">
+                            <li>Teczka A4 (31 x 22 cm): Zmieści się swobodnie</li>
+                            <li>Butelka Wody + Lunchbox: Tak, zostaje miejsce na kosmetyczkę</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Studniówka Dress & Palette Planner -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-white border-b border-white/5 pb-3 flex items-center space-x-2">
+                        <i class="fa-solid fa-gem text-roseGold"></i>
+                        <span>Studniówka Look Planner</span>
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Preferowany Kolor Sukni</label>
+                            <select id="dressColor" class="w-full glass-input rounded-xl px-3 py-2 text-xs">
+                                <option value="Deep Navy Blue">Ciemny Granat (Deep Navy Blue)</option>
+                                <option value="Burgundy / Wine">Głębokie Bordo / Wino (Burgundy)</option>
+                                <option value="Emerald Green">Szmaragdowa Zielona (Emerald Green)</option>
+                                <option value="Onyx Black">Klasyczna Czerń (Onyx Black)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Fason / Silhouette</label>
+                            <select id="dressCut" class="w-full glass-input rounded-xl px-3 py-2 text-xs">
+                                <option value="Corset & Draped Top">Gorset ze marszczonym dekoltem & rozcięciem</option>
+                                <option value="Satin Maxi Slip">Satynowa Maxi na ramiączkach</option>
+                                <option value="A-Line Princess">A-Line z gorsetową górą</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Planowany Budżet (PLN)</label>
+                            <input type="number" id="dressBudget" value="450" class="w-full glass-input rounded-xl px-3 py-2 text-xs">
+                        </div>
+                        <button onclick="saveDressPlan()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-roseGold to-roseGoldHover text-black font-semibold text-xs shadow-glowRose">
+                            Zapisz Stylizację Studniówkową
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: CHILL LOUNGE & ASIAN DRAMA HUB -->
+        <div id="tab-chill" class="tab-content hidden space-y-6">
+            <div class="glass-panel p-6 rounded-3xl border border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center space-x-3">
+                        <i class="fa-solid fa-tv text-roseGold"></i>
+                        <span>Chill Lounge, Dramas & Streams Log</span>
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1">K-Drama/C-Drama tracker, NoPixel GTA RP & SSO stream scratchpad oraz Web Audio Ambient Synthesizer.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Synthesized Ambient Sound Engine (Web Audio API) -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-white border-b border-white/5 pb-3 flex items-center space-x-2">
+                        <i class="fa-solid fa-music text-emeraldAcc"></i>
+                        <span>Ambient Sound Synthesizer</span>
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <button onclick="toggleAmbient('rain')" id="ambRainBtn" class="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-gray-300 border border-white/5 flex justify-between items-center">
+                            <span><i class="fa-solid fa-cloud-rain mr-2 text-blue-400"></i> Deszcz za Oknem</span>
+                            <span class="text-[10px] text-gray-500 uppercase">Off</span>
+                        </button>
+                        <button onclick="toggleAmbient('brown')" id="ambBrownBtn" class="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-gray-300 border border-white/5 flex justify-between items-center">
+                            <span><i class="fa-solid fa-sliders mr-2 text-roseGold"></i> Deep Focus Brown Noise</span>
+                            <span class="text-[10px] text-gray-500 uppercase">Off</span>
+                        </button>
+                        <button onclick="toggleAmbient('cafe')" id="ambCafeBtn" class="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-gray-300 border border-white/5 flex justify-between items-center">
+                            <span><i class="fa-solid fa-mug-hot mr-2 text-yellow-500"></i> Cozy Cafe Ambience</span>
+                            <span class="text-[10px] text-gray-500 uppercase">Off</span>
+                        </button>
+                    </div>
+
+                    <!-- Pomodoro Timer -->
+                    <div class="pt-4 border-t border-white/5 space-y-2">
+                        <span class="text-xs font-bold text-gray-300 block">Focus Pomodoro Timer ⏱️</span>
+                        <div class="text-center">
+                            <span class="text-3xl font-mono font-black text-roseGold" id="pomoDisplay">25:00</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="togglePomodoro()" id="pomoStartBtn" class="flex-1 py-1.5 rounded-lg bg-roseGold text-black font-bold text-xs">Start Focus</button>
+                            <button onclick="resetPomodoro()" class="py-1.5 px-3 rounded-lg bg-white/5 text-gray-400 text-xs">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- K-Drama & C-Drama Tracker -->
+                <div class="md:col-span-2 glass-panel p-6 rounded-2xl space-y-4">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                        <h3 class="font-bold text-white">Asian Drama Tracker</h3>
+                        <button onclick="showAddDramaModal()" class="text-xs px-3 py-1.5 rounded-lg bg-roseGold text-black font-semibold hover:bg-roseGoldHover transition-all">
+                            + Dodaj Dramę
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="dramaContainer">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- NoPixel RP & Roblox / SSO Stream Log & Scratchpad -->
+            <div class="glass-panel p-6 rounded-2xl space-y-4">
+                <h3 class="font-bold text-white border-b border-white/5 pb-3 flex items-center space-x-2">
+                    <i class="fa-solid fa-gamepad text-emeraldAcc"></i>
+                    <span>NoPixel GTA V RP & Star Stable / Roblox Log</span>
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-bold text-gray-400 uppercase">Ulubione Streamy & Serwery RP</h4>
+                        <textarea id="rpStreamNotes" onchange="saveStreamNotes()" class="w-full glass-input rounded-xl p-3 text-xs h-32" placeholder="Notatki ze streamów NoPixel (np. postacie, cele fabularne, ulubieni streamerzy)..."></textarea>
+                    </div>
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-bold text-gray-400 uppercase">SSO / Roblox Daily Quests</h4>
+                        <textarea id="ssoQuestNotes" onchange="saveStreamNotes()" class="w-full glass-input rounded-xl p-3 text-xs h-32" placeholder="Star Stable / Roblox zadania (np. trening koni w Jorvik, zebrane schillingi)..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 7: BUDGET & SHOPPING HUB -->
+        <div id="tab-budget" class="tab-content hidden space-y-6">
+            <div class="glass-panel p-6 rounded-3xl border border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center space-x-3">
+                        <i class="fa-solid fa-wallet text-emeraldAcc"></i>
+                        <span>Life & Apartment Budget Tracker</span>
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1">Rozliczanie współlokatorów, podział rachunków i inteligentna lista zakupów.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Co-Renting Splitter -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-white border-b border-white/5 pb-3">Podział Rachunków Mieszkaniowych</h3>
+                    
+                    <form id="billForm" onsubmit="handleAddBill(event)" class="space-y-3">
+                        <input type="text" id="billName" required placeholder="Nazwa rachunku (np. Prąd / Internet)" class="w-full glass-input rounded-xl px-3 py-2 text-xs">
+                        <input type="number" id="billAmount" required placeholder="Kwota całkowita (PLN)" class="w-full glass-input rounded-xl px-3 py-2 text-xs">
+                        <input type="number" id="billRoommates" value="2" required placeholder="Liczba osób" class="w-full glass-input rounded-xl px-3 py-2 text-xs">
+                        <button type="submit" class="w-full py-2 rounded-xl bg-emeraldAcc text-black font-semibold text-xs shadow-glowEmerald">
+                            Dodaj i Oblicz Udział
+                        </button>
+                    </form>
+
+                    <div class="space-y-2 pt-2" id="billsList">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Categorized Shopping List -->
+                <div class="md:col-span-2 glass-panel p-6 rounded-2xl space-y-4">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                        <h3 class="font-bold text-white">Zarządzanie Listą Zakupów</h3>
+                        <div class="flex space-x-2">
+                            <button onclick="copyShoppingList()" class="text-xs px-3 py-1.5 rounded-lg bg-white/10 text-gray-300 hover:text-white">
+                                <i class="fa-solid fa-copy mr-1"></i> Kopiuj Tekst
+                            </button>
+                            <button onclick="clearShoppingList()" class="text-xs px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20">
+                                Wyczyść
+                            </button>
+                        </div>
+                    </div>
+
+                    <form id="shopForm" onsubmit="handleAddShopItem(event)" class="flex gap-2">
+                        <input type="text" id="shopItemInput" required placeholder="Dodaj produkt (np. Płatki owsiane, Mleko, Kakao)..." class="flex-1 glass-input rounded-xl px-3 py-2 text-xs">
+                        <select id="shopCategoryInput" class="glass-input rounded-xl px-3 py-2 text-xs">
+                            <option value="Food">Jedzenie / Snacks</option>
+                            <option value="Nails">Nails & Beauty</option>
+                            <option value="School">Szkoła & Matura</option>
+                        </select>
+                        <button type="submit" class="px-4 py-2 rounded-xl bg-roseGold text-black font-semibold text-xs shadow-glowRose">
+                            Dodaj
+                        </button>
+                    </form>
+
+                    <div class="space-y-2 pt-2" id="fullShoppingContainer">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings & Data Backup -->
+            <div class="glass-panel p-6 rounded-2xl space-y-4 border border-white/10">
+                <h3 class="font-bold text-white border-b border-white/5 pb-3">Kopia Zapasowa & Reset Danych</h3>
+                <div class="flex items-center space-x-4">
+                    <button onclick="exportData()" class="px-4 py-2 rounded-xl bg-white/10 text-gray-300 hover:text-white text-xs font-semibold">
+                        <i class="fa-solid fa-download mr-1"></i> Pobierz Kopię Zapasową (JSON)
+                    </button>
+                    <button onclick="resetAllData()" class="px-4 py-2 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-semibold">
+                        <i class="fa-solid fa-trash mr-1"></i> Reset Zapisanych Danych
+                    </button>
                 </div>
             </div>
         </div>
 
     </main>
 
-    <!-- Modal: Add Wishlist Item -->
-    <div id="wishlist-modal" class="fixed inset-0 bg-dark-900/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="glass-card w-full max-w-md rounded-2xl p-6 border border-slate-700 shadow-2xl relative">
-            <button onclick="closeAddWishlistModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-shirt text-roseGold-400"></i> Dodaj do Outfits & Wishlist
-            </h3>
-            <form onsubmit="saveWishlistItem(event)" class="space-y-3.5">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nazwa przedmiotu</label>
-                    <input type="text" id="wish-title" required placeholder="np. Sukienka gorsetowa z rozcięciem" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Kategoria</label>
-                        <select id="wish-category" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-                            <option value="Studniówka 💃">Studniówka 💃</option>
-                            <option value="Torba A4 👜">Torba A4 👜</option>
-                            <option value="Outfit 👗">Outfit 👗</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Odcień / Paleta</label>
-                        <select id="wish-color" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-                            <option value="Bordowy">Bordowy 🍷</option>
-                            <option value="Szmaragd">Szmaragd 💚</option>
-                            <option value="Granat">Granat 💙</option>
-                            <option value="Czarny">Czarny 🖤</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Cena (zł)</label>
-                        <input type="number" id="wish-price" placeholder="np. 299" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 mb-1">Link URL</label>
-                        <input type="url" id="wish-link" placeholder="https://..." class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">URL Zdjęcia (opcjonalnie)</label>
-                    <input type="url" id="wish-img" placeholder="https://images.unsplash.com/..." class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
-                </div>
-                <button type="submit" class="w-full bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold py-2.5 rounded-xl text-xs transition-all mt-2">
-                    Zapisz w Inspiracjach
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Application JS Logic -->
+    <!-- JavaScript Application Logic -->
     <script>
-        const STORAGE_KEY = 'lifeos_my_space_v3_data';
-
-        let appData = {
-            energyLevel: 3,
-            todos: [
-                { id: 1, text: 'Rozwiązać 5 zadań z ciągów arytmetycznych', category: 'Szkoła', completed: false },
-                { id: 2, text: 'Przejrzeć znaki pionowe i skrzyżowania (Prawko Kat. B)', category: 'Prawko', completed: true },
-                { id: 3, text: 'Uzupełnić odrost żelowy na Górnych Formach (Palù / SPN)', category: 'Nails', completed: false }
-            ],
+        // Default System State Definition
+        const DEFAULT_STATE = {
             habits: [
-                { id: 'h1', title: 'Pielęgnacja Skórek & Paznokci 💅', done: true },
-                { id: 'h2', title: 'Nauka Matura 30 min 📚', done: false },
-                { id: 'h3', title: 'Airfryer Posilek 🥣', done: true },
-                { id: 'h4', title: 'Test Teoretyczny Prawko B 🚗', done: false }
+                { id: 1, text: '20 min Fiszki (DE/EN/Math)', done: false },
+                { id: 2, text: 'Przekąska bez twarogu & surowego sera', done: false },
+                { id: 3, text: 'Utwardzanie / Pielęgnacja paznokci', done: false }
             ],
-            nailsHistory: [
-                { id: 1, date: '2026-10-10', brand: 'Palù', method: 'Górne Formy (Dual Forms)', design: 'Cat-Eye Rose Gold + 3D Floral Accents', colors: 'Mleczny róż & Złoto' }
-            ],
-            drivingLessons: [
-                { id: 1, hours: 2, route: 'Plac manewrowy - łuk i ruszanie na wzniesieniu', date: '2026-10-18' }
-            ],
-            maturaChecklist: {
-                math: [
-                    { id: 'm1', title: 'Funkcja kwadratowa & Delta', done: true },
-                    { id: 'm2', title: 'Ciągi arytmetyczne i geometryczne', done: false },
-                    { id: 'm3', title: 'Planimetria i okręgi', done: false }
-                ],
-                pol: [
-                    { id: 'p1', title: 'Pan Tadeusz & Dziady cz. III', done: true },
-                    { id: 'p2', title: 'Wesele Wyspiańskiego (Motyw chochoła)', done: false },
-                    { id: 'p3', title: 'Struktura rozprawki maturalnej', done: true }
-                ],
-                eng: [
-                    { id: 'e1', title: 'Present Perfect vs Past Simple', done: true },
-                    { id: 'e2', title: 'Pisanie e-maila formalnego', done: true },
-                    { id: 'e3', title: 'Słownictwo: Edukacja & Praca', done: false }
-                ]
-            },
             flashcards: [
-                { subject: 'Matematyka', q: 'Wzór na delta (Δ) w funkcji kwadratowej?', a: 'Δ = b² - 4ac' },
-                { subject: 'Język Polski', q: 'Co symbolizuje Chocholi Taniec w Weselu?', a: 'Symbol uśpienia narodu, marazmu i uśpionego potencjału.' },
-                { subject: 'Język Angielski', q: 'Przetłumacz: "I would rather stay home today."', a: 'Wolałabym dzisiaj zostać w domu.' }
+                { id: 1, cat: 'English Phrasals', front: 'look forward to', back: 'wyczekiwać czegoś z niecierpliwością (+ing)' },
+                { id: 2, cat: 'German Vokabeln', front: 'die Prüfung bestehen', back: 'zdać egzamin' },
+                { id: 3, cat: 'Matematyka Wzory', front: 'Wzór na deltę (Δ)', back: 'b² - 4ac' },
+                { id: 4, cat: 'Polski Motywy', front: 'Motyw Vanitas', back: 'Marność nad marnościami (Barok, Księga Koheleta)' }
             ],
-            waterGlasses: 4,
+            recipes: [
+                { id: 1, title: 'Czekoladowa Pieczona Owsianka', time: 10, temp: 180, ing: 'Płatki owsiane, Kakao, Banan, Borówki', tag: 'oats' },
+                { id: 2, title: 'Chrupiące Jabłka z Cynamonem', time: 8, temp: 175, ing: 'Jabłko, Cynamon, Odrobina syropu z klonu', tag: 'banana' },
+                { id: 3, title: 'Owsiane Ciasteczka Borówkowe', time: 12, temp: 180, ing: 'Płatki owsiane, Banan, Borówki, Jajko', tag: 'berries' },
+                { id: 4, title: 'Kakao Omlet Owsiany', time: 9, temp: 180, ing: 'Jajka, Kakao, Płatki owsiane, Banan', tag: 'eggs' }
+            ],
             dramas: [
-                { id: 1, title: 'Crash Landing on You', currentEp: 16, totalEps: 16, rating: 5, status: 'Obejrzane' },
-                { id: 2, title: 'Business Proposal', currentEp: 8, totalEps: 12, rating: 4, status: 'W trakcie' }
+                { id: 1, title: 'Business Proposal', genre: 'K-Drama / Comedy', ep: 8, totalEp: 12, rating: 5, notes: 'Super zabawne!' },
+                { id: 2, title: 'Hidden Love', genre: 'C-Drama / Romance', ep: 15, totalEp: 25, rating: 4.8, notes: 'Urocza fabuła' }
             ],
             shopping: [
-                { id: 1, text: 'Płatki owsiane górskie', category: 'Spożywcze', done: false },
-                { id: 2, text: 'Oliwka do skórek Hessi / SPN', category: 'Kosmetyki', done: true },
-                { id: 3, text: 'Zeszyt A4 w kratkę', category: 'Szkoła', done: false }
+                { id: 1, name: 'Płatki Owsiane Górskie', category: 'Food', checked: false },
+                { id: 2, name: 'Kakao Ciemne', category: 'Food', checked: false },
+                { id: 3, name: 'Claresa Rubber Base', category: 'Nails', checked: true }
             ],
-            wishlist: [
-                { id: 1, title: 'Gorsetowa Sukienka Maxi (Rozcięcie)', category: 'Studniówka 💃', color: 'Bordowy', price: 349, link: '', img: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=600&q=80' },
-                { id: 2, title: 'Czarny Skórzany Shopper A4', category: 'Torba A4 👜', color: 'Czarny', price: 189, link: '', img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80' }
+            bills: [
+                { id: 1, name: 'Internet Światłowodowy', amount: 90, people: 2 }
             ],
-            rpNotes: ''
+            streamNotes: '',
+            ssoNotes: '',
+            studyStreak: 1,
+            lastStudyDate: ''
         };
 
-        const recipesList = [
-            {
-                id: 1,
-                title: "Pieczona Owsianka Czekoladowa",
-                tag: "airfryer",
-                category: "Airfryer 🌬️ / Słodkie",
-                time: "12 min",
-                desc: "Zblenduj płatki owsiane, banan, kakao i mleko roślinne. 12 min w 180°C.",
-                ingredients: ["Płatki owsiane", "Banan", "Kakao", "Mleko roślinne"]
-            },
-            {
-                id: 2,
-                title: "Airfryer Tortilla z Serem & Słodką Papryką",
-                tag: "salty",
-                category: "Airfryer 🌬️ / Przekąski",
-                time: "8 min",
-                desc: "Tortilla złożona z serem cheddar, papryką i kukurydzą. Zapiekaj 7 min w 190°C.",
-                ingredients: ["Placek Tortilla", "Ser Cheddar", "Papryka czerwona", "Kukurydza"]
-            },
-            {
-                id: 3,
-                title: "Mug Cake Czekoladowy w 3 Minuty",
-                tag: "sweet",
-                category: "Na Słodko 🍫",
-                time: "3 min",
-                desc: "Mąka, kakao, miód, odrobina mleka i kostka gorzkiej czekolady do środka.",
-                ingredients: ["Mąka", "Kakao", "Kostka gorzkiej czekolady", "Miód"]
-            }
-        ];
+        // App State Loaded from LocalStorage
+        let appState = JSON.parse(localStorage.getItem('lifeos_luxury_state')) || DEFAULT_STATE;
 
-        const drivingQuizData = [
-            { q: "Kto ma pierwszeństwo na skrzyżowaniu równorzędnym?", a: "Pojazd nadjeżdżający z prawej strony (zasada prawej ręki)." },
-            { q: "Znak B-20 'STOP' nakazuje:", a: "Bezwzględne zatrzymanie pojazdu przed linią zatrzymania lub przed krawędzią jezdni." },
-            { q: "Jaki jest dopuszczalny limit alkoholu we krwi kierowcy w Polsce?", a: "Mniej niż 0,2 promila (0,00 mg/l w wydychanym powietrzu)." }
-        ];
-
-        let currentCardIdx = 0;
-        let currentDrivingIdx = 0;
-
-        /* POMODORO & AUDIO SYNTHESIZER */
-        let pomoTime = 25 * 60;
-        let pomoInterval = null;
+        // Web Audio Synthesizer Context
         let audioCtx = null;
-        let activeNodes = {};
+        let soundFxEnabled = true;
 
-        window.onload = function() {
-            loadFromStorage();
-            updateDateDisplay();
-            updateCountdowns();
-            renderTodos();
-            renderHabits();
-            renderFlashcard();
-            renderWaterGlasses();
-            renderMaturaChecklists();
-            renderRecipes('all');
-            renderWishlist();
-            renderDramas();
-            renderShopping();
-            renderNailsHistory();
-            renderDrivingLessons();
-            renderDrivingCard();
-            document.getElementById('rp-notes-textarea').value = appData.rpNotes || '';
-            document.getElementById('energy-range').value = appData.energyLevel || 3;
-            updateEnergyTracker(appData.energyLevel || 3);
-        };
-
-        function saveToStorage() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-        }
-
-        function loadFromStorage() {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            if(saved) {
-                try {
-                    appData = { ...appData, ...JSON.parse(saved) };
-                } catch(e) {
-                    console.error("Storage parse error", e);
-                }
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
         }
 
-        /* NAVIGATION & DASHBOARD LOGIC */
+        function playBeep(freq = 440, duration = 0.1) {
+            if (!soundFxEnabled) return;
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        function toggleSoundFx() {
+            soundFxEnabled = !soundFxEnabled;
+            const btn = document.getElementById('soundFxBtn');
+            btn.textContent = soundFxEnabled ? 'ON' : 'OFF';
+            btn.className = soundFxEnabled 
+                ? 'text-xs px-2 py-1 rounded bg-emeraldAcc/20 text-emeraldAcc border border-emeraldAcc/30 font-semibold'
+                : 'text-xs px-2 py-1 rounded bg-white/10 text-gray-500 font-semibold';
+        }
+
+        function saveState() {
+            localStorage.setItem('lifeos_luxury_state', JSON.stringify(appState));
+        }
+
+        // Navigation Switcher
         function switchTab(tabId) {
+            playBeep(520, 0.08);
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-roseGold-500', 'text-dark-900', 'shadow-md');
-                btn.classList.add('text-slate-400', 'hover:bg-dark-800');
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('text-roseGold', 'bg-white/5', 'border', 'border-roseGold/20');
+                btn.classList.add('text-gray-400');
             });
 
-            document.getElementById(`content-${tabId}`).classList.remove('hidden');
-            const activeBtn = document.getElementById(`tab-${tabId}`);
-            if(activeBtn) {
-                activeBtn.classList.add('bg-roseGold-500', 'text-dark-900', 'shadow-md');
-                activeBtn.classList.remove('text-slate-400', 'hover:bg-dark-800');
+            event.currentTarget.classList.remove('text-gray-400');
+            event.currentTarget.classList.add('text-roseGold', 'bg-white/5', 'border', 'border-roseGold/20');
+
+            // Close mobile menu if open
+            document.getElementById('sidebar').classList.add('-translate-x-full');
+        }
+
+        // Mobile Menu Toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        });
+
+        // Initialize App UI
+        window.onload = function() {
+            updateMaturaCountdown();
+            renderDashboard();
+            renderRecipes();
+            renderDramas();
+            renderShopping();
+            renderBills();
+            testBagFit();
+            calculateMaturaScore();
+            
+            document.getElementById('rpStreamNotes').value = appState.streamNotes || '';
+            document.getElementById('ssoQuestNotes').value = appState.ssoNotes || '';
+        };
+
+        // Matura Countdown Logic (Target: May 4, 2027)
+        function updateMaturaCountdown() {
+            const targetDate = new Date('2027-05-04T09:00:00');
+            const now = new Date();
+            const diffTime = Math.max(0, targetDate - now);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('dashCountdown').textContent = diffDays;
+            document.getElementById('dashStreak').textContent = appState.studyStreak || 0;
+        }
+
+        function logStudySession() {
+            appState.studyStreak = (appState.studyStreak || 0) + 1;
+            saveState();
+            updateMaturaCountdown();
+            playBeep(880, 0.2);
+        }
+
+        // Dashboard Habit Rendering
+        function renderDashboard() {
+            const container = document.getElementById('habitList');
+            container.innerHTML = '';
+            
+            let doneCount = 0;
+            appState.habits.forEach(h => {
+                if(h.done) doneCount++;
+                const item = document.createElement('div');
+                item.className = 'glass-card p-3 rounded-xl flex items-center justify-between border border-white/5';
+                item.innerHTML = `
+                    <span class="text-xs ${h.done ? 'line-through text-gray-500' : 'text-gray-200'}">${h.text}</span>
+                    <button onclick="toggleHabit(${h.id})" class="w-6 h-6 rounded-lg border ${h.done ? 'bg-emeraldAcc border-emeraldAcc text-black' : 'border-white/20 text-transparent'} flex items-center justify-center transition-all">
+                        <i class="fa-solid fa-check text-xs"></i>
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+            document.getElementById('habitProgress').textContent = `${doneCount}/${appState.habits.length}`;
+
+            // Quick Drama View Update
+            if(appState.dramas.length > 0) {
+                const active = appState.dramas[0];
+                document.getElementById('dashDramaTitle').textContent = active.title;
+                document.getElementById('dashDramaGenre').textContent = active.genre;
+                document.getElementById('dashDramaEp').textContent = `Odc. ${active.ep}/${active.totalEp}`;
+                document.getElementById('dashDramaProgress').style.width = `${(active.ep/active.totalEp)*100}%`;
             }
         }
 
-        function updateDateDisplay() {
-            const now = new Date();
-            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-            const formatted = now.toLocaleDateString('pl-PL', options);
-            document.getElementById('current-date-display').innerText = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+        function toggleHabit(id) {
+            const habit = appState.habits.find(h => h.id === id);
+            if(habit) {
+                habit.done = !habit.done;
+                saveState();
+                renderDashboard();
+                playBeep(habit.done ? 660 : 330, 0.1);
+            }
         }
 
-        function updateCountdowns() {
-            const today = new Date();
-            const maturaDate = new Date('2027-05-04T09:00:00');
-            const diffMatura = Math.ceil((maturaDate - today) / (1000 * 60 * 60 * 24));
-            document.getElementById('matura-countdown').innerText = diffMatura > 0 ? `${diffMatura} dni` : 'Dziś Matura!';
+        // --- MATURA HUB LOGIC ---
+        function switchMaturaSubTab(subId) {
+            document.querySelectorAll('#tab-matura > div[id^="matura-sub"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`matura-sub-${subId}`).classList.remove('hidden');
 
-            const studniowkaDate = new Date('2027-01-15T18:00:00');
-            const diffStud = Math.ceil((studniowkaDate - today) / (1000 * 60 * 60 * 24));
-            document.getElementById('studniowka-countdown').innerText = diffStud > 0 ? `${diffStud} dni` : 'Dziś Studniówka!';
+            document.querySelectorAll('.matura-subtab').forEach(b => {
+                b.classList.remove('bg-white/10', 'text-white', 'border', 'border-white/10');
+                b.classList.add('text-gray-400');
+            });
+            document.getElementById(`btn-matura-${subId}`).classList.add('bg-white/10', 'text-white', 'border', 'border-white/10');
         }
 
-        function updateEnergyTracker(val) {
-            appData.energyLevel = val;
-            saveToStorage();
-            const textEl = document.getElementById('energy-value-text');
-            const recEl = document.getElementById('energy-recommendation');
-            
-            const states = {
-                1: { title: "1/5 (Brak energii)", desc: "Odpocznij! Zrób ciepłą herbatę, włącz drama K-Drama lub posłuchaj muzyki." },
-                2: { title: "2/5 (Niski)", desc: "Zrób szybką przekąskę w Airfryerze i przejrzyj 3 fiszki z polskiego lub z prawka." },
-                3: { title: "3/5 (Umiarkowany)", desc: "Stabilne tempo. Dobry moment na krótki blok nauki lub jazdę próbną online." },
-                4: { title: "4/5 (Wysoki)", desc: "Świetna forma! Przerób ciężejsze zadanie z matematyki." },
-                5: { title: "5/5 (Pełna moc ✨)", desc: "Rozwalasz dziś system! Zaplanuj manicure lub rozwiąż arkusz maturalny!" }
-            };
+        // German Prompts
+        const germanPrompts = [
+            { text: "Opisz swój ulubiony sposób spędzania wolnego czasu po szkole i wyjaśnij, dlaczego odpoczynek jest ważny przed maturą.", cat: "Materiały i Czas Wolny" },
+            { text: "Przedstaw zalety i wady uczenia się w grupie w porównaniu do samodzielnej nauki w domu.", cat: "Edukacja / Szkoła" },
+            { text: "Opisz przygotowania do imprezy szkolnej (np. Studniówka) i swoją rolę w organizacji.", cat: "Życie Społeczne" }
+        ];
 
-            textEl.innerText = states[val].title;
-            recEl.innerHTML = `<i class="fa-solid fa-circle-info text-roseGold-400 shrink-0"></i><span>${states[val].desc}</span>`;
+        function generateGermanPrompt() {
+            const p = germanPrompts[Math.floor(Math.random() * germanPrompts.length)];
+            document.getElementById('germanPromptText').textContent = `"${p.text}"`;
+            document.getElementById('germanPromptCategory').textContent = `Kategoria: ${p.cat}`;
+            playBeep(600, 0.1);
         }
 
-        /* POMODORO LOGIC */
-        function startPomodoro() {
-            if(pomoInterval) return;
-            pomoInterval = setInterval(() => {
-                if(pomoTime > 0) {
-                    pomoTime--;
-                    updatePomoDisplay();
-                } else {
-                    clearInterval(pomoInterval);
-                    pomoInterval = null;
-                    alert("Czas na przerwę! ☕ ✨");
+        // English Prompts
+        const englishPrompts = [
+            { text: "Write an article for a student magazine discussing the impact of artificial intelligence tools on modern high school study habits.", type: "Article (200-250 words)" },
+            { text: "Write an essay presenting arguments for and against taking a gap year before entering university in Poland.", type: "Essay (For & Against)" },
+            { text: "Write a formal letter to a university admissions officer inquiring about E-Business degree requirements.", type: "Formal Letter" }
+        ];
+
+        function generateEnglishPrompt() {
+            const p = englishPrompts[Math.floor(Math.random() * englishPrompts.length)];
+            document.getElementById('englishPromptText').textContent = `"${p.text}"`;
+            document.getElementById('englishPromptType').textContent = `Type: ${p.type}`;
+            playBeep(700, 0.1);
+        }
+
+        // Flashcards Logic
+        let currentFcIndex = 0;
+        let isFcFlipped = false;
+
+        function renderFlashcard() {
+            if(appState.flashcards.length === 0) return;
+            const card = appState.flashcards[currentFcIndex];
+            document.getElementById('fcCategoryBadge').textContent = card.cat;
+            document.getElementById('fcCounter').textContent = `Karta ${currentFcIndex + 1} / ${appState.flashcards.length}`;
+            document.getElementById('fcContentText').textContent = isFcFlipped ? card.back : card.front;
+            document.getElementById('fcSideLabel font-bold').textContent = isFcFlipped ? 'TYŁ (ODPOWIEDŹ)' : 'PRZÓD (KLIKNIJ ABY OBRÓCIĆ)';
+        }
+
+        function flipFlashcard() {
+            isFcFlipped = !isFcFlipped;
+            renderFlashcard();
+            playBeep(400, 0.05);
+        }
+
+        function rateFlashcard(rating) {
+            isFcFlipped = false;
+            currentFcIndex = (currentFcIndex + 1) % appState.flashcards.length;
+            renderFlashcard();
+            playBeep(rating === 'easy' ? 800 : 400, 0.1);
+        }
+
+        function handleAddFlashcard(e) {
+            e.preventDefault();
+            const cat = document.getElementById('fcCategory').value;
+            const front = document.getElementById('fcFront').value;
+            const back = document.getElementById('fcBack').value;
+
+            appState.flashcards.push({ id: Date.now(), cat, front, back });
+            saveState();
+            document.getElementById('addFlashcardForm').reset();
+            renderFlashcard();
+            playBeep(600, 0.1);
+        }
+
+        // Admissions Calculator
+        function calculateMaturaScore() {
+            const mathP = parseFloat(document.getElementById('matMathP').value) || 0;
+            const mathR = parseFloat(document.getElementById('matMathR').value) || 0;
+            const engR = parseFloat(document.getElementById('matEngR').value) || 0;
+            const extraR = parseFloat(document.getElementById('matExtraR').value) || 0;
+
+            // PG Score Formula approximation (Math R * 0.4 + Eng R * 0.2 + Extra R * 0.4)
+            const scorePG = Math.round((mathR * 0.4) + (engR * 0.2) + (extraR * 0.4));
+            document.getElementById('scorePG').textContent = `${scorePG} pkt`;
+            document.getElementById('statusPG').textContent = scorePG >= 75 ? ' Wysoka szansa dostania się!' : ' Warto poćwiczyć rozszerzenia';
+
+            // UG Score Formula (Math P * 0.4 + Math R * 0.6 + Eng R * 0.4)
+            const scoreUG = Math.round((mathP * 0.2) + (mathR * 0.5) + (engR * 0.3));
+            document.getElementById('scoreUG').textContent = `${scoreUG} pkt`;
+            document.getElementById('statusUG').textContent = scoreUG >= 65 ? ' Powyżej progu!' : ' Kontynuuj naukę';
+        }
+
+        // --- AIRFRYER STUDIO LOGIC ---
+        function renderRecipes() {
+            const container = document.getElementById('recipeContainer');
+            container.innerHTML = '';
+
+            appState.recipes.forEach(r => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-4 rounded-xl border border-white/5 space-y-2 flex flex-col justify-between';
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-bold text-white text-sm">${r.title}</h4>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-emeraldAcc/20 text-emeraldAcc font-bold">${r.time} min</span>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Składniki: ${r.ing}</p>
+                    </div>
+                    <div class="pt-2 border-t border-white/5 flex justify-between items-center text-xs">
+                        <span class="text-roseGold font-mono">${r.temp}°C Airfryer</span>
+                        <button onclick="addIngredientsToShop('${r.ing}')" class="text-[11px] text-emeraldAcc hover:underline font-semibold">
+                            + Do Zakupów
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            document.getElementById('recipeCount').textContent = `Znaleziono: ${appState.recipes.length}`;
+        }
+
+        function filterRecipes() {
+            const timeVal = document.getElementById('recipeTimeFilter').value;
+            const ingVal = document.getElementById('recipeIngFilter').value;
+
+            let filtered = DEFAULT_STATE.recipes;
+            if(timeVal !== 'all') {
+                filtered = filtered.filter(r => r.time <= parseInt(timeVal));
+            }
+            if(ingVal !== 'all') {
+                filtered = filtered.filter(r => r.tag === ingVal);
+            }
+            appState.recipes = filtered;
+            renderRecipes();
+        }
+
+        function convertOvenToAirfryer() {
+            const oTemp = parseFloat(document.getElementById('ovenTemp').value) || 200;
+            const oTime = parseFloat(document.getElementById('ovenTime').value) || 20;
+
+            const aTemp = Math.round(oTemp * 0.9);
+            const aTime = Math.round(oTime * 0.8);
+
+            document.getElementById('airfryerResult').textContent = `${aTemp}°C przez ${aTime} min`;
+        }
+
+        function handleAddCustomRecipe(e) {
+            e.preventDefault();
+            const title = document.getElementById('crTitle').value;
+            const time = parseInt(document.getElementById('crTime').value);
+            const temp = parseInt(document.getElementById('crTemp').value);
+            const ing = document.getElementById('crIngredients').value;
+
+            appState.recipes.unshift({ id: Date.now(), title, time, temp, ing, tag: 'custom' });
+            saveState();
+            renderRecipes();
+            addIngredientsToShop(ing);
+            document.getElementById('customRecipeForm').reset();
+            playBeep(600, 0.1);
+        }
+
+        function addIngredientsToShop(ingString) {
+            const items = ingString.split(',');
+            items.forEach(itemStr => {
+                const clean = itemStr.trim();
+                if(clean) {
+                    appState.shopping.push({ id: Date.now() + Math.random(), name: clean, category: 'Food', checked: false });
+                }
+            });
+            saveState();
+            renderShopping();
+            playBeep(750, 0.1);
+        }
+
+        let cleanInterval = null;
+        function startCleanTimer(mins) {
+            clearInterval(cleanInterval);
+            let sec = mins * 60;
+            cleanInterval = setInterval(() => {
+                sec--;
+                const m = Math.floor(sec/60);
+                const s = sec % 60;
+                document.getElementById('cleanTimerDisplay').textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+                if(sec <= 0) {
+                    clearInterval(cleanInterval);
+                    document.getElementById('cleanTimerDisplay').textContent = 'Czyszczenie zakończone! 🧼';
+                    playBeep(900, 0.3);
                 }
             }, 1000);
         }
 
-        function pausePomodoro() {
-            clearInterval(pomoInterval);
-            pomoInterval = null;
+        // --- MANICURE ATELIER LOGIC ---
+        let cureInterval = null;
+        function startCuringTimer(sec, label) {
+            clearInterval(cureInterval);
+            document.getElementById('curingBrandLabel').textContent = label;
+            let current = sec;
+            cureInterval = setInterval(() => {
+                current--;
+                document.getElementById('curingTimerDisplay').textContent = `${current}s`;
+                if(current <= 0) {
+                    clearInterval(cureInterval);
+                    document.getElementById('curingTimerDisplay').textContent = 'Utwardzono! ✨';
+                    playBeep(1000, 0.2);
+                }
+            }, 1000);
+        }
+
+        function setNailEffect(effect) {
+            const nail = document.getElementById('nailCanvas');
+            const label = document.getElementById('nailCanvasLabel');
+            const desc = document.getElementById('nailDesc');
+
+            if(effect === 'cateye') {
+                nail.className = "w-24 h-48 rounded-t-full rounded-b-xl border-2 border-white/20 shadow-2xl relative transition-all duration-500 flex items-center justify-center overflow-hidden bg-gradient-to-b from-purple-900 via-pink-900 to-black";
+                label.textContent = "Cat-Eye 9D";
+                desc.textContent = "Magnes z drobiną różowego złota tworzy trójwymiarową smugę świetlną.";
+            } else if(effect === 'chrome') {
+                nail.className = "w-24 h-48 rounded-t-full rounded-b-xl border-2 border-white/20 shadow-2xl relative transition-all duration-500 flex items-center justify-center overflow-hidden bg-gradient-to-tr from-gray-300 via-white to-gray-500";
+                label.textContent = "Mirror Chrome";
+                desc.textContent = "Lustrzany pyłek wcierany w Top No Wipe dla idealnego błysku tafli.";
+            } else if(effect === 'french3d') {
+                nail.className = "w-24 h-48 rounded-t-full rounded-b-xl border-2 border-white/20 shadow-2xl relative transition-all duration-500 flex items-center justify-center overflow-hidden bg-roseGold/20";
+                label.textContent = "French 3D Floral";
+                desc.textContent = "Elegancja z wypukłym floralnym akcentem 3D utwardzanym w żelu.";
+            }
+            playBeep(500, 0.05);
+        }
+
+        // --- FASHION & BAG LOGIC ---
+        function testBagFit() {
+            const w = parseFloat(document.getElementById('bagWidth').value) || 0;
+            const h = parseFloat(document.getElementById('bagHeight').value) || 0;
+            const d = parseFloat(document.getElementById('bagDepth').value) || 0;
+
+            const box = document.getElementById('bagTestResultBox');
+            const status = document.getElementById('bagResultStatus');
+            const list = document.getElementById('bagDetailsList');
+
+            const a4Fit = w >= 34 && h >= 26;
+            const extraFit = d >= 10;
+
+            if(a4Fit && extraFit) {
+                box.className = "glass-card p-4 rounded-xl border border-emeraldAcc/30 space-y-2";
+                status.className = "flex items-center space-x-2 text-emeraldAcc font-bold text-sm";
+                status.innerHTML = `<i class="fa-solid fa-circle-check"></i><span>Idealna Torebka A4 Shopper!</span>`;
+                list.innerHTML = `
+                    <li>Teczka A4 (31 x 22 cm): Zmieści się bez zaginania brzegów</li>
+                    <li>Butelka wody 0.75L + Lunchbox: Zmieści się bez problemu</li>
+                `;
+            } else if(a4Fit && !extraFit) {
+                box.className = "glass-card p-4 rounded-xl border border-yellow-500/30 space-y-2";
+                status.className = "flex items-center space-x-2 text-yellow-400 font-bold text-sm";
+                status.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i><span>Płaska torebka A4</span>`;
+                list.innerHTML = `
+                    <li>Teczka A4: Zmieści się</li>
+                    <li>Lunchbox / Woda: Może być ciaśniej (głębokość < 10cm)</li>
+                `;
+            } else {
+                box.className = "glass-card p-4 rounded-xl border border-red-500/30 space-y-2";
+                status.className = "flex items-center space-x-2 text-red-400 font-bold text-sm";
+                status.innerHTML = `<i class="fa-solid fa-circle-xmark"></i><span>Za mała na format A4</span>`;
+                list.innerHTML = `
+                    <li>Teczka A4 nie zmieści się swobodnie. Wymagane min. 34 x 26 cm.</li>
+                `;
+            }
+        }
+
+        function saveDressPlan() {
+            playBeep(600, 0.1);
+        }
+
+        // --- DRAMA & CHILL LOGIC ---
+        function renderDramas() {
+            const container = document.getElementById('dramaContainer');
+            container.innerHTML = '';
+
+            appState.dramas.forEach(d => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-4 rounded-xl border border-white/5 space-y-3';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-white text-base">${d.title}</h4>
+                            <span class="text-xs text-roseGold">${d.genre}</span>
+                        </div>
+                        <span class="text-yellow-400 text-xs font-bold"><i class="fa-solid fa-star"></i> ${d.rating}</span>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Postęp odcinków</span>
+                            <span>${d.ep} / ${d.totalEp}</span>
+                        </div>
+                        <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                            <div class="bg-gradient-to-r from-roseGold to-emeraldAcc h-full" style="width: ${(d.ep/d.totalEp)*100}%"></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center pt-2">
+                        <p class="text-xs text-gray-400 italic">"${d.notes}"</p>
+                        <button onclick="incrementDramaEp(${d.id})" class="px-3 py-1 rounded-lg bg-roseGold/20 text-roseGold font-semibold text-xs border border-roseGold/30 hover:bg-roseGold hover:text-black">
+                            +1 Odc
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function incrementDramaEp(id) {
+            const drama = appState.dramas.find(d => d.id === id);
+            if(drama && drama.ep < drama.totalEp) {
+                drama.ep++;
+                saveState();
+                renderDramas();
+                renderDashboard();
+                playBeep(650, 0.1);
+            }
+        }
+
+        function saveStreamNotes() {
+            appState.streamNotes = document.getElementById('rpStreamNotes').value;
+            appState.ssoNotes = document.getElementById('ssoQuestNotes').value;
+            saveState();
+        }
+
+        // Ambient Synthesizer Controls
+        let ambNodes = {};
+
+        function toggleAmbient(type) {
+            initAudio();
+            const btn = document.getElementById(`amb${type.charAt(0).toUpperCase() + type.slice(1)}Btn`);
+            const statusSpan = btn.querySelector('span:last-child');
+
+            if(ambNodes[type]) {
+                ambNodes[type].stop();
+                delete ambNodes[type];
+                statusSpan.textContent = 'OFF';
+                btn.classList.remove('border-emeraldAcc', 'bg-emeraldAcc/10');
+            } else {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                if(type === 'rain') osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+                if(type === 'brown') osc.frequency.setValueAtTime(60, audioCtx.currentTime);
+                if(type === 'cafe') osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+
+                gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                ambNodes[type] = osc;
+
+                statusSpan.textContent = 'PLAYING';
+                btn.classList.add('border-emeraldAcc', 'bg-emeraldAcc/10');
+            }
+        }
+
+        // Pomodoro Timer
+        let pomoInterval = null;
+        let pomoSec = 25 * 60;
+        let isPomoRunning = false;
+
+        function togglePomodoro() {
+            const btn = document.getElementById('pomoStartBtn');
+            if(isPomoRunning) {
+                clearInterval(pomoInterval);
+                isPomoRunning = false;
+                btn.textContent = 'Start Focus';
+            } else {
+                isPomoRunning = true;
+                btn.textContent = 'Pauza';
+                pomoInterval = setInterval(() => {
+                    pomoSec--;
+                    const m = Math.floor(pomoSec/60);
+                    const s = pomoSec % 60;
+                    document.getElementById('pomoDisplay').textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+                    if(pomoSec <= 0) {
+                        clearInterval(pomoInterval);
+                        isPomoRunning = false;
+                        playBeep(880, 0.5);
+                    }
+                }, 1000);
+            }
         }
 
         function resetPomodoro() {
-            pausePomodoro();
-            pomoTime = 25 * 60;
-            updatePomoDisplay();
+            clearInterval(pomoInterval);
+            isPomoRunning = false;
+            pomoSec = 25 * 60;
+            document.getElementById('pomoDisplay').textContent = '25:00';
+            document.getElementById('pomoStartBtn').textContent = 'Start Focus';
         }
 
-        function updatePomoDisplay() {
-            const mins = Math.floor(pomoTime / 60);
-            const secs = pomoTime % 60;
-            document.getElementById('pomo-timer-display').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        /* WEB AUDIO AMBIENT SOUND GENERATOR */
-        function toggleAudioSynth(type) {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-
-            if (activeNodes[type]) {
-                activeNodes[type].stop();
-                delete activeNodes[type];
-                document.getElementById(`audio-btn-${type}`).innerText = 'Connect / Play';
-                document.getElementById(`audio-btn-${type}`).classList.remove('bg-roseGold-500', 'text-dark-900');
-                return;
-            }
-
-            // Create noise buffer
-            const bufferSize = audioCtx.sampleRate * 2;
-            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-            const output = buffer.getChannelData(0);
-
-            for (let i = 0; i < bufferSize; i++) {
-                output[i] = Math.random() * 2 - 1;
-            }
-
-            const whiteNoise = audioCtx.createBufferSource();
-            whiteNoise.buffer = buffer;
-            whiteNoise.loop = true;
-
-            const filter = audioCtx.createBiquadFilter();
-            if (type === 'rain') {
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(800, audioCtx.currentTime);
-            } else if (type === 'cafe') {
-                filter.type = 'bandpass';
-                filter.frequency.setValueAtTime(400, audioCtx.currentTime);
-            } else {
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(300, audioCtx.currentTime);
-            }
-
-            const gain = audioCtx.createGain();
-            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-
-            whiteNoise.connect(filter);
-            filter.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            whiteNoise.start();
-            activeNodes[type] = whiteNoise;
-
-            document.getElementById(`audio-btn-${type}`).innerText = 'Playing (Stop)';
-            document.getElementById(`audio-btn-${type}`).classList.add('bg-roseGold-500', 'text-dark-900');
-        }
-
-        /* MANICURE / NAILS LOGIC */
-        function saveNailSet(e) {
-            e.preventDefault();
-            const brand = document.getElementById('nail-brand').value;
-            const method = document.getElementById('nail-method').value;
-            const design = document.getElementById('nail-design').value;
-            const colors = document.getElementById('nail-colors').value;
-
-            const today = new Date().toISOString().split('T')[0];
-            appData.nailsHistory.unshift({ id: Date.now(), date: today, brand, method, design, colors });
-            saveToStorage();
-            renderNailsHistory();
-            e.target.reset();
-        }
-
-        function renderNailsHistory() {
-            const container = document.getElementById('nails-history-list');
-            if(!container) return;
-            container.innerHTML = '';
-
-            appData.nailsHistory.forEach(n => {
-                const setDate = new Date(n.date);
-                const now = new Date();
-                const daysAgo = Math.floor((now - setDate) / (1000 * 60 * 60 * 24));
-
-                const div = document.createElement('div');
-                div.className = "p-4 rounded-xl bg-dark-900 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs";
-                div.innerHTML = `
-                    <div class="space-y-1">
-                        <div class="flex items-center gap-2">
-                            <span class="font-bold text-roseGold-400">${escapeHtml(n.brand)}</span>
-                            <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-300">${escapeHtml(n.method)}</span>
-                        </div>
-                        <div class="text-white font-medium">${escapeHtml(n.design)}</div>
-                        <div class="text-slate-400 text-[11px]">Paleta: ${escapeHtml(n.colors || 'Standard')}</div>
-                    </div>
-                    <div class="flex items-center gap-3 self-end sm:self-center">
-                        <div class="text-right">
-                            <div class="text-[10px] text-slate-500">Wiek stylizacji</div>
-                            <div class="font-mono font-bold ${daysAgo > 21 ? 'text-roseGold-400' : 'text-emeraldGlow-400'}">${daysAgo} dni temu</div>
-                        </div>
-                        <button onclick="deleteNailSet(${n.id})" class="text-slate-500 hover:text-roseGold-400 p-1"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function deleteNailSet(id) {
-            appData.nailsHistory = appData.nailsHistory.filter(n => n.id !== id);
-            saveToStorage();
-            renderNailsHistory();
-        }
-
-        /* DRIVING LICENSE LOGIC */
-        function renderDrivingCard() {
-            const item = drivingQuizData[currentDrivingIdx];
-            document.getElementById('driving-q-text').innerText = item.q;
-            document.getElementById('driving-a-text').innerText = item.a;
-            document.getElementById('driving-a-text').classList.add('hidden');
-        }
-
-        function flipDrivingCard() {
-            document.getElementById('driving-a-text').classList.toggle('hidden');
-        }
-
-        function nextDrivingCard() {
-            currentDrivingIdx = (currentDrivingIdx + 1) % drivingQuizData.length;
-            renderDrivingCard();
-        }
-
-        function addDrivingLesson(e) {
-            e.preventDefault();
-            const hours = parseInt(document.getElementById('lesson-hours').value) || 1;
-            const route = document.getElementById('lesson-route').value;
-            const date = new Date().toISOString().split('T')[0];
-
-            appData.drivingLessons.unshift({ id: Date.now(), hours, route, date });
-            saveToStorage();
-            renderDrivingLessons();
-            e.target.reset();
-        }
-
-        function renderDrivingLessons() {
-            const container = document.getElementById('driving-lessons-list');
-            if(!container) return;
-            container.innerHTML = '';
-            let totalH = 0;
-
-            appData.drivingLessons.forEach(l => {
-                totalH += l.hours;
-                const div = document.createElement('div');
-                div.className = "p-3 rounded-xl bg-dark-900 border border-slate-800 flex items-center justify-between text-xs";
-                div.innerHTML = `
-                    <div>
-                        <span class="font-bold text-white">${l.hours}h</span> - <span class="text-slate-300">${escapeHtml(l.route)}</span>
-                        <div class="text-[10px] text-slate-500">${l.date}</div>
-                    </div>
-                    <button onclick="deleteDrivingLesson(${l.id})" class="text-slate-500 hover:text-roseGold-400 p-1"><i class="fa-solid fa-trash"></i></button>
-                `;
-                container.appendChild(div);
-            });
-
-            document.getElementById('driving-hours-total').innerText = `${totalH} / 30h wyjeżdżone`;
-        }
-
-        function deleteDrivingLesson(id) {
-            appData.drivingLessons = appData.drivingLessons.filter(l => l.id !== id);
-            saveToStorage();
-            renderDrivingLessons();
-        }
-
-        /* TO-DO LIST */
-        function renderTodos() {
-            const container = document.getElementById('todo-list');
-            container.innerHTML = '';
-            let done = 0;
-
-            appData.todos.forEach(t => {
-                if(t.completed) done++;
-                const div = document.createElement('div');
-                div.className = `flex items-center justify-between p-2.5 rounded-xl border ${t.completed ? 'bg-dark-900/40 border-slate-800/60 opacity-60' : 'bg-dark-900 border-slate-800'}`;
-                div.innerHTML = `
-                    <div class="flex items-center gap-2.5 overflow-hidden">
-                        <button onclick="toggleTodo(${t.id})" class="w-4 h-4 rounded border ${t.completed ? 'bg-roseGold-500 border-roseGold-500 text-dark-900' : 'border-slate-600'} flex items-center justify-center shrink-0 text-[10px]">
-                            ${t.completed ? '<i class="fa-solid fa-check"></i>' : ''}
-                        </button>
-                        <span class="text-xs ${t.completed ? 'line-through text-slate-500' : 'text-slate-200'} truncate">${escapeHtml(t.text)}</span>
-                    </div>
-                    <button onclick="deleteTodo(${t.id})" class="text-slate-500 hover:text-roseGold-400 text-xs p-1">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-            document.getElementById('todo-count').innerText = `${done} z ${appData.todos.length} gotowe`;
-        }
-
-        function addTodo(e) {
-            e.preventDefault();
-            const input = document.getElementById('todo-input');
-            const cat = document.getElementById('todo-category').value;
-            if(!input.value.trim()) return;
-            appData.todos.unshift({ id: Date.now(), text: input.value.trim(), category: cat, completed: false });
-            input.value = '';
-            saveToStorage();
-            renderTodos();
-        }
-
-        function toggleTodo(id) {
-            appData.todos = appData.todos.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
-            saveToStorage();
-            renderTodos();
-        }
-
-        function deleteTodo(id) {
-            appData.todos = appData.todos.filter(t => t.id !== id);
-            saveToStorage();
-            renderTodos();
-        }
-
-        /* HABITS TRACKER */
-        function renderHabits() {
-            const container = document.getElementById('daily-habits-grid');
-            container.innerHTML = '';
-            appData.habits.forEach(h => {
-                const btn = document.createElement('button');
-                btn.onclick = () => toggleHabit(h.id);
-                btn.className = `p-2.5 rounded-xl border flex items-center gap-2 text-left transition-all ${h.done ? 'bg-roseGold-500/10 border-roseGold-500/30 text-roseGold-400 font-semibold' : 'bg-dark-900 border-slate-800 text-slate-400'}`;
-                btn.innerHTML = `<i class="fa-solid ${h.done ? 'fa-circle-check text-roseGold-400' : 'fa-circle text-slate-600'} text-xs"></i><span>${h.title}</span>`;
-                container.appendChild(btn);
-            });
-        }
-
-        function toggleHabit(id) {
-            appData.habits = appData.habits.map(h => h.id === id ? { ...h, done: !h.done } : h);
-            saveToStorage();
-            renderHabits();
-        }
-
-        /* FLASHCARDS */
-        function renderFlashcard() {
-            if(!appData.flashcards || appData.flashcards.length === 0) return;
-            const current = appData.flashcards[currentCardIdx];
-            document.getElementById('flashcard-subject-tag').innerText = current.subject;
-            document.getElementById('flashcard-front-text').innerText = current.q;
-            document.getElementById('flashcard-back-text').innerText = current.a;
-            document.getElementById('flashcard-back-text').classList.add('hidden');
-        }
-
-        function flipCurrentCard() {
-            document.getElementById('flashcard-back-text').classList.toggle('hidden');
-        }
-
-        function rateFlashcard(type) {
-            currentCardIdx = (currentCardIdx + 1) % appData.flashcards.length;
-            renderFlashcard();
-        }
-
-        /* WATER TRACKER */
-        function renderWaterGlasses() {
-            const container = document.getElementById('water-glasses-container');
-            container.innerHTML = '';
-            for(let i = 1; i <= 8; i++) {
-                const btn = document.createElement('button');
-                btn.onclick = () => { appData.waterGlasses = i; saveToStorage(); renderWaterGlasses(); };
-                const isActive = i <= appData.waterGlasses;
-                btn.className = `h-8 rounded-lg flex items-center justify-center text-xs ${isActive ? 'bg-emeraldGlow-500/20 border border-emeraldGlow-500/40 text-emeraldGlow-400' : 'bg-dark-900 border border-slate-800 text-slate-600'}`;
-                btn.innerHTML = `<i class="fa-solid fa-glass-water"></i>`;
-                container.appendChild(btn);
-            }
-            document.getElementById('water-count-text').innerText = `${appData.waterGlasses} / 8 szklanek`;
-        }
-
-        function resetWater() {
-            appData.waterGlasses = 0;
-            saveToStorage();
-            renderWaterGlasses();
-        }
-
-        /* MATURA CHECKLISTS & CALCULATOR */
-        function renderMaturaChecklists() {
-            renderSubjectChecklist('math', appData.maturaChecklist.math, 'math-checklist', 'math-progress-bar', 'math-progress-text');
-            renderSubjectChecklist('pol', appData.maturaChecklist.pol, 'pol-checklist', 'pol-progress-bar', 'pol-progress-text');
-            renderSubjectChecklist('eng', appData.maturaChecklist.eng, 'eng-checklist', 'eng-progress-bar', 'eng-progress-text');
-        }
-
-        function renderSubjectChecklist(key, list, cId, bId, tId) {
-            const c = document.getElementById(cId);
-            c.innerHTML = '';
-            let done = 0;
-            list.forEach(item => {
-                if(item.done) done++;
-                const div = document.createElement('div');
-                div.className = "flex items-center gap-2 text-slate-300";
-                div.innerHTML = `
-                    <button onclick="toggleMaturaCheck('${key}', '${item.id}')" class="w-3.5 h-3.5 rounded border ${item.done ? 'bg-roseGold-500 border-roseGold-500 text-dark-900' : 'border-slate-600'} flex items-center justify-center text-[9px] shrink-0">
-                        ${item.done ? '<i class="fa-solid fa-check"></i>' : ''}
-                    </button>
-                    <span class="${item.done ? 'line-through text-slate-500' : ''}">${escapeHtml(item.title)}</span>
-                `;
-                c.appendChild(div);
-            });
-            const pct = Math.round((done / list.length) * 100) || 0;
-            document.getElementById(bId).style.width = `${pct}%`;
-            document.getElementById(tId).innerText = `${pct}%`;
-        }
-
-        function toggleMaturaCheck(subject, id) {
-            appData.maturaChecklist[subject] = appData.maturaChecklist[subject].map(i => i.id === id ? { ...i, done: !i.done } : i);
-            saveToStorage();
-            renderMaturaChecklists();
-        }
-
-        function calculateUniPoints() {
-            const mathP = parseFloat(document.getElementById('calc-math-p').value) || 0;
-            const mathR = parseFloat(document.getElementById('calc-math-r').value) || 0;
-            const engP = parseFloat(document.getElementById('calc-eng-p').value) || 0;
-            const engR = parseFloat(document.getElementById('calc-eng-r').value) || 0;
-            const polP = parseFloat(document.getElementById('calc-pol-p').value) || 0;
-            const polR = parseFloat(document.getElementById('calc-pol-r').value) || 0;
-
-            const mathScore = Math.max(mathP * 0.4, mathR * 1.0);
-            const engScore = Math.max(engP * 0.4, engR * 1.0);
-            const polScore = Math.max(polP * 0.4, polR * 1.0);
-
-            const total = Math.round(mathScore + engScore + polScore);
-            document.getElementById('uni-total-points').innerText = `${total} pkt`;
-        }
-
-        /* FIT KITCHEN RECIPES */
-        function renderRecipes(filter) {
-            const container = document.getElementById('recipes-grid');
-            container.innerHTML = '';
-            const list = filter === 'all' ? recipesList : recipesList.filter(r => r.tag === filter);
-
-            list.forEach(r => {
-                const card = document.createElement('div');
-                card.className = "glass-card glass-card-hover rounded-2xl p-5 border border-slate-800 flex flex-col justify-between";
-                card.innerHTML = `
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20">${r.category}</span>
-                            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock"></i> ${r.time}</span>
-                        </div>
-                        <h4 class="font-bold text-white text-base mb-1.5">${r.title}</h4>
-                        <p class="text-xs text-slate-300 leading-relaxed mb-3">${r.desc}</p>
-                    </div>
-                    <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                        <span class="text-[10px] text-emeraldGlow-400"><i class="fa-solid fa-shield"></i> Bez twarogu/tuńczyka</span>
-                        <button onclick="addIngredientsToShopping(${r.id})" class="text-xs text-roseGold-400 hover:underline flex items-center gap-1">
-                            <i class="fa-solid fa-cart-plus"></i> Dodaj składniki
-                        </button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function filterRecipes(cat) {
-            document.querySelectorAll('.recipe-filter-btn').forEach(b => {
-                b.classList.remove('bg-roseGold-500', 'text-dark-900');
-                b.classList.add('bg-dark-800', 'text-slate-400');
-            });
-            event.target.classList.remove('bg-dark-800', 'text-slate-400');
-            event.target.classList.add('bg-roseGold-500', 'text-dark-900');
-            renderRecipes(cat);
-        }
-
-        function generateRandomMeal() {
-            const idx = Math.floor(Math.random() * recipesList.length);
-            const r = recipesList[idx];
-            document.getElementById('meal-res-title').innerText = `${r.title} 🥣`;
-            document.getElementById('meal-res-desc').innerText = r.desc;
-        }
-
-        function addCurrentMealToShopping() {
-            const currentTitle = document.getElementById('meal-res-title').innerText;
-            const recipe = recipesList.find(r => currentTitle.includes(r.title)) || recipesList[0];
-            addIngredientsToShopping(recipe.id);
-        }
-
-        function addIngredientsToShopping(recipeId) {
-            const recipe = recipesList.find(r => r.id === recipeId);
-            if(!recipe) return;
-            recipe.ingredients.forEach(ing => {
-                appData.shopping.push({ id: Date.now() + Math.random(), text: ing, category: 'Spożywcze', done: false });
-            });
-            saveToStorage();
-            renderShopping();
-            alert(`Dodano składniki (${recipe.title}) do Listy Zakupów! 🛒`);
-        }
-
-        /* STYLE & WISHLIST */
-        function renderWishlist() {
-            const container = document.getElementById('wishlist-grid');
-            container.innerHTML = '';
-            const filterColor = document.getElementById('wishlist-color-filter')?.value || 'all';
-
-            const filtered = filterColor === 'all' ? appData.wishlist : appData.wishlist.filter(w => w.color === filterColor);
-
-            filtered.forEach(item => {
-                const card = document.createElement('div');
-                card.className = "glass-card rounded-2xl overflow-hidden border border-slate-800 flex flex-col justify-between group";
-                const imgTag = item.img ? `<img src="${item.img}" class="w-full h-44 object-cover group-hover:scale-105 transition-all duration-300" alt="${item.title}">` : `<div class="w-full h-44 bg-dark-900 flex items-center justify-center text-slate-700"><i class="fa-solid fa-shirt text-3xl"></i></div>`;
-
-                card.innerHTML = `
-                    <div>
-                        ${imgTag}
-                        <div class="p-4">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-semibold text-roseGold-400 bg-roseGold-500/10 border border-roseGold-500/20 px-2 py-0.5 rounded-full">${item.category}</span>
-                                <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">${item.color || 'Brak'}</span>
-                            </div>
-                            <h4 class="font-bold text-white text-sm mt-2">${escapeHtml(item.title)}</h4>
-                            <div class="text-xs font-mono text-emeraldGlow-400 mt-1">${item.price ? item.price + ' zł' : 'Brak ceny'}</div>
-                        </div>
-                    </div>
-                    <div class="px-4 pb-4 flex items-center justify-between gap-2">
-                        ${item.link ? `<a href="${item.link}" target="_blank" class="text-xs text-roseGold-400 hover:underline"><i class="fa-solid fa-link"></i> Otwórz link</a>` : '<span></span>'}
-                        <button onclick="deleteWishlistItem(${item.id})" class="text-xs text-slate-500 hover:text-roseGold-400 p-1"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function openAddWishlistModal() { document.getElementById('wishlist-modal').classList.remove('hidden'); }
-        function closeAddWishlistModal() { document.getElementById('wishlist-modal').classList.add('hidden'); }
-
-        function saveWishlistItem(e) {
-            e.preventDefault();
-            const title = document.getElementById('wish-title').value;
-            const category = document.getElementById('wish-category').value;
-            const color = document.getElementById('wish-color').value;
-            const price = document.getElementById('wish-price').value;
-            const link = document.getElementById('wish-link').value;
-            const img = document.getElementById('wish-img').value;
-
-            appData.wishlist.unshift({ id: Date.now(), title, category, color, price, link, img });
-            saveToStorage();
-            renderWishlist();
-            closeAddWishlistModal();
-        }
-
-        function deleteWishlistItem(id) {
-            appData.wishlist = appData.wishlist.filter(w => w.id !== id);
-            saveToStorage();
-            renderWishlist();
-        }
-
-        /* ASIAN DRAMAS WATCHLIST */
-        function renderDramas() {
-            const container = document.getElementById('dramas-list');
-            container.innerHTML = '';
-            appData.dramas.forEach(d => {
-                const div = document.createElement('div');
-                div.className = "p-3 rounded-xl bg-dark-900 border border-slate-800 flex items-center justify-between text-xs";
-                div.innerHTML = `
-                    <div class="space-y-0.5">
-                        <div class="font-bold text-white">${escapeHtml(d.title)}</div>
-                        <div class="text-[11px] text-slate-400">Odcinek: ${d.currentEp} / ${d.totalEps}</div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="updateDramaEp(${d.id}, 1)" class="px-2 py-1 rounded bg-dark-800 hover:bg-dark-700 text-roseGold-400 border border-slate-700 font-bold">+1 Ep</button>
-                        <button onclick="deleteDrama(${d.id})" class="text-slate-500 hover:text-roseGold-400 p-1"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function addDrama(e) {
-            e.preventDefault();
-            const title = document.getElementById('drama-title').value;
-            const totalEps = parseInt(document.getElementById('drama-total-eps').value) || 16;
-            appData.dramas.unshift({ id: Date.now(), title, currentEp: 1, totalEps, status: 'W trakcie' });
-            saveToStorage();
-            renderDramas();
-            document.getElementById('drama-title').value = '';
-            document.getElementById('drama-total-eps').value = '';
-        }
-
-        function updateDramaEp(id, delta) {
-            appData.dramas = appData.dramas.map(d => d.id === id ? { ...d, currentEp: Math.min(d.totalEps, d.currentEp + delta) } : d);
-            saveToStorage();
-            renderDramas();
-        }
-
-        function deleteDrama(id) {
-            appData.dramas = appData.dramas.filter(d => d.id !== id);
-            saveToStorage();
-            renderDramas();
-        }
-
-        /* GAMING & RP NOTES */
-        let rpTimeout;
-        function saveRpNotes() {
-            appData.rpNotes = document.getElementById('rp-notes-textarea').value;
-            document.getElementById('rp-notes-status').innerText = 'Zapisywanie...';
-            clearTimeout(rpTimeout);
-            rpTimeout = setTimeout(() => {
-                saveToStorage();
-                document.getElementById('rp-notes-status').innerHTML = '<i class="fa-solid fa-check"></i> Aktualne';
-            }, 500);
-        }
-
-        /* SMART SHOPPING LIST */
+        // --- BUDGET & SHOPPING LOGIC ---
         function renderShopping() {
-            const foodC = document.getElementById('shop-list-food');
-            const beautyC = document.getElementById('shop-list-beauty');
-            const otherC = document.getElementById('shop-list-other');
+            const container = document.getElementById('fullShoppingContainer');
+            const dashContainer = document.getElementById('dashShopList');
+            container.innerHTML = '';
+            dashContainer.innerHTML = '';
 
-            foodC.innerHTML = ''; beautyC.innerHTML = ''; otherC.innerHTML = '';
-
-            appData.shopping.forEach(s => {
-                const div = document.createElement('div');
-                div.className = "flex items-center justify-between p-2 rounded-lg bg-dark-900/90 border border-slate-800/80";
-                div.innerHTML = `
-                    <div class="flex items-center gap-2 overflow-hidden">
-                        <button onclick="toggleShopping(${s.id})" class="w-4 h-4 rounded border ${s.done ? 'bg-emeraldGlow-500 border-emeraldGlow-500 text-dark-900' : 'border-slate-600'} flex items-center justify-center text-[10px]">
-                            ${s.done ? '<i class="fa-solid fa-check"></i>' : ''}
+            appState.shopping.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'glass-card p-3 rounded-xl flex items-center justify-between border border-white/5';
+                el.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <button onclick="toggleShopItem(${item.id})" class="w-5 h-5 rounded-md border ${item.checked ? 'bg-emeraldAcc border-emeraldAcc text-black' : 'border-white/20'} flex items-center justify-center">
+                            <i class="fa-solid fa-check text-xs"></i>
                         </button>
-                        <span class="${s.done ? 'line-through text-slate-500' : 'text-slate-200'} truncate">${escapeHtml(s.text)}</span>
+                        <span class="text-xs ${item.checked ? 'line-through text-gray-500' : 'text-gray-200'}">${item.name}</span>
                     </div>
-                    <button onclick="deleteShopping(${s.id})" class="text-slate-500 hover:text-roseGold-400 text-xs p-1"><i class="fa-solid fa-trash"></i></button>
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-gray-400">${item.category}</span>
                 `;
+                container.appendChild(el);
 
-                if(s.category === 'Spożywcze') foodC.appendChild(div);
-                else if(s.category === 'Kosmetyki') beautyC.appendChild(div);
-                else otherC.appendChild(div);
+                if(!item.checked) {
+                    const dashItem = el.cloneNode(true);
+                    dashContainer.appendChild(dashItem);
+                }
             });
         }
 
-        function addShoppingItem(e) {
+        function handleAddShopItem(e) {
             e.preventDefault();
-            const input = document.getElementById('shop-input');
-            const cat = document.getElementById('shop-category').value;
-            if(!input.value.trim()) return;
-            appData.shopping.push({ id: Date.now(), text: input.value.trim(), category: cat, done: false });
-            input.value = '';
-            saveToStorage();
+            const name = document.getElementById('shopItemInput').value;
+            const category = document.getElementById('shopCategoryInput').value;
+            appState.shopping.push({ id: Date.now(), name, category, checked: false });
+            saveState();
+            renderShopping();
+            document.getElementById('shopItemInput').value = '';
+            playBeep(550, 0.08);
+        }
+
+        function toggleShopItem(id) {
+            const item = appState.shopping.find(s => s.id === id);
+            if(item) {
+                item.checked = !item.checked;
+                saveState();
+                renderShopping();
+            }
+        }
+
+        function clearShoppingList() {
+            appState.shopping = [];
+            saveState();
             renderShopping();
         }
 
-        function toggleShopping(id) {
-            appData.shopping = appData.shopping.map(s => s.id === id ? { ...s, done: !s.done } : s);
-            saveToStorage();
-            renderShopping();
+        function copyShoppingList() {
+            const text = appState.shopping.map(s => `${s.checked ? '[x]' : '[ ]'} ${s.name}`).join('\n');
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            playBeep(700, 0.1);
         }
 
-        function deleteShopping(id) {
-            appData.shopping = appData.shopping.filter(s => s.id !== id);
-            saveToStorage();
-            renderShopping();
+        function renderBills() {
+            const container = document.getElementById('billsList');
+            container.innerHTML = '';
+
+            appState.bills.forEach(b => {
+                const share = (b.amount / b.people).toFixed(2);
+                const el = document.createElement('div');
+                el.className = 'glass-card p-3 rounded-xl border border-white/5 flex justify-between items-center';
+                el.innerHTML = `
+                    <div>
+                        <h4 class="font-bold text-white text-xs">${b.name}</h4>
+                        <span class="text-[10px] text-gray-400">Całość: ${b.amount} PLN (${b.people} osoby)</span>
+                    </div>
+                    <span class="text-xs font-bold text-emeraldAcc">Twój udział: ${share} PLN</span>
+                `;
+                container.appendChild(el);
+            });
         }
 
-        function clearCompletedShopping() {
-            appData.shopping = appData.shopping.filter(s => !s.done);
-            saveToStorage();
-            renderShopping();
+        function handleAddBill(e) {
+            e.preventDefault();
+            const name = document.getElementById('billName').value;
+            const amount = parseFloat(document.getElementById('billAmount').value);
+            const people = parseInt(document.getElementById('billRoommates').value);
+
+            appState.bills.push({ id: Date.now(), name, amount, people });
+            saveState();
+            renderBills();
+            document.getElementById('billForm').reset();
+            playBeep(600, 0.1);
         }
 
-        /* FOCUS MODE */
-        function toggleFocusMode() {
-            document.body.classList.toggle('focus-mode');
-            const btn = document.getElementById('focus-toggle-btn');
-            btn.classList.toggle('bg-roseGold-500');
-            btn.classList.toggle('text-dark-900');
+        // --- BACKUP & RESET LOGIC ---
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", `LifeOS_Backup_${new Date().toISOString().slice(0,10)}.json`);
+            dlAnchorElem.click();
         }
 
-        function escapeHtml(str) {
-            return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") : '';
+        function resetAllData() {
+            appState = DEFAULT_STATE;
+            saveState();
+            location.reload();
         }
     </script>
 </body>
