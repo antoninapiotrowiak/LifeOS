@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="pl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeOS: My Space ✨</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Plus Jakarta Sans & Playfair Display) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0B0D12',
+                            800: '#131722',
+                            700: '#1D2333',
+                            600: '#2A334A'
+                        },
+                        roseGold: {
+                            400: '#F4B5B5',
+                            500: '#E89898',
+                            600: '#D67B7B',
+                        },
+                        emeraldGlow: {
+                            400: '#5EEAD4',
+                            500: '#14B8A6',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0D12;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2A334A;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E89898;
+        }
+        
+        .glass-card {
+            background: rgba(19, 23, 34, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        
+        .glass-card-hover:hover {
+            border-color: rgba(232, 152, 152, 0.3);
+            box-shadow: 0 10px 30px -10px rgba(232, 152, 152, 0.15);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #F4B5B5 0%, #E89898 50%, #5EEAD4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-border {
+            position: relative;
+        }
+        .gradient-border::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(244,181,181,0.4), rgba(94,234,212,0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-slate-200 font-sans min-h-screen flex flex-col antialiased selection:bg-roseGold-500 selection:text-dark-900">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 bg-dark-900/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3.5 transition-all">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            
+            <!-- Logo & Greeting -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-roseGold-600 via-roseGold-400 to-emeraldGlow-400 p-[1px] flex items-center justify-center shadow-lg shadow-roseGold-500/10">
+                    <div class="w-full h-full bg-dark-900 rounded-[15px] flex items-center justify-center">
+                        <i class="fa-solid font-bold text-roseGold-400 fa-sparkles text-lg"></i>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-white tracking-tight flex items-center gap-2">
+                        LifeOS <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20">My Space</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 font-medium" id="current-date-display">Ładowanie daty...</p>
+                </div>
+            </div>
+
+            <!-- Matura Countdown Badge -->
+            <div class="hidden md:flex items-center gap-3 bg-dark-800/90 border border-slate-700/60 rounded-full px-4 py-1.5 text-xs shadow-inner">
+                <i class="fa-solid fa-graduation-cap text-roseGold-400"></i>
+                <span class="text-slate-300">Odliczanie do Matury 2027:</span>
+                <span id="matura-countdown" class="font-bold text-emeraldGlow-400 font-mono tracking-wide">-- dni</span>
+            </div>
+
+            <!-- Focus Mode Button & Mobile Nav Trigger -->
+            <div class="flex items-center gap-2">
+                <button id="focus-toggle-btn" onclick="toggleFocusMode()" class="flex items-center gap-2 text-xs font-semibold bg-dark-800 hover:bg-dark-700 text-slate-300 px-3.5 py-2 rounded-xl border border-slate-700/60 transition-all hover:text-roseGold-400">
+                    <i class="fa-solid fa-bullseye text-roseGold-400"></i>
+                    <span class="hidden sm:inline">Tryb Skupienia</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 lg:p-8 space-y-6">
+
+        <!-- Welcome Banner & Quick Controls -->
+        <section class="relative overflow-hidden rounded-3xl p-6 md:p-8 glass-card gradient-border">
+            <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-roseGold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-12 -top-12 w-64 h-64 bg-emeraldGlow-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20 mb-3">
+                        <i class="fa-solid fa-crown text-[10px]"></i> Twój Prywatny Kokpit
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-white font-serif tracking-wide">
+                        Witaj, <span class="gradient-text">Gwiazdo!</span> ✨
+                    </h2>
+                    <p class="text-sm text-slate-400 mt-1 max-w-xl leading-relaxed">
+                        Wszystko, czego potrzebujesz na dzisiaj – Matura, Air Fryer, lista zadań, notatki oraz marzenia w jednym miejscu.
+                    </p>
+                </div>
+
+                <!-- Daily Motivational Quote / Quick Stats -->
+                <div class="flex items-center gap-4 bg-dark-900/60 border border-slate-800 rounded-2xl p-3.5 max-w-md">
+                    <div class="w-10 h-10 rounded-xl bg-emeraldGlow-500/10 border border-emeraldGlow-500/20 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-fire text-emeraldGlow-400 text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-medium text-slate-400">Daily Goal & Streak</div>
+                        <div id="quote-display" class="text-xs font-semibold text-slate-200 mt-0.5 leading-snug">"Małe kroki każdego dnia robią różnicę."</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation Tabs -->
+        <nav class="flex items-center gap-2 border-b border-slate-800 pb-2 overflow-x-auto scrollbar-none">
+            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all bg-roseGold-500 text-dark-900 shadow-md shadow-roseGold-500/20">
+                <i class="fa-solid fa-grid-2"></i> Dashboard
+            </button>
+            <button onclick="switchTab('matura')" id="tab-matura" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all">
+                <i class="fa-solid fa-book-open"></i> Matura 2027
+            </button>
+            <button onclick="switchTab('recipes')" id="tab-recipes" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all">
+                <i class="fa-solid fa-utensils"></i> Air Fryer & Przepisy
+            </button>
+            <button onclick="switchTab('style')" id="tab-style" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all">
+                <i class="fa-solid fa-shirt"></i> Style & Studniówka
+            </button>
+            <button onclick="switchTab('notes')" id="tab-notes" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all">
+                <i class="fa-solid fa-note-sticky"></i> Brain Dump
+            </button>
+        </nav>
+
+        <!-- TAB CONTENT 1: DASHBOARD -->
+        <div id="content-dashboard" class="tab-content grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Column 1: Daily To-Do List -->
+            <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[520px]">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-roseGold-400"></i> Lista Zadania na Dziś
+                    </h3>
+                    <span id="todo-count" class="text-xs bg-slate-800 text-roseGold-400 font-medium px-2.5 py-1 rounded-full border border-slate-700">0 zrealizowane</span>
+                </div>
+
+                <!-- Add Task Form -->
+                <form onsubmit="addTodo(event)" class="flex items-center gap-2 mb-4">
+                    <input type="text" id="todo-input" placeholder="Co dziś robimy?" required class="flex-1 bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-roseGold-500 transition-all placeholder:text-slate-500">
+                    <select id="todo-category" class="bg-dark-900 border border-slate-700 text-xs text-slate-300 rounded-xl px-2.5 py-2 focus:outline-none focus:border-roseGold-500">
+                        <option value="Szkoła">Szkoła</option>
+                        <option value="Matura">Matura</option>
+                        <option value="Życie">Życie</option>
+                        <option value="Projekt">Projekt</option>
+                    </select>
+                    <button type="submit" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold px-3 py-2 rounded-xl text-xs transition-all">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </form>
+
+                <!-- Task List Container -->
+                <div id="todo-list" class="flex-1 overflow-y-auto space-y-2 pr-1">
+                    <!-- Dynamic To-Dos insert here -->
+                </div>
+            </div>
+
+            <!-- Column 2: Quick Matura Practice Flashcard -->
+            <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[520px]">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-brain text-emeraldGlow-400"></i> Szybka Powtórka (Fiszka)
+                    </h3>
+                    <span class="text-xs bg-emeraldGlow-500/10 text-emeraldGlow-400 border border-emeraldGlow-500/20 px-2 py-0.5 rounded-md font-medium">Spaced Repetition</span>
+                </div>
+
+                <div class="flex-1 flex flex-col justify-between bg-dark-900/80 rounded-xl p-5 border border-slate-800 relative group overflow-hidden">
+                    <div class="flex items-center justify-between text-xs text-slate-400">
+                        <span id="flashcard-subject" class="font-semibold text-roseGold-400 uppercase tracking-wider text-[10px]">Matematyka</span>
+                        <span>Kliknij, aby odsłonić odpowiedź</span>
+                    </div>
+
+                    <div id="flashcard-container" onclick="flipFlashcard()" class="my-auto text-center cursor-pointer py-8 px-4 transition-all hover:scale-[1.01]">
+                        <div id="flashcard-question" class="text-base font-semibold text-slate-100">
+                            Ładowanie pytania...
+                        </div>
+                        <div id="flashcard-answer" class="text-sm text-emeraldGlow-400 mt-4 font-medium hidden border-t border-slate-800 pt-3">
+                            Odpowiedź...
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-3 pt-3 border-t border-slate-800/80">
+                        <button onclick="prevFlashcard()" class="text-xs px-3 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 text-slate-300 font-medium transition-all">
+                            <i class="fa-solid fa-arrow-left"></i> Poprzednia
+                        </button>
+                        <button onclick="nextFlashcard()" class="text-xs px-3 py-1.5 rounded-lg bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20 hover:bg-roseGold-500/20 font-medium transition-all">
+                            Następna <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 3: Quick Air Fryer Picker & Daily Water/Habits -->
+            <div class="space-y-6 flex flex-col justify-between">
+                
+                <!-- Air Fryer Random Meal Generator Card -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles text-roseGold-400"></i> Co dziś zjeść?
+                        </h3>
+                        <span class="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Bez twarogu i tuńczyka</span>
+                    </div>
+
+                    <p class="text-xs text-slate-400 mb-4">Nie masz pomysłu? Kliknij poniżej, aby wygenerować szybką fit przekąskę z Air Fryera lub miski!</p>
+
+                    <div id="quick-meal-result" class="bg-dark-900/90 rounded-xl p-3.5 border border-slate-800 mb-4">
+                        <div class="text-xs font-bold text-roseGold-400 mb-1" id="meal-res-title">Szybka Owsianka z Air Fryera 🥣</div>
+                        <div class="text-[11px] text-slate-300" id="meal-res-desc">Płatki owsiane, mleko roślinne, banan, kakao, kropka miodu - 12 min w 180°C.</div>
+                    </div>
+
+                    <button onclick="generateRandomMeal()" class="w-full bg-gradient-to-r from-roseGold-500 to-roseGold-600 hover:opacity-95 text-dark-900 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md shadow-roseGold-500/10 transition-all">
+                        <i class="fa-solid fa-dice"></i> Losuj ekspresowy przepis
+                    </button>
+                </div>
+
+                <!-- Habits & Hydration -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800">
+                    <h3 class="text-base font-bold text-white mb-3 flex items-center justify-between">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-glass-water text-emeraldGlow-400"></i> Nawodnienie Dnia</span>
+                        <span id="water-count-text" class="text-xs font-mono text-emeraldGlow-400 font-bold">0 / 8 szklanek</span>
+                    </h3>
+                    
+                    <div class="grid grid-cols-8 gap-1.5 mb-3" id="water-glasses-container">
+                        <!-- 8 water glasses JS generated -->
+                    </div>
+
+                    <div class="flex items-center justify-between text-xs text-slate-400">
+                        <span>Kliknij szklankę, by zaznaczyć</span>
+                        <button onclick="resetWater()" class="hover:text-roseGold-400 text-[10px]"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB CONTENT 2: MATURA 2027 -->
+        <div id="content-matura" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Matematyka -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-lg bg-roseGold-500/10 border border-roseGold-500/20 flex items-center justify-center text-roseGold-400">
+                                <i class="fa-solid fa-calculator text-sm"></i>
+                            </div>
+                            <h3 class="font-bold text-white text-base">Matematyka</h3>
+                        </div>
+                        <span id="math-progress-text" class="text-xs font-mono text-roseGold-400">0%</span>
+                    </div>
+
+                    <div class="w-full bg-dark-900 rounded-full h-2 mb-4 overflow-hidden border border-slate-800">
+                        <div id="math-progress-bar" class="bg-roseGold-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+
+                    <div class="space-y-2 text-xs" id="math-checklist">
+                        <!-- Checklist loaded via JS -->
+                    </div>
+                </div>
+
+                <!-- Język Polski -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-lg bg-emeraldGlow-500/10 border border-emeraldGlow-500/20 flex items-center justify-center text-emeraldGlow-400">
+                                <i class="fa-solid fa-book text-sm"></i>
+                            </div>
+                            <h3 class="font-bold text-white text-base">Język Polski</h3>
+                        </div>
+                        <span id="pol-progress-text" class="text-xs font-mono text-emeraldGlow-400">0%</span>
+                    </div>
+
+                    <div class="w-full bg-dark-900 rounded-full h-2 mb-4 overflow-hidden border border-slate-800">
+                        <div id="pol-progress-bar" class="bg-emeraldGlow-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+
+                    <div class="space-y-2 text-xs" id="pol-checklist">
+                        <!-- Checklist loaded via JS -->
+                    </div>
+                </div>
+
+                <!-- Język Angielski -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                                <i class="fa-solid fa-language text-sm"></i>
+                            </div>
+                            <h3 class="font-bold text-white text-base">Język Angielski</h3>
+                        </div>
+                        <span id="eng-progress-text" class="text-xs font-mono text-sky-400">0%</span>
+                    </div>
+
+                    <div class="w-full bg-dark-900 rounded-full h-2 mb-4 overflow-hidden border border-slate-800">
+                        <div id="eng-progress-bar" class="bg-sky-400 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+
+                    <div class="space-y-2 text-xs" id="eng-checklist">
+                        <!-- Checklist loaded via JS -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB CONTENT 3: RECIPES & AIR FRYER -->
+        <div id="content-recipes" class="tab-content hidden space-y-6">
+            
+            <!-- Filters & Preferences Banner -->
+            <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-utensils text-roseGold-400"></i> Szybka Kuchnia & Air Fryer (10-15 min)
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Przepisy zoptymalizowane pod szybki czas i ulubione składniki (bez twarogu i tuńczyka!).</p>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button onclick="filterRecipes('all')" class="recipe-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-roseGold-500 text-dark-900">Wszystkie</button>
+                    <button onclick="filterRecipes('airfryer')" class="recipe-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-dark-800 text-slate-400 hover:text-white">Air Fryer 🌬️</button>
+                    <button onclick="filterRecipes('sweet')" class="recipe-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-dark-800 text-slate-400 hover:text-white">Na Słodko 🍫</button>
+                    <button onclick="filterRecipes('salty')" class="recipe-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-dark-800 text-slate-400 hover:text-white">Przekąski 🥨</button>
+                </div>
+            </div>
+
+            <!-- Recipe Grid -->
+            <div id="recipes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Recipe Cards Inserted Dynamically -->
+            </div>
+        </div>
+
+        <!-- TAB CONTENT 4: STYLE & MOODBOARD (STUDNIÓWKA) -->
+        <div id="content-style" class="tab-content hidden space-y-6">
+            
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-sparkles text-roseGold-400"></i> Wishlist & Studniówka Moodboard
+                    </h3>
+                    <p class="text-xs text-slate-400">Zapisuj sukienki, stylówki, shoppery i budżet w jednym miejscu.</p>
+                </div>
+                
+                <button onclick="openAddWishlistModal()" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-roseGold-500/20 transition-all">
+                    <i class="fa-solid fa-plus"></i> Dodaj Inspirację / Przedmiot
+                </button>
+            </div>
+
+            <!-- Shopping List & Moodboard Items Grid -->
+            <div id="wishlist-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Wishlist Items loaded here -->
+            </div>
+        </div>
+
+        <!-- TAB CONTENT 5: BRAIN DUMP / NOTES -->
+        <div id="content-notes" class="tab-content hidden space-y-6">
+            <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[600px]">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-note-sticky text-roseGold-400"></i> Szybki Brudnopis / Luźne Myśli
+                    </h3>
+                    <span class="text-xs text-emeraldGlow-400 font-mono" id="notes-save-status">Zapisano w pamięci <i class="fa-solid fa-check"></i></span>
+                </div>
+
+                <textarea id="brain-dump-textarea" oninput="saveNotes()" placeholder="Wpisz cokolwiek: linki do outfitów, pomysły na seriale, angielskie słówka, luźne notatki..." class="flex-1 w-full bg-dark-900/90 border border-slate-800 rounded-xl p-4 text-sm text-slate-200 focus:outline-none focus:border-roseGold-500 resize-none font-sans leading-relaxed transition-all placeholder:text-slate-600"></textarea>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal: Add Wishlist / Style Item -->
+    <div id="wishlist-modal" class="fixed inset-0 bg-dark-900/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="glass-card w-full max-w-md rounded-2xl p-6 border border-slate-700 shadow-2xl relative">
+            <button onclick="closeAddWishlistModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-shirt text-roseGold-400"></i> Dodaj do Wishlisty / Moodboardu
+            </h3>
+            <form onsubmit="saveWishlistItem(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nazwa przedmiotu / inspiracji</label>
+                    <input type="text" id="wish-title" required placeholder="np. Sukienka na studniówkę (Zieleń/Bord)" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-roseGold-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Kategoria</label>
+                    <select id="wish-category" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-roseGold-500">
+                        <option value="Studniówka 💃">Studniówka 💃</option>
+                        <option value="Torba / Shopper 👜">Torba / Shopper 👜</option>
+                        <option value="Codzienny Outit 👗">Codzienny Outfit 👗</option>
+                        <option value="Kosmetyki / Inne ✨">Kosmetyki / Inne ✨</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Cena / Budżet (zł)</label>
+                        <input type="number" id="wish-price" placeholder="np. 250" class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-roseGold-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Link (opcjonalnie)</label>
+                        <input type="url" id="wish-link" placeholder="https://..." class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-roseGold-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">URL Zdjęcia (opcjonalnie)</label>
+                    <input type="url" id="wish-img" placeholder="https://images.unsplash.com/..." class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-roseGold-500">
+                </div>
+                <button type="submit" class="w-full bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold py-2.5 rounded-xl text-xs transition-all mt-2">
+                    Dodaj do mojej listy
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Script Logic -->
+    <script>
+        /* --- STATE MANAGEMENT & LOCAL STORAGE --- */
+        const STORAGE_KEY = 'lifeos_my_space_data_v1';
+
+        let appData = {
+            todos: [
+                { id: 1, text: 'Rozwiązać 5 zadań z ciągów arytmetycznych', category: 'Matura', completed: false },
+                { id: 2, text: 'Sprawdzić wymiary shoppera A4 na uczelnię/szkołę', category: 'Życie', completed: true },
+                { id: 3, text: 'Zrobić szybką pieczoną owsiankę w Air Fryerze', category: 'Życie', completed: false }
+            ],
+            maturaChecklist: {
+                math: [
+                    { id: 'm1', title: 'Funkcja kwadratowa i wzory', done: true },
+                    { id: 'm2', title: 'Ciągi arytmetyczne i geometryczne', done: false },
+                    { id: 'm3', title: 'Planimetria & Kąty w okręgu', done: false },
+                    { id: 'm4', title: 'Równania i nierówności', done: true },
+                    { id: 'm5', title: 'Prawdopodobieństwo & Kombinatoryka', done: false }
+                ],
+                pol: [
+                    { id: 'p1', title: 'Lektury obowiązkowe: Pan Tadeusz, Dziady', done: true },
+                    { id: 'p2', title: 'Wesele Wyspiańskiego - motywy', done: false },
+                    { id: 'p3', title: 'Struktura rozprawki maturalnej', done: true },
+                    { id: 'p4', title: 'Lalka Prusa - charakterystyka', done: false }
+                ],
+                eng: [
+                    { id: 'e1', title: 'Czasy złożone (Perfect & Continuous)', done: true },
+                    { id: 'e2', title: 'Słownictwo: Środowisko & Edukacja', done: true },
+                    { id: 'e3', title: 'Pisanie e-maila / Wypowiedź pisemna', done: true },
+                    { id: 'e4', title: 'Pytania na maturze ustnej', done: false }
+                ]
+            },
+            flashcards: [
+                { subject: 'Matematyka', q: 'Jaki jest wzór na delta (Δ) w funkcji kwadratowej?', a: 'Δ = b² - 4ac' },
+                { subject: 'Język Polski', q: 'Czym jest motyw "tńca chętnego / chocholego" w Weselu?', a: 'Symbol uśpienia narodu, marazmu i niezdolności do walki.' },
+                { subject: 'Język Angielski', q: 'Przetłumacz: "I would rather stay home today."', a: 'Wolałabym dzisiaj zostać w domu.' },
+                { subject: 'Matematyka', q: 'Wzór na n-ty wyraz ciągu arytmetycznego?', a: 'an = a1 + (n - 1) * r' }
+            ],
+            waterGlasses: 3,
+            notes: '',
+            wishlist: [
+                { id: 1, title: 'Sukienka gorsetowa z rozcięciem', category: 'Studniówka 💃', price: 299, link: '', img: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=600&q=80' },
+                { id: 2, title: 'Czarny Shopper miejski A4', category: 'Torba / Shopper 👜', price: 159, link: '', img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80' }
+            ]
+        };
+
+        const recipesList = [
+            {
+                id: 1,
+                title: "Pieczona Owsianka Czekoladowa",
+                tag: "airfryer",
+                category: "Air Fryer 🌬️ / Na słodko",
+                time: "12 min",
+                desc: "Zblenduj płatki owsiane z bananem, kakao i mlekiem. Wlej do kokilki i piecz 12 minut w 180°C."
+            },
+            {
+                id: 2,
+                title: "Air Fryer Chrupiąca Tortilla z Serem & Warzywami",
+                tag: "salty",
+                category: "Air Fryer 🌬️ / Przekąski",
+                time: "8 min",
+                desc: "Złóż tortillę z ulubionym serem żółtym, papryką i kukurydzą. Zapiekaj 7-8 min na chrupiąco."
+            },
+            {
+                id: 3,
+                title: "Mug Cake Czekoladowe w 3 minuty",
+                tag: "sweet",
+                category: "Na Słodko 🍫",
+                time: "3 min",
+                desc: "Mąka, kakao, odrobina proszku do pieczenia, mleko, miód i kostka gorzkiej czekolady w środku."
+            },
+            {
+                id: 4,
+                title: "Kruche Frytki z Ziemniaków / Batatów",
+                tag: "airfryer",
+                category: "Air Fryer 🌬️",
+                time: "15 min",
+                desc: "Pokrój w słupki, dodaj łyżeczkę oliwy, słodką paprykę i zioła. 15 minut w 200°C z potrząśnięciem."
+            },
+            {
+                id: 5,
+                title: "Wafle Ryżowe z Masłem Orzechowym & Bananem",
+                tag: "sweet",
+                category: "Na Słodko 🍫",
+                time: "2 min",
+                desc: "Brak czasu? Dwa wafle ryżowe, gruba warstwa masła orzechowego, plastry banana i cynamon."
+            }
+        ];
+
+        let currentFlashcardIdx = 0;
+
+        // Initialize App
+        window.onload = function() {
+            loadFromStorage();
+            updateDateDisplay();
+            updateMaturaCountdown();
+            renderTodos();
+            renderFlashcards();
+            renderWaterGlasses();
+            renderMaturaChecklists();
+            renderRecipes('all');
+            renderWishlist();
+            document.getElementById('brain-dump-textarea').value = appData.notes || '';
+        };
+
+        function saveToStorage() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+        }
+
+        function loadFromStorage() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if(saved) {
+                try {
+                    appData = { ...appData, ...JSON.parse(saved) };
+                } catch(e) {
+                    console.error("Error loading local storage", e);
+                }
+            }
+        }
+
+        /* --- UI NAVIGATION --- */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-roseGold-500', 'text-dark-900', 'shadow-md');
+                btn.classList.add('text-slate-400', 'hover:bg-dark-800');
+            });
+
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.classList.add('bg-roseGold-500', 'text-dark-900', 'shadow-md');
+            activeBtn.classList.remove('text-slate-400', 'hover:bg-dark-800');
+        }
+
+        function updateDateDisplay() {
+            const now = new Date();
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            const formatted = now.toLocaleDateString('pl-PL', options);
+            document.getElementById('current-date-display').innerText = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+        }
+
+        function updateMaturaCountdown() {
+            // Target Matura 2027 start (Approx May 4, 2027)
+            const maturaDate = new Date('2027-05-04T09:00:00');
+            const today = new Date();
+            const diffTime = maturaDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('matura-countdown').innerText = diffDays > 0 ? `${diffDays} dni` : 'Dziś Matura!';
+        }
+
+        /* --- TO-DO LIST --- */
+        function renderTodos() {
+            const container = document.getElementById('todo-list');
+            container.innerHTML = '';
+
+            let completedCount = 0;
+            appData.todos.forEach(todo => {
+                if(todo.completed) completedCount++;
+
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between p-3 rounded-xl border ${todo.completed ? 'bg-dark-900/40 border-slate-800/60 opacity-60' : 'bg-dark-900 border-slate-800'} transition-all`;
+                
+                div.innerHTML = `
+                    <div class="flex items-center gap-3 overflow-hidden pr-2">
+                        <button onclick="toggleTodo(${todo.id})" class="w-5 h-5 rounded-md border ${todo.completed ? 'bg-roseGold-500 border-roseGold-500 text-dark-900' : 'border-slate-600'} flex items-center justify-center shrink-0 text-xs transition-all">
+                            ${todo.completed ? '<i class="fa-solid fa-check"></i>' : ''}
+                        </button>
+                        <span class="text-xs ${todo.completed ? 'line-through text-slate-500' : 'text-slate-200'} truncate">${escapeHtml(todo.text)}</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">${todo.category}</span>
+                        <button onclick="deleteTodo(${todo.id})" class="text-slate-500 hover:text-roseGold-400 text-xs p-1">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('todo-count').innerText = `${completedCount} z ${appData.todos.length} gotowe`;
+        }
+
+        function addTodo(e) {
+            e.preventDefault();
+            const input = document.getElementById('todo-input');
+            const category = document.getElementById('todo-category').value;
+            if(!input.value.trim()) return;
+
+            appData.todos.unshift({
+                id: Date.now(),
+                text: input.value.trim(),
+                category: category,
+                completed: false
+            });
+            input.value = '';
+            saveToStorage();
+            renderTodos();
+        }
+
+        function toggleTodo(id) {
+            appData.todos = appData.todos.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
+            saveToStorage();
+            renderTodos();
+        }
+
+        function deleteTodo(id) {
+            appData.todos = appData.todos.filter(t => t.id !== id);
+            saveToStorage();
+            renderTodos();
+        }
+
+        /* --- FLASHCARDS --- */
+        function renderFlashcards() {
+            if(!appData.flashcards || appData.flashcards.length === 0) return;
+            const current = appData.flashcards[currentFlashcardIdx];
+            document.getElementById('flashcard-subject').innerText = current.subject;
+            document.getElementById('flashcard-question').innerText = current.q;
+            document.getElementById('flashcard-answer').innerText = current.a;
+            document.getElementById('flashcard-answer').classList.add('hidden');
+        }
+
+        function flipFlashcard() {
+            document.getElementById('flashcard-answer').classList.toggle('hidden');
+        }
+
+        function nextFlashcard() {
+            currentFlashcardIdx = (currentFlashcardIdx + 1) % appData.flashcards.length;
+            renderFlashcards();
+        }
+
+        function prevFlashcard() {
+            currentFlashcardIdx = (currentFlashcardIdx - 1 + appData.flashcards.length) % appData.flashcards.length;
+            renderFlashcards();
+        }
+
+        /* --- WATER TRACKER --- */
+        function renderWaterGlasses() {
+            const container = document.getElementById('water-glasses-container');
+            container.innerHTML = '';
+            for(let i = 1; i <= 8; i++) {
+                const btn = document.createElement('button');
+                btn.onclick = () => setWater(i);
+                const isActive = i <= appData.waterGlasses;
+                btn.className = `h-9 rounded-lg flex items-center justify-center text-xs transition-all ${isActive ? 'bg-emeraldGlow-500/20 border border-emeraldGlow-500/40 text-emeraldGlow-400' : 'bg-dark-900 border border-slate-800 text-slate-600 hover:text-slate-400'}`;
+                btn.innerHTML = `<i class="fa-solid fa-glass-water"></i>`;
+                container.appendChild(btn);
+            }
+            document.getElementById('water-count-text').innerText = `${appData.waterGlasses} / 8 szklanek`;
+        }
+
+        function setWater(count) {
+            appData.waterGlasses = count;
+            saveToStorage();
+            renderWaterGlasses();
+        }
+
+        function resetWater() {
+            appData.waterGlasses = 0;
+            saveToStorage();
+            renderWaterGlasses();
+        }
+
+        /* --- RANDOM MEAL PICKER --- */
+        function generateRandomMeal() {
+            const randomIndex = Math.floor(Math.random() * recipesList.length);
+            const meal = recipesList[randomIndex];
+            document.getElementById('meal-res-title').innerText = `${meal.title} 🥣`;
+            document.getElementById('meal-res-desc').innerText = meal.desc;
+        }
+
+        /* --- MATURA CHECKLISTS --- */
+        function renderMaturaChecklists() {
+            renderSubjectList('math', appData.maturaChecklist.math, 'math-checklist', 'math-progress-bar', 'math-progress-text');
+            renderSubjectList('pol', appData.maturaChecklist.pol, 'pol-checklist', 'pol-progress-bar', 'pol-progress-text');
+            renderSubjectList('eng', appData.maturaChecklist.eng, 'eng-checklist', 'eng-progress-bar', 'eng-progress-text');
+        }
+
+        function renderSubjectList(subjectKey, list, containerId, barId, textId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            let doneCount = 0;
+            list.forEach(item => {
+                if(item.done) doneCount++;
+                const div = document.createElement('div');
+                div.className = "flex items-center gap-2.5 p-2 rounded-lg bg-dark-900/80 border border-slate-800/80";
+                div.innerHTML = `
+                    <button onclick="toggleMaturaItem('${subjectKey}', '${item.id}')" class="w-4 h-4 rounded border ${item.done ? 'bg-roseGold-500 border-roseGold-500 text-dark-900' : 'border-slate-600'} flex items-center justify-center text-[10px] shrink-0">
+                        ${item.done ? '<i class="fa-solid fa-check"></i>' : ''}
+                    </button>
+                    <span class="${item.done ? 'line-through text-slate-500' : 'text-slate-200'}">${escapeHtml(item.title)}</span>
+                `;
+                container.appendChild(div);
+            });
+
+            const percent = Math.round((doneCount / list.length) * 100) || 0;
+            document.getElementById(barId).style.width = `${percent}%`;
+            document.getElementById(textId).innerText = `${percent}%`;
+        }
+
+        function toggleMaturaItem(subjectKey, itemId) {
+            appData.maturaChecklist[subjectKey] = appData.maturaChecklist[subjectKey].map(item => item.id === itemId ? { ...item, done: !item.done } : item);
+            saveToStorage();
+            renderMaturaChecklists();
+        }
+
+        /* --- RECIPES GALLERY --- */
+        function renderRecipes(filter) {
+            const container = document.getElementById('recipes-grid');
+            container.innerHTML = '';
+
+            const filtered = filter === 'all' ? recipesList : recipesList.filter(r => r.tag === filter);
+
+            filtered.forEach(recipe => {
+                const card = document.createElement('div');
+                card.className = "glass-card glass-card-hover rounded-2xl p-5 border border-slate-800 flex flex-col justify-between transition-all";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20">${recipe.category}</span>
+                            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock"></i> ${recipe.time}</span>
+                        </div>
+                        <h4 class="font-bold text-white text-base mb-2">${recipe.title}</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">${recipe.desc}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+                        <span class="text-emeraldGlow-400"><i class="fa-solid fa-leaf"></i> Fit & Fast</span>
+                        <span>Zero twarogu</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterRecipes(category) {
+            document.querySelectorAll('.recipe-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-roseGold-500', 'text-dark-900');
+                btn.classList.add('bg-dark-800', 'text-slate-400');
+            });
+            event.target.classList.remove('bg-dark-800', 'text-slate-400');
+            event.target.classList.add('bg-roseGold-500', 'text-dark-900');
+            renderRecipes(category);
+        }
+
+        /* --- WISHLIST & MOODBOARD --- */
+        function renderWishlist() {
+            const container = document.getElementById('wishlist-grid');
+            container.innerHTML = '';
+
+            appData.wishlist.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "glass-card rounded-2xl overflow-hidden border border-slate-800 flex flex-col justify-between group";
+                
+                const imgTag = item.img ? `<img src="${item.img}" class="w-full h-44 object-cover group-hover:scale-105 transition-all duration-300" alt="${item.title}">` : `<div class="w-full h-44 bg-dark-900 flex items-center justify-center text-slate-700"><i class="fa-solid fa-image text-3xl"></i></div>`;
+
+                card.innerHTML = `
+                    <div>
+                        ${imgTag}
+                        <div class="p-4">
+                            <span class="text-[10px] font-semibold text-roseGold-400 bg-roseGold-500/10 border border-roseGold-500/20 px-2 py-0.5 rounded-full">${item.category}</span>
+                            <h4 class="font-bold text-white text-sm mt-2">${escapeHtml(item.title)}</h4>
+                            <div class="text-xs font-mono text-emeraldGlow-400 mt-1">${item.price ? item.price + ' zł' : 'Brak ceny'}</div>
+                        </div>
+                    </div>
+                    <div class="px-4 pb-4 flex items-center justify-between gap-2">
+                        ${item.link ? `<a href="${item.link}" target="_blank" class="text-xs text-roseGold-400 hover:underline"><i class="fa-solid fa-link"></i> Otwórz link</a>` : '<span></span>'}
+                        <button onclick="deleteWishlistItem(${item.id})" class="text-xs text-slate-500 hover:text-roseGold-400 p-1">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openAddWishlistModal() {
+            document.getElementById('wishlist-modal').classList.remove('hidden');
+        }
+
+        function closeAddWishlistModal() {
+            document.getElementById('wishlist-modal').classList.add('hidden');
+        }
+
+        function saveWishlistItem(e) {
+            e.preventDefault();
+            const title = document.getElementById('wish-title').value;
+            const category = document.getElementById('wish-category').value;
+            const price = document.getElementById('wish-price').value;
+            const link = document.getElementById('wish-link').value;
+            const img = document.getElementById('wish-img').value;
+
+            appData.wishlist.unshift({
+                id: Date.now(),
+                title, category, price, link, img
+            });
+
+            saveToStorage();
+            renderWishlist();
+            closeAddWishlistModal();
+
+            document.getElementById('wish-title').value = '';
+            document.getElementById('wish-price').value = '';
+            document.getElementById('wish-link').value = '';
+            document.getElementById('wish-img').value = '';
+        }
+
+        function deleteWishlistItem(id) {
+            appData.wishlist = appData.wishlist.filter(w => w.id !== id);
+            saveToStorage();
+            renderWishlist();
+        }
+
+        /* --- NOTES & BRAIN DUMP --- */
+        let notesTimeout;
+        function saveNotes() {
+            const val = document.getElementById('brain-dump-textarea').value;
+            appData.notes = val;
+            document.getElementById('notes-save-status').innerText = 'Zapisywanie...';
+            clearTimeout(notesTimeout);
+            notesTimeout = setTimeout(() => {
+                saveToStorage();
+                document.getElementById('notes-save-status').innerHTML = 'Zapisano w pamięci <i class="fa-solid fa-check"></i>';
+            }, 500);
+        }
+
+        /* --- FOCUS MODE TOGGLE --- */
+        function toggleFocusMode() {
+            document.body.classList.toggle('focus-mode');
+            const btn = document.getElementById('focus-toggle-btn');
+            if(document.body.classList.contains('focus-mode')) {
+                btn.classList.add('bg-roseGold-500', 'text-dark-900');
+                btn.classList.remove('bg-dark-800', 'text-slate-300');
+            } else {
+                btn.classList.remove('bg-roseGold-500', 'text-dark-900');
+                btn.classList.add('bg-dark-800', 'text-slate-300');
+            }
+        }
+
+        /* --- UTILS --- */
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
