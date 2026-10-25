@@ -105,14 +105,14 @@
                 </div>
                 <div>
                     <h1 class="text-lg font-bold text-white tracking-tight flex items-center gap-2">
-                        LifeOS <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20">My Space</span>
+                        LifeOS <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20">My Space ✨</span>
                     </h1>
                     <p class="text-xs text-slate-400 font-medium" id="current-date-display">Ładowanie daty...</p>
                 </div>
             </div>
 
             <!-- Real-time Countdowns (Matura & Studniówka) -->
-            <div class="hidden sm:flex items-center gap-3">
+            <div class="hidden md:flex items-center gap-3">
                 <div class="flex items-center gap-2 bg-dark-800/90 border border-slate-700/60 rounded-full px-3.5 py-1.5 text-xs shadow-inner">
                     <i class="fa-solid fa-graduation-cap text-roseGold-400"></i>
                     <span class="text-slate-400">Matura 2027:</span>
@@ -146,13 +146,13 @@
             <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
                 <div class="lg:col-span-2 space-y-2">
                     <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-roseGold-500/10 text-roseGold-400 border border-roseGold-500/20">
-                        <i class="fa-solid fa-crown text-[10px]"></i> Twój Prywatny Kokpit
+                        <i class="fa-solid fa-crown text-[10px]"></i> Twój Prywatny Kokpit 2.0
                     </span>
                     <h2 class="text-2xl sm:text-3xl font-bold text-white font-serif tracking-wide">
                         Cześć, <span class="gradient-text">Gwiazda / Młoda!</span> ✨
                     </h2>
                     <p class="text-xs sm:text-sm text-slate-400 max-w-xl leading-relaxed">
-                        Matura, Airfryer bez twarogu, wishlisty studniówkowe, dramy azjatyckie i punkty na studia — w jednym stylowym miejscu.
+                        Matura 2027, Prawo Jazdy Kat. B, Manicure Gel Studio, Pomodoro Soundscapes & Fit Kuchnia w jednym miejscu.
                     </p>
                 </div>
 
@@ -169,7 +169,7 @@
                     
                     <div id="energy-recommendation" class="text-[11px] text-slate-300 bg-dark-800/70 p-2.5 rounded-xl border border-slate-700/50 flex items-center gap-2">
                         <i class="fa-solid fa-circle-info text-roseGold-400 shrink-0"></i>
-                        <span>Stabilne tempo. Dobry moment na 15m fiszek lub małą przekąskę.</span>
+                        <span>Stabilne tempo. Dobry moment na 15m fiszek lub jazdę próbną online.</span>
                     </div>
                 </div>
             </div>
@@ -180,20 +180,29 @@
             <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all bg-roseGold-500 text-dark-900 shadow-md shadow-roseGold-500/20 shrink-0">
                 <i class="fa-solid fa-grid-2"></i> Dashboard
             </button>
+            <button onclick="switchTab('pomodoro')" id="tab-pomodoro" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
+                <i class="fa-solid fa-headphones"></i> Focus & Audio 🎧
+            </button>
+            <button onclick="switchTab('nails')" id="tab-nails" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
+                <i class="fa-solid fa-hand-sparkles"></i> Manicure & Nails 💅
+            </button>
+            <button onclick="switchTab('driving')" id="tab-driving" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
+                <i class="fa-solid fa-car-side"></i> Prawo Jazdy Kat. B 🚗
+            </button>
             <button onclick="switchTab('matura')" id="tab-matura" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
-                <i class="fa-solid fa-graduation-cap"></i> Matura & Kalkulator PG/UG
+                <i class="fa-solid fa-graduation-cap"></i> Matura & UG/PG
             </button>
             <button onclick="switchTab('recipes')" id="tab-recipes" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
-                <i class="fa-solid fa-utensils"></i> Fit Kuchnia & Airfryer
+                <i class="fa-solid fa-utensils"></i> Fit Kuchnia
             </button>
             <button onclick="switchTab('style')" id="tab-style" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
-                <i class="fa-solid fa-shirt"></i> Style & Studniówka
+                <i class="fa-solid fa-shirt"></i> Style & Outfits
             </button>
             <button onclick="switchTab('lounge')" id="tab-lounge" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
-                <i class="fa-solid fa-tv"></i> Dramy & Gaming RP
+                <i class="fa-solid fa-tv"></i> Dramy & Gaming
             </button>
             <button onclick="switchTab('shopping')" id="tab-shopping" class="tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-dark-800 transition-all shrink-0">
-                <i class="fa-solid fa-cart-shopping"></i> Lista Zakupów
+                <i class="fa-solid fa-cart-shopping"></i> Zakupy
             </button>
         </nav>
 
@@ -213,7 +222,8 @@
                     <input type="text" id="todo-input" placeholder="Wpisz nowe zadanie..." required class="flex-1 bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-roseGold-500 transition-all placeholder:text-slate-500">
                     <select id="todo-category" class="bg-dark-900 border border-slate-700 text-xs text-slate-300 rounded-xl px-2 py-2 focus:outline-none focus:border-roseGold-500">
                         <option value="Szkoła">Szkoła</option>
-                        <option value="Matura">Matura</option>
+                        <option value="Prawko">Prawko B</option>
+                        <option value="Nails">Manicure</option>
                         <option value="Życie">Życie</option>
                     </select>
                     <button type="submit" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold px-3 py-2 rounded-xl text-xs transition-all">
@@ -224,9 +234,8 @@
                 <div id="todo-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
             </div>
 
-            <!-- Column 2: Quick Flashcard Mini Widget & Daily Habits -->
+            <!-- Column 2: Flashcard Mini Widget & Daily Habits -->
             <div class="space-y-6 flex flex-col">
-                <!-- Spaced Repetition Flashcard Mini -->
                 <div class="glass-card rounded-2xl p-5 border border-slate-800 flex-1 flex flex-col justify-between">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -235,7 +244,7 @@
                         <span id="flashcard-subject-tag" class="text-[10px] bg-emeraldGlow-500/10 text-emeraldGlow-400 border border-emeraldGlow-500/20 px-2 py-0.5 rounded-md font-medium uppercase">Matematyka</span>
                     </div>
 
-                    <div id="flashcard-card" onclick="flipCurrentCard()" class="perspective-1000 my-auto cursor-pointer min-h-[140px] flex items-center justify-center">
+                    <div id="flashcard-card" onclick="flipCurrentCard()" class="perspective-1000 my-auto cursor-pointer min-h-[130px] flex items-center justify-center">
                         <div id="flashcard-inner" class="w-full h-full transform-style-3d relative bg-dark-900/90 rounded-xl border border-slate-800 p-4 flex flex-col items-center justify-center text-center">
                             <p id="flashcard-front-text" class="text-sm font-semibold text-slate-100">Ładowanie pytania...</p>
                             <p id="flashcard-back-text" class="text-xs text-emeraldGlow-400 font-medium hidden mt-2 border-t border-slate-800 pt-2 w-full">Odpowiedź...</p>
@@ -252,26 +261,22 @@
                     </div>
                 </div>
 
-                <!-- Daily Habits Tracker -->
                 <div class="glass-card rounded-2xl p-5 border border-slate-800">
                     <h3 class="text-base font-bold text-white mb-3 flex items-center gap-2">
                         <i class="fa-solid fa-sparkles text-roseGold-400"></i> Nawykownik Dnia
                     </h3>
-                    <div class="grid grid-cols-2 gap-2 text-xs" id="daily-habits-grid">
-                        <!-- Habits loaded dynamically -->
-                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs" id="daily-habits-grid"></div>
                 </div>
             </div>
 
             <!-- Column 3: Airfryer Quick Randomizer & Hydration -->
             <div class="space-y-6 flex flex-col justify-between">
-                
                 <div class="glass-card rounded-2xl p-5 border border-slate-800">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
                             <i class="fa-solid fa-wand-magic-sparkles text-roseGold-400"></i> Losuj Ekspresowy Przepis
                         </h3>
-                        <span class="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Bez twarogu & tuńczyka</span>
+                        <span class="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded">Airfryer & Fit</span>
                     </div>
 
                     <div id="quick-meal-result" class="bg-dark-900/90 rounded-xl p-3.5 border border-slate-800 mb-4">
@@ -280,38 +285,215 @@
                     </div>
 
                     <div class="flex gap-2">
-                        <button onclick="generateRandomMeal()" class="flex-1 bg-gradient-to-r from-roseGold-500 to-roseGold-600 hover:opacity-95 text-dark-900 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition-all">
+                        <button onclick="generateRandomMeal()" class="flex-1 bg-gradient-to-r from-roseGold-500 to-roseGold-600 hover:opacity-95 text-dark-900 font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition-all">
                             <i class="fa-solid fa-dice"></i> Losuj Danie
                         </button>
-                        <button onclick="addCurrentMealToShopping()" class="bg-dark-800 hover:bg-dark-700 border border-slate-700 text-roseGold-400 px-3 py-2.5 rounded-xl text-xs transition-all" title="Dodaj składniki do zakupy">
+                        <button onclick="addCurrentMealToShopping()" class="bg-dark-800 hover:bg-dark-700 border border-slate-700 text-roseGold-400 px-3 py-2 rounded-xl text-xs transition-all" title="Dodaj składniki do zakupy">
                             <i class="fa-solid fa-cart-plus"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- Hydration Tracker -->
                 <div class="glass-card rounded-2xl p-5 border border-slate-800">
                     <h3 class="text-base font-bold text-white mb-3 flex items-center justify-between">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-glass-water text-emeraldGlow-400"></i> Nawodnienie Dnia</span>
                         <span id="water-count-text" class="text-xs font-mono text-emeraldGlow-400 font-bold">0 / 8 szklanek</span>
                     </h3>
-                    
                     <div class="grid grid-cols-8 gap-1.5 mb-3" id="water-glasses-container"></div>
-
                     <div class="flex items-center justify-between text-xs text-slate-400">
-                        <span>Kliknij szklankę, by zaznaczyć</span>
+                        <span>Kliknij szklankę</span>
                         <button onclick="resetWater()" class="hover:text-roseGold-400 text-[10px]"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW TAB: FOCUS MODE & POMODORO SOUNDSCAPES -->
+        <div id="content-pomodoro" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Pomodoro Timer -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 flex flex-col items-center justify-center text-center">
+                    <span class="text-xs uppercase tracking-widest text-roseGold-400 font-semibold mb-2" id="pomo-mode-label">Tryb Skupienia (25 min)</span>
+                    <div class="text-6xl font-mono font-bold text-white tracking-wider my-4" id="pomo-timer-display">25:00</div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="startPomodoro()" id="pomo-start-btn" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold px-6 py-2.5 rounded-xl text-xs transition-all shadow-lg shadow-roseGold-500/20">
+                            <i class="fa-solid fa-play"></i> Start
+                        </button>
+                        <button onclick="pausePomodoro()" class="bg-dark-800 hover:bg-dark-700 text-slate-300 border border-slate-700 px-4 py-2.5 rounded-xl text-xs transition-all">
+                            <i class="fa-solid fa-pause"></i> Pauza
+                        </button>
+                        <button onclick="resetPomodoro()" class="bg-dark-800 hover:bg-dark-700 text-slate-400 border border-slate-700 px-4 py-2.5 rounded-xl text-xs transition-all">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ambient Soundscapes (Web Audio Generator) -->
+                <div class="lg:col-span-2 glass-card rounded-2xl p-6 border border-slate-800">
+                    <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-headphones text-emeraldGlow-400"></i> Lofi Ambient Soundscapes
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-6">Generowane w czasie rzeczywistym szumy i tła do nauki, maratonów maturalnych i skupienia.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- Rain Sound -->
+                        <div class="bg-dark-900/90 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-between text-center space-y-3">
+                            <i class="fa-solid fa-cloud-showers-heavy text-2xl text-roseGold-400"></i>
+                            <div>
+                                <div class="text-xs font-bold text-white">Cichy Deszcz</div>
+                                <div class="text-[10px] text-slate-500">Soft Rain synth</div>
+                            </div>
+                            <button onclick="toggleAudioSynth('rain')" id="audio-btn-rain" class="w-full bg-dark-800 hover:bg-dark-700 border border-slate-700 text-slate-300 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                                Connect / Play
+                            </button>
+                        </div>
+
+                        <!-- Cafe Ambient -->
+                        <div class="bg-dark-900/90 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-between text-center space-y-3">
+                            <i class="fa-solid fa-mug-hot text-2xl text-emeraldGlow-400"></i>
+                            <div>
+                                <div class="text-xs font-bold text-white">Kawiarnia / Cafe</div>
+                                <div class="text-[10px] text-slate-500">Warm Brown Noise</div>
+                            </div>
+                            <button onclick="toggleAudioSynth('cafe')" id="audio-btn-cafe" class="w-full bg-dark-800 hover:bg-dark-700 border border-slate-700 text-slate-300 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                                Connect / Play
+                            </button>
+                        </div>
+
+                        <!-- Deep Focus White/Pink noise -->
+                        <div class="bg-dark-900/90 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-between text-center space-y-3">
+                            <i class="fa-solid fa-wave-square text-2xl text-sky-400"></i>
+                            <div>
+                                <div class="text-xs font-bold text-white">Deep Focus</div>
+                                <div class="text-[10px] text-slate-500">Pink Noise Synth</div>
+                            </div>
+                            <button onclick="toggleAudioSynth('pink')" id="audio-btn-pink" class="w-full bg-dark-800 hover:bg-dark-700 border border-slate-700 text-slate-300 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                                Connect / Play
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW TAB: MANICURE & BEAUTY STUDIO -->
+        <div id="content-nails" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Gel Extension Project Form -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-hand-sparkles text-roseGold-400"></i> Nowy Projekt Stylizacji
+                    </h3>
+                    <form onsubmit="saveNailSet(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-xs text-slate-300 mb-1">Marka Żelu / Hybrydy:</label>
+                            <select id="nail-brand" class="w-full bg-dark-900 border border-slate-700 text-xs rounded-xl p-2.5 text-white">
+                                <option value="Excellent Pro">Excellent Pro 💖</option>
+                                <option value="Palù">Palù 🌸</option>
+                                <option value="Hessi">Hessi ⭐</option>
+                                <option value="SPN Nails">SPN Nails ✨</option>
+                                <option value="Claresa">Claresa 💎</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs text-slate-300 mb-1">Metoda Przedłużania:</label>
+                            <select id="nail-method" class="w-full bg-dark-900 border border-slate-700 text-xs rounded-xl p-2.5 text-white">
+                                <option value="Górne Formy (Dual Forms)">Górne Formy (Dual Forms)</option>
+                                <option value="Szablony papierowe">Szablony papierowe (Paper)</option>
+                                <option value="Utwardzenie naturalnej płytki">Utwardzenie naturalnej płytki</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs text-slate-300 mb-1">Zdobienia & Efekty:</label>
+                            <input type="text" id="nail-design" placeholder="np. Cat-Eye, 3D Kwiaty, French Rose Gold" required class="w-full bg-dark-900 border border-slate-700 text-xs rounded-xl p-2.5 text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs text-slate-300 mb-1">Paleta / Kolory:</label>
+                            <input type="text" id="nail-colors" placeholder="np. Mleczny róż, szmaragd, złoto" class="w-full bg-dark-900 border border-slate-700 text-xs rounded-xl p-2.5 text-white">
+                        </div>
+
+                        <button type="submit" class="w-full bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold py-2.5 rounded-xl text-xs transition-all shadow-md">
+                            Zapisz Set w Dzienniku
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Log & Gel Maintenance Timer -->
+                <div class="lg:col-span-2 glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left text-emeraldGlow-400"></i> Log Stylizacji & Licznik Odrostu
+                            </h3>
+                            <span class="text-xs text-slate-400">Optymalna zmiana: co 3-4 tyg.</span>
+                        </div>
+                        <div id="nails-history-list" class="space-y-3"></div>
                     </div>
                 </div>
 
             </div>
         </div>
 
-        <!-- TAB 2: MATURA & KALKULATOR UG / PG -->
-        <div id="content-matura" class="tab-content hidden space-y-6">
-            
+        <!-- NEW TAB: PRAWO JAZDY KAT. B -->
+        <div id="content-driving" class="tab-content hidden space-y-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Left 2 Cols: Matura Checklists & Deck Flashcards -->
+                
+                <!-- Driving Theory Flashcards / Quiz -->
+                <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-shield-halved text-roseGold-400"></i> Teoria Kat. B Quiz
+                            </h3>
+                            <span id="driving-quiz-tag" class="text-[10px] bg-roseGold-500/10 text-roseGold-400 px-2 py-0.5 rounded font-bold">Znaki & Skrzyżowania</span>
+                        </div>
+
+                        <div id="driving-card-box" onclick="flipDrivingCard()" class="perspective-1000 my-4 cursor-pointer min-h-[140px] flex items-center justify-center">
+                            <div id="driving-inner" class="w-full h-full transform-style-3d bg-dark-900 border border-slate-800 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                                <p id="driving-q-text" class="text-xs font-semibold text-slate-100">Ładowanie pytania drogowego...</p>
+                                <p id="driving-a-text" class="text-xs text-emeraldGlow-400 font-medium hidden mt-2 border-t border-slate-800 pt-2 w-full">Wyjaśnienie zasady...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2 pt-3 border-t border-slate-800">
+                        <button onclick="nextDrivingCard()" class="w-full bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold py-2 rounded-xl text-xs transition-all">
+                            Następne Pytanie Drogowe <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Driving Lessons Log -->
+                <div class="lg:col-span-2 glass-card rounded-2xl p-5 border border-slate-800 flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-route text-emeraldGlow-400"></i> Dziennik Jazd Praktycznych
+                        </h3>
+                        <span id="driving-hours-total" class="text-xs font-mono font-bold text-emeraldGlow-400 bg-emeraldGlow-500/10 border border-emeraldGlow-500/20 px-3 py-1 rounded-full">0 / 30h wyjeżdżone</span>
+                    </div>
+
+                    <form onsubmit="addDrivingLesson(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-2 mb-4">
+                        <input type="number" id="lesson-hours" placeholder="Liczbah (np. 2)" min="1" max="10" required class="bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                        <input type="text" id="lesson-route" placeholder="Trasa (np. Manewry, Plac, Miasto Center)" required class="sm:col-span-2 bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                        <button type="submit" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold py-2 rounded-xl text-xs transition-all">
+                            Zapisz Jazdę
+                        </button>
+                    </form>
+
+                    <div id="driving-lessons-list" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB 5: MATURA & KALKULATOR UG / PG -->
+        <div id="content-matura" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Checklists -->
                 <div class="lg:col-span-2 space-y-6">
                     <div class="glass-card rounded-2xl p-5 border border-slate-800">
                         <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
@@ -356,14 +538,14 @@
                     </div>
                 </div>
 
-                <!-- Right Col: Polish University Admission Points Calculator (UG / PG formula) -->
+                <!-- Calculator UG / PG -->
                 <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-base font-bold text-white flex items-center gap-2">
                                 <i class="fa-solid fa-calculator text-emeraldGlow-400"></i> Kalkulator Punktów UG / PG
                             </h3>
-                            <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded">Rekrutacja</span>
+                            <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded">Gdańsk</span>
                         </div>
                         <p class="text-xs text-slate-400 mb-4">Przelicz wyniki matur (Podstawa = 0.4, Rozszerzenie = 1.0) na punkty rekrutacyjne.</p>
 
@@ -394,28 +576,25 @@
                         </div>
                     </div>
 
-                    <!-- Output Points -->
                     <div class="mt-5 pt-4 border-t border-slate-800">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-bold text-slate-300">Szacowane Punkty:</span>
                             <span id="uni-total-points" class="text-xl font-mono font-bold text-emeraldGlow-400">0 pkt</span>
                         </div>
-                        <p class="text-[10px] text-slate-500 mt-1">Typowy próg UG: ~60-80 pkt, PG: ~70-90 pkt w zależności od kierunku.</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Próg UG: ~60-80 pkt, PG: ~70-90 pkt.</p>
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- TAB 3: FIT KITCHEN & AIRFRYER -->
+        <!-- TAB 6: FIT KITCHEN & AIRFRYER -->
         <div id="content-recipes" class="tab-content hidden space-y-6">
-            
             <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
                     <h3 class="text-base font-bold text-white flex items-center gap-2">
                         <i class="fa-solid fa-utensils text-roseGold-400"></i> Airfryer & Fit Przepisy (10-15 min)
                     </h3>
-                    <p class="text-xs text-slate-400 mt-0.5">Przepisy zoptymalizowane pod szybki czas (zero twarogu, zero tuńczyka, zero hummusu!).</p>
+                    <p class="text-xs text-slate-400 mt-0.5">Szybkie przepisy bez twarogu, tuńczyka, hummusu czy szakszuki!</p>
                 </div>
 
                 <div class="flex items-center gap-2 flex-wrap">
@@ -429,15 +608,14 @@
             <div id="recipes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
 
-        <!-- TAB 4: STYLE, SHOPPING & STUDNIÓWKA MOODBOARD -->
+        <!-- TAB 7: STYLE & STUDNIÓWKA MOODBOARD -->
         <div id="content-style" class="tab-content hidden space-y-6">
-            
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h3 class="text-lg font-bold text-white flex items-center gap-2">
                         <i class="fa-solid fa-wand-magic-sparkles text-roseGold-400"></i> Studniówka & Outfit Moodboard
                     </h3>
-                    <p class="text-xs text-slate-400">Sukienki na Studniówkę (Bordowa / Szmaragdowa), shoppery A4 i wishlisty.</p>
+                    <p class="text-xs text-slate-400">Sukienki (Bordowa / Szmaragdowa / Granatowa / Czarna), Shoppery A4 & Inspiracje.</p>
                 </div>
                 
                 <div class="flex items-center gap-2">
@@ -458,11 +636,10 @@
             <div id="wishlist-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
 
-        <!-- TAB 5: ASIAN DRAMAS & GAMING RP -->
+        <!-- TAB 8: ASIAN DRAMAS & GAMING RP -->
         <div id="content-lounge" class="tab-content hidden space-y-6">
-            
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Asian Dramas Watchlist -->
+                <!-- Dramas -->
                 <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[520px]">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -473,7 +650,7 @@
 
                     <form onsubmit="addDrama(event)" class="grid grid-cols-3 gap-2 mb-4">
                         <input type="text" id="drama-title" placeholder="Tytuł dramy..." required class="col-span-2 bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-                        <input type="number" id="drama-total-eps" placeholder="Ode (np. 16)" min="1" required class="bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                        <input type="number" id="drama-total-eps" placeholder="Ode (16)" min="1" required class="bg-dark-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
                         <button type="submit" class="col-span-3 bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold py-2 rounded-xl text-xs transition-all">
                             Dodaj do Listy Oglądania
                         </button>
@@ -482,7 +659,7 @@
                     <div id="dramas-list" class="flex-1 overflow-y-auto space-y-2.5 pr-1"></div>
                 </div>
 
-                <!-- Gaming & RP Quest Log / Scratchpad -->
+                <!-- Gaming & RP Notes -->
                 <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col h-[520px]">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -491,7 +668,7 @@
                         <span class="text-xs text-slate-400">Roblox, SSO, GTA RP</span>
                     </div>
 
-                    <textarea id="rp-notes-textarea" oninput="saveRpNotes()" placeholder="Notatki do GTA RP (Lore postaci, kontakty, auto), SSO (konie, treningi), Roblox questy..." class="flex-1 w-full bg-dark-900 border border-slate-800 rounded-xl p-3.5 text-xs text-slate-200 focus:outline-none focus:border-emeraldGlow-500 resize-none leading-relaxed transition-all placeholder:text-slate-600"></textarea>
+                    <textarea id="rp-notes-textarea" oninput="saveRpNotes()" placeholder="Notatki do GTA RP (Lore postaci, auta), Star Stable (konie), Roblox..." class="flex-1 w-full bg-dark-900 border border-slate-800 rounded-xl p-3.5 text-xs text-slate-200 focus:outline-none focus:border-emeraldGlow-500 resize-none leading-relaxed transition-all placeholder:text-slate-600"></textarea>
                     
                     <div class="flex items-center justify-between text-[11px] text-slate-400 mt-3 pt-2 border-t border-slate-800">
                         <span>Zapisuje się automatycznie</span>
@@ -499,12 +676,10 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- TAB 6: SMART SHOPPING LIST -->
+        <!-- TAB 9: SMART SHOPPING LIST -->
         <div id="content-shopping" class="tab-content hidden space-y-6">
-            
             <div class="glass-card rounded-2xl p-5 border border-slate-800">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -519,7 +694,7 @@
                     <input type="text" id="shop-input" placeholder="Co trzeba kupić?" required class="flex-1 bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white">
                     <select id="shop-category" class="bg-dark-900 border border-slate-700 text-xs text-slate-300 rounded-xl px-3 py-2">
                         <option value="Spożywcze">Spożywcze 🛒</option>
-                        <option value="Kosmetyki">Kosmetyki / Manicure 💅</option>
+                        <option value="Kosmetyki">Kosmetyki / Paznokcie 💅</option>
                         <option value="Szkoła">Szkoła / Inne 📚</option>
                     </select>
                     <button type="submit" class="bg-roseGold-500 hover:bg-roseGold-600 text-dark-900 font-bold px-4 py-2 rounded-xl text-xs transition-all">
@@ -542,7 +717,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
     </main>
@@ -603,20 +777,26 @@
 
     <!-- Application JS Logic -->
     <script>
-        const STORAGE_KEY = 'lifeos_my_space_v2_data';
+        const STORAGE_KEY = 'lifeos_my_space_v3_data';
 
         let appData = {
             energyLevel: 3,
             todos: [
-                { id: 1, text: 'Rozwiązać 5 zadań z ciągów arytmetycznych', category: 'Matura', completed: false },
-                { id: 2, text: 'Sprawdzić wymiary shoppera A4 na studia/szkołę', category: 'Życie', completed: true },
-                { id: 3, text: 'Przejrzeć sukienki bordowe i szmaragdowe na studniówkę', category: 'Życie', completed: false }
+                { id: 1, text: 'Rozwiązać 5 zadań z ciągów arytmetycznych', category: 'Szkoła', completed: false },
+                { id: 2, text: 'Przejrzeć znaki pionowe i skrzyżowania (Prawko Kat. B)', category: 'Prawko', completed: true },
+                { id: 3, text: 'Uzupełnić odrost żelowy na Górnych Formach (Palù / SPN)', category: 'Nails', completed: false }
             ],
             habits: [
-                { id: 'h1', title: 'Pielęgnacja / Paznokcie 💅', done: true },
-                { id: 'h2', title: 'Nauka 30 min 📚', done: false },
+                { id: 'h1', title: 'Pielęgnacja Skórek & Paznokci 💅', done: true },
+                { id: 'h2', title: 'Nauka Matura 30 min 📚', done: false },
                 { id: 'h3', title: 'Airfryer Posilek 🥣', done: true },
-                { id: 'h4', title: 'Chwila dla siebie / Relax ☕', done: false }
+                { id: 'h4', title: 'Test Teoretyczny Prawko B 🚗', done: false }
+            ],
+            nailsHistory: [
+                { id: 1, date: '2026-10-10', brand: 'Palù', method: 'Górne Formy (Dual Forms)', design: 'Cat-Eye Rose Gold + 3D Floral Accents', colors: 'Mleczny róż & Złoto' }
+            ],
+            drivingLessons: [
+                { id: 1, hours: 2, route: 'Plac manewrowy - łuk i ruszanie na wzniesieniu', date: '2026-10-18' }
             ],
             maturaChecklist: {
                 math: [
@@ -637,7 +817,7 @@
             },
             flashcards: [
                 { subject: 'Matematyka', q: 'Wzór na delta (Δ) w funkcji kwadratowej?', a: 'Δ = b² - 4ac' },
-                { subject: 'Język Polski', q: 'Co symbolizuje Chocholi Taniec w Weselu?', a: 'Symbol uśpienia narodu, marazmu i niezdolności do zrywu.' },
+                { subject: 'Język Polski', q: 'Co symbolizuje Chocholi Taniec w Weselu?', a: 'Symbol uśpienia narodu, marazmu i uśpionego potencjału.' },
                 { subject: 'Język Angielski', q: 'Przetłumacz: "I would rather stay home today."', a: 'Wolałabym dzisiaj zostać w domu.' }
             ],
             waterGlasses: 4,
@@ -647,7 +827,7 @@
             ],
             shopping: [
                 { id: 1, text: 'Płatki owsiane górskie', category: 'Spożywcze', done: false },
-                { id: 2, text: 'Oliwka do skórek i paznokci', category: 'Kosmetyki', done: true },
+                { id: 2, text: 'Oliwka do skórek Hessi / SPN', category: 'Kosmetyki', done: true },
                 { id: 3, text: 'Zeszyt A4 w kratkę', category: 'Szkoła', done: false }
             ],
             wishlist: [
@@ -684,19 +864,23 @@
                 time: "3 min",
                 desc: "Mąka, kakao, miód, odrobina mleka i kostka gorzkiej czekolady do środka.",
                 ingredients: ["Mąka", "Kakao", "Kostka gorzkiej czekolady", "Miód"]
-            },
-            {
-                id: 4,
-                title: "Kruche Wafle Ryżowe z Masłem Orzechowym & Bananem",
-                tag: "sweet",
-                category: "Na Słodko 🍫",
-                time: "2 min",
-                desc: "Wafle ryżowe, gruba warstwa masła orzechowego, plastry banana i cynamon.",
-                ingredients: ["Wafle ryżowe", "Masło orzechowe", "Banan"]
             }
         ];
 
+        const drivingQuizData = [
+            { q: "Kto ma pierwszeństwo na skrzyżowaniu równorzędnym?", a: "Pojazd nadjeżdżający z prawej strony (zasada prawej ręki)." },
+            { q: "Znak B-20 'STOP' nakazuje:", a: "Bezwzględne zatrzymanie pojazdu przed linią zatrzymania lub przed krawędzią jezdni." },
+            { q: "Jaki jest dopuszczalny limit alkoholu we krwi kierowcy w Polsce?", a: "Mniej niż 0,2 promila (0,00 mg/l w wydychanym powietrzu)." }
+        ];
+
         let currentCardIdx = 0;
+        let currentDrivingIdx = 0;
+
+        /* POMODORO & AUDIO SYNTHESIZER */
+        let pomoTime = 25 * 60;
+        let pomoInterval = null;
+        let audioCtx = null;
+        let activeNodes = {};
 
         window.onload = function() {
             loadFromStorage();
@@ -711,6 +895,9 @@
             renderWishlist();
             renderDramas();
             renderShopping();
+            renderNailsHistory();
+            renderDrivingLessons();
+            renderDrivingCard();
             document.getElementById('rp-notes-textarea').value = appData.rpNotes || '';
             document.getElementById('energy-range').value = appData.energyLevel || 3;
             updateEnergyTracker(appData.energyLevel || 3);
@@ -741,8 +928,10 @@
 
             document.getElementById(`content-${tabId}`).classList.remove('hidden');
             const activeBtn = document.getElementById(`tab-${tabId}`);
-            activeBtn.classList.add('bg-roseGold-500', 'text-dark-900', 'shadow-md');
-            activeBtn.classList.remove('text-slate-400', 'hover:bg-dark-800');
+            if(activeBtn) {
+                activeBtn.classList.add('bg-roseGold-500', 'text-dark-900', 'shadow-md');
+                activeBtn.classList.remove('text-slate-400', 'hover:bg-dark-800');
+            }
         }
 
         function updateDateDisplay() {
@@ -771,14 +960,211 @@
             
             const states = {
                 1: { title: "1/5 (Brak energii)", desc: "Odpocznij! Zrób ciepłą herbatę, włącz drama K-Drama lub posłuchaj muzyki." },
-                2: { title: "2/5 (Niski)", desc: "Zrób szybką przekąskę w Airfryerze i przejrzyj 3 fiszki z polskiego." },
-                3: { title: "3/5 (Umiarkowany)", desc: "Stabilne tempo. Dobry moment na krótki blok nauki lub uporządkowanie zadań." },
+                2: { title: "2/5 (Niski)", desc: "Zrób szybką przekąskę w Airfryerze i przejrzyj 3 fiszki z polskiego lub z prawka." },
+                3: { title: "3/5 (Umiarkowany)", desc: "Stabilne tempo. Dobry moment na krótki blok nauki lub jazdę próbną online." },
                 4: { title: "4/5 (Wysoki)", desc: "Świetna forma! Przerób ciężejsze zadanie z matematyki." },
-                5: { title: "5/5 (Pełna moc ✨)", desc: "Rozwalasz dziś system! Rozwiąż arkusz lub zaplanuj moodboard outfitów!" }
+                5: { title: "5/5 (Pełna moc ✨)", desc: "Rozwalasz dziś system! Zaplanuj manicure lub rozwiąż arkusz maturalny!" }
             };
 
             textEl.innerText = states[val].title;
             recEl.innerHTML = `<i class="fa-solid fa-circle-info text-roseGold-400 shrink-0"></i><span>${states[val].desc}</span>`;
+        }
+
+        /* POMODORO LOGIC */
+        function startPomodoro() {
+            if(pomoInterval) return;
+            pomoInterval = setInterval(() => {
+                if(pomoTime > 0) {
+                    pomoTime--;
+                    updatePomoDisplay();
+                } else {
+                    clearInterval(pomoInterval);
+                    pomoInterval = null;
+                    alert("Czas na przerwę! ☕ ✨");
+                }
+            }, 1000);
+        }
+
+        function pausePomodoro() {
+            clearInterval(pomoInterval);
+            pomoInterval = null;
+        }
+
+        function resetPomodoro() {
+            pausePomodoro();
+            pomoTime = 25 * 60;
+            updatePomoDisplay();
+        }
+
+        function updatePomoDisplay() {
+            const mins = Math.floor(pomoTime / 60);
+            const secs = pomoTime % 60;
+            document.getElementById('pomo-timer-display').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        /* WEB AUDIO AMBIENT SOUND GENERATOR */
+        function toggleAudioSynth(type) {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (activeNodes[type]) {
+                activeNodes[type].stop();
+                delete activeNodes[type];
+                document.getElementById(`audio-btn-${type}`).innerText = 'Connect / Play';
+                document.getElementById(`audio-btn-${type}`).classList.remove('bg-roseGold-500', 'text-dark-900');
+                return;
+            }
+
+            // Create noise buffer
+            const bufferSize = audioCtx.sampleRate * 2;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = buffer.getChannelData(0);
+
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+
+            const whiteNoise = audioCtx.createBufferSource();
+            whiteNoise.buffer = buffer;
+            whiteNoise.loop = true;
+
+            const filter = audioCtx.createBiquadFilter();
+            if (type === 'rain') {
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(800, audioCtx.currentTime);
+            } else if (type === 'cafe') {
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(400, audioCtx.currentTime);
+            } else {
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(300, audioCtx.currentTime);
+            }
+
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+
+            whiteNoise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            whiteNoise.start();
+            activeNodes[type] = whiteNoise;
+
+            document.getElementById(`audio-btn-${type}`).innerText = 'Playing (Stop)';
+            document.getElementById(`audio-btn-${type}`).classList.add('bg-roseGold-500', 'text-dark-900');
+        }
+
+        /* MANICURE / NAILS LOGIC */
+        function saveNailSet(e) {
+            e.preventDefault();
+            const brand = document.getElementById('nail-brand').value;
+            const method = document.getElementById('nail-method').value;
+            const design = document.getElementById('nail-design').value;
+            const colors = document.getElementById('nail-colors').value;
+
+            const today = new Date().toISOString().split('T')[0];
+            appData.nailsHistory.unshift({ id: Date.now(), date: today, brand, method, design, colors });
+            saveToStorage();
+            renderNailsHistory();
+            e.target.reset();
+        }
+
+        function renderNailsHistory() {
+            const container = document.getElementById('nails-history-list');
+            if(!container) return;
+            container.innerHTML = '';
+
+            appData.nailsHistory.forEach(n => {
+                const setDate = new Date(n.date);
+                const now = new Date();
+                const daysAgo = Math.floor((now - setDate) / (1000 * 60 * 60 * 24));
+
+                const div = document.createElement('div');
+                div.className = "p-4 rounded-xl bg-dark-900 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs";
+                div.innerHTML = `
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-roseGold-400">${escapeHtml(n.brand)}</span>
+                            <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-300">${escapeHtml(n.method)}</span>
+                        </div>
+                        <div class="text-white font-medium">${escapeHtml(n.design)}</div>
+                        <div class="text-slate-400 text-[11px]">Paleta: ${escapeHtml(n.colors || 'Standard')}</div>
+                    </div>
+                    <div class="flex items-center gap-3 self-end sm:self-center">
+                        <div class="text-right">
+                            <div class="text-[10px] text-slate-500">Wiek stylizacji</div>
+                            <div class="font-mono font-bold ${daysAgo > 21 ? 'text-roseGold-400' : 'text-emeraldGlow-400'}">${daysAgo} dni temu</div>
+                        </div>
+                        <button onclick="deleteNailSet(${n.id})" class="text-slate-500 hover:text-roseGold-400 p-1"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function deleteNailSet(id) {
+            appData.nailsHistory = appData.nailsHistory.filter(n => n.id !== id);
+            saveToStorage();
+            renderNailsHistory();
+        }
+
+        /* DRIVING LICENSE LOGIC */
+        function renderDrivingCard() {
+            const item = drivingQuizData[currentDrivingIdx];
+            document.getElementById('driving-q-text').innerText = item.q;
+            document.getElementById('driving-a-text').innerText = item.a;
+            document.getElementById('driving-a-text').classList.add('hidden');
+        }
+
+        function flipDrivingCard() {
+            document.getElementById('driving-a-text').classList.toggle('hidden');
+        }
+
+        function nextDrivingCard() {
+            currentDrivingIdx = (currentDrivingIdx + 1) % drivingQuizData.length;
+            renderDrivingCard();
+        }
+
+        function addDrivingLesson(e) {
+            e.preventDefault();
+            const hours = parseInt(document.getElementById('lesson-hours').value) || 1;
+            const route = document.getElementById('lesson-route').value;
+            const date = new Date().toISOString().split('T')[0];
+
+            appData.drivingLessons.unshift({ id: Date.now(), hours, route, date });
+            saveToStorage();
+            renderDrivingLessons();
+            e.target.reset();
+        }
+
+        function renderDrivingLessons() {
+            const container = document.getElementById('driving-lessons-list');
+            if(!container) return;
+            container.innerHTML = '';
+            let totalH = 0;
+
+            appData.drivingLessons.forEach(l => {
+                totalH += l.hours;
+                const div = document.createElement('div');
+                div.className = "p-3 rounded-xl bg-dark-900 border border-slate-800 flex items-center justify-between text-xs";
+                div.innerHTML = `
+                    <div>
+                        <span class="font-bold text-white">${l.hours}h</span> - <span class="text-slate-300">${escapeHtml(l.route)}</span>
+                        <div class="text-[10px] text-slate-500">${l.date}</div>
+                    </div>
+                    <button onclick="deleteDrivingLesson(${l.id})" class="text-slate-500 hover:text-roseGold-400 p-1"><i class="fa-solid fa-trash"></i></button>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('driving-hours-total').innerText = `${totalH} / 30h wyjeżdżone`;
+        }
+
+        function deleteDrivingLesson(id) {
+            appData.drivingLessons = appData.drivingLessons.filter(l => l.id !== id);
+            saveToStorage();
+            renderDrivingLessons();
         }
 
         /* TO-DO LIST */
@@ -849,7 +1235,7 @@
             renderHabits();
         }
 
-        /* FLASHCARDS WITH FLIP ANIMATION */
+        /* FLASHCARDS */
         function renderFlashcard() {
             if(!appData.flashcards || appData.flashcards.length === 0) return;
             const current = appData.flashcards[currentCardIdx];
